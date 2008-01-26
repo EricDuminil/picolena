@@ -1,0 +1,4 @@
+development:
+  "spec/test_dirs/indexed": "//test_server/some_dirs"
+test:
+  "spec/test_dirs/indexed": "//test_server/some_dirs"

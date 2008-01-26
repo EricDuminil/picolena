@@ -1,0 +1,12 @@
+-content_for :info_bar do
+  .info_bar
+    %p
+      -if nothing_found? then
+        %span{:class=>'pagination'}=google?(@query)
+        =:nothing_found_for.l
+        %strong=@query
+        =show_time_needed(@time_needed)
+      -else
+        %span{:class=>'pagination'}=should_paginate(@matching_documents, @query)
+        =describe_results(@matching_documents, @total_hits, @time_needed, @query)
+= render :partial =>'result', :collection => @matching_documents
