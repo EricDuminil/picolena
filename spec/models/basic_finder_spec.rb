@@ -50,11 +50,7 @@ describe "Basic Finder" do
     lambda {Finder.new("a", 0, 15)}.should_not raise_error
     lambda {Finder.new("a", 10, 20, 30)}.should raise_error(ArgumentError, "wrong number of arguments (4 for 3)")
   end
-  
-  it "should check query before executing"
-  it "should raise if query is invalid"
-  it "should sanitize query before executing"
-  
+
   it "should return matching documents if executed successfully" do
     finder_with_valid_query=Finder.new("district heating",0,30)
     finder_with_valid_query.should respond_to(:matching_documents)
