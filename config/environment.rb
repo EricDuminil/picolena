@@ -29,4 +29,6 @@ require 'pathname'
 Ferret.locale = "en_US.UTF-8"
 Ferret::Search::FuzzyQuery.default_min_similarity=0.6
 
-Globalite.language = :de
+# Which language should be used?
+# English (:en) & German (:de) are supported
+Globalite.language = :en
