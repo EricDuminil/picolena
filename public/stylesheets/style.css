@@ -47,11 +47,11 @@ h1, h2, h3, h4, h5, h6, p, form {
 }
 
 #mainimg h3 {
-	font-size:46px;
+	font-size:42px;
 	color:#b3d220;
 	font-weight:normal;
 	text-decoration:none;
-	padding: 0px 40px 0px 0px;
+	padding-right: 20px;
 }
 
 .info_bar p{
@@ -83,6 +83,7 @@ h1, h2, h3, h4, h5, h6, p, form {
 }
 
 #mainimg input.btn{
+   margin-right: 10px;
    height: 20px;
    color:#fff;
    margin-top: 5px;
@@ -162,7 +163,7 @@ width: 80%;
 	padding-top:25px;
 }
 
-#email {
+#link {
 	float:left;
 	width:500px;
 	background-color:#9BBE00;
@@ -170,7 +171,7 @@ width: 80%;
 	padding-top:5px;
 }
 
-#email a{
+#link a{
 	font-family:"Trebuchet MS";
 	font-size:11px;
 	color:#fff;
@@ -179,7 +180,7 @@ width: 80%;
 	padding:0px 40px;
 }
 
-#email a:hover{
+#link a:hover{
 	font-family:"Trebuchet MS";
 	font-size:11px;
 	color:#fff;

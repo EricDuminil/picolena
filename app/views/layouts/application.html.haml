@@ -27,9 +27,11 @@
             %br/
         #bottom
           = yield(:info_bar) unless nothing_found?
-          #email
-            %a{"href"=>"http://zafh.net/"}
-              zafh.net
+          #link
+            =link_to 'Picolena', 'http://picolena.devjavu.com/'
           #validtext
             %p
-              Valid XHTML | CSS
+              Valid
+              =link_to 'XHTML', 'http://validator.w3.org/check?uri=referer'
+              |
+              =link_to 'CSS', 'http://jigsaw.w3.org/css-validator'
