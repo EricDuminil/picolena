@@ -1,13 +1,13 @@
 desc 'Ferret index maintenance tasks'
 namespace :index do  
   desc 'Clear indexes'
-  task :clear => :environment do
+  task :clear do
     require 'fileutils'
     Dir.glob('tmp/ferret_indexes/**/*').each{|f| FileUtils.rm(f) if File.file?(f)}
   end
   
   desc 'Create configuration files from template'
-  task :prepare_config do
+  task :prepare_config => :environment do
     require 'fileutils'
     %w{config/indexed_directories.yml config/white_list_ip.yml}.each{|yaml_config_file|
       FileUtils.cp(yaml_config_file+'.template', yaml_config_file) unless File.readable?(yaml_config_file)
@@ -21,7 +21,7 @@ namespace :index do
   end
 
   desc 'Update index'
-  task :update => :environment do
+  task :update do
     puts "Implement me!"
   end
   
