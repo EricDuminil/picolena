@@ -13,8 +13,6 @@
 # - External text file converters documented in ferret_helper.rb file.
 #
 
-require 'pathname'
-require 'fileutils'
 require 'ferret_helper'
 
 #require 'ferret_analyser_ext'

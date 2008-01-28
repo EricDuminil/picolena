@@ -50,7 +50,6 @@
 #   Installation: Ubuntu package
 #   Home page: http://www.wagner.pp.ru/~vitus/software/catdoc/
 
-require 'fileutils'
 require 'tempfile'
 
 module FerretHelper

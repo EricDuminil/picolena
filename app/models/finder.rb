@@ -1,6 +1,4 @@
 require 'ff'
-require 'fileutils'
-require 'ferret_analyser_ext'
 
 class Finder
   attr_reader :index, :query
