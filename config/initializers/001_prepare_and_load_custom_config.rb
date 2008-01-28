@@ -17,10 +17,10 @@ IndexesSavePath=File.join(RAILS_ROOT, 'tmp/ferret_indexes/')
 
 
 # Which language should be used?
-# # English (:en) & German (:de) are supported, and English is chosen by default.
-# # If you'd like to use another language, you can find templates in #{RAILS_ROOT}/lang/ui,
-# # then add your own language in this directory, and modify this line:
-# Globalite.language = :en
+# English (:en) & German (:de) are supported, and English is chosen by default.
+# If you'd like to use another language, you can find templates in #{RAILS_ROOT}/lang/ui,
+# then add your own language in this directory, and modify this line:
+Globalite.language = :en
 
 
 # Specify which locale should be used by Ferret
