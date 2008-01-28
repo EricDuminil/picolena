@@ -1,3 +1,9 @@
+# Only localhost is allowed by default, any request coming from another IP will get rejected.
+# You can either add an IP address to the list:
+# 192.168.0.37
+# or an IP address range:
+# 192.168.0.
+# that will match any IP address whose first octets are 192.168.0
 Allow:
   - 127.0.0.1
   - 0.0.0.0
