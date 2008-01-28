@@ -23,8 +23,6 @@ Analyzer=Ferret::Analysis::StandardAnalyzer.new
 
 include FerretHelper
 
-INDEX_DIR = IndexSavePath rescue File.join('tmp/ferret_indexes/',RAILS_ENV || "development")
-
 def puts_to_stderr_if_dev(string)
   $stderr.puts string if RAILS_ENV=="development"
 end
@@ -82,8 +80,8 @@ def index_directory(index, dir, excludes, includes, counters)
 end
 
 def create_index(dirs, excludes=[], includes=[])
-  FileUtils.mkpath File.dirname(INDEX_DIR)
-  index = Ferret::Index::IndexWriter.new(:create => true, :path => INDEX_DIR, :analyzer => Analyzer)
+  FileUtils.mkpath File.dirname(IndexSavePath)
+  index = Ferret::Index::IndexWriter.new(:create => true, :path => IndexSavePath, :analyzer => Analyzer)
     
   # Although not intuitively obvious, until I tokenized the file name, wildcard
   # file name searches did not return all matching documents.

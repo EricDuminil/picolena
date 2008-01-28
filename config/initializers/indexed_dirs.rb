@@ -5,4 +5,4 @@ YAML.load_file(indexed_dir_config_file)[RAILS_ENV].each_pair{|abs_or_rel_path, a
   IndexedDirectories[Pathname(abs_or_rel_path).realpath.to_s]=alias_path
 }
 
-IndexSavePath=File.join('tmp/ferret_indexes/',ENV["RAILS_ENV"] || "development")
+IndexSavePath=File.join(IndexesSavePath,ENV["RAILS_ENV"] || "development")

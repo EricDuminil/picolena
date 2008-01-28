@@ -1,9 +1,9 @@
 desc 'Ferret index maintenance tasks'
 namespace :index do  
   desc 'Clear indexes'
-  task :clear do
+  task :clear => :environment do
     require 'fileutils'
-    Dir.glob('tmp/ferret_indexes/**/*').each{|f| FileUtils.rm(f) if File.file?(f)}
+    Dir.glob(File.join(IndexSavePath,'/**/*')).each{|f| FileUtils.rm(f) if File.file?(f)}
   end
   
   desc 'Create configuration files from template'
