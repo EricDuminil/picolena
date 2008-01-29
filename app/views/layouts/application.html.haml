@@ -12,14 +12,14 @@
       #content
         #header
         #mainimg
-          %p= link_to :help.l, "/help/#{:help_file.l}"
+          %p= link_to :help.l, :help_file.l
           %h3
             =:type_your_query_here.l
             &darr;
           -form_tag(:action=>:check_query) do
             = text_field_tag :query, @query, :size=>60, :class=>'text_field'
             %br/
-            = submit_tag "#{:search.l}!", :class => 'btn'
+            = submit_tag "#{:search.l}", :class => 'btn'
         #contentarea
           = yield(:info_bar)
           #results
