@@ -28,7 +28,7 @@
         #bottom
           = yield(:info_bar) unless nothing_found?
           #link
-            =link_to 'Picolena', 'http://picolena.devjavu.com/'
+            =link_to :website_name.l, :website_url.l
           #validtext
             %p
               Valid

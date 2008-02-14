@@ -9,6 +9,10 @@ results: Results
 of: of
 for: for
 
+## Link to a website, located in the bottom-left corner.
+website_name: Picolena
+website_url:  http://picolena.devjavu.com/
+
 ## Boolean operators
 AND: AND
 OR: OR

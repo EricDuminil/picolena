@@ -9,6 +9,10 @@ results: Résultats
 of: parmi
 for: pour
 
+## Link to a website, located in the bottom-left corner.
+website_name: Picolena
+website_url:  http://picolena.devjavu.com/
+
 ## Boolean operators
 AND: ET
 OR: OU
