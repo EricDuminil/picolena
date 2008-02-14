@@ -8,3 +8,13 @@ nothing_found_for: Nichts gefunden für
 results: Ergebnisse
 of: von
 for: für
+
+## Boolean operators
+AND: UND
+OR: ODER
+NOT: NICHT
+LIKE: WIE
+
+## Fields
+filetype: erweiterung|ext
+content: inhalt

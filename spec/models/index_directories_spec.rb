@@ -11,7 +11,7 @@ describe "IndexedDirectories" do
   
   it "should only contain existing directories" do
     IndexedDirectories.keys.all?{|dir|
-      File.directory?(dir).should be_true
+      File.should be_directory(dir)
     }
   end
 end

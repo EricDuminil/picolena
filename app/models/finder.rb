@@ -22,20 +22,20 @@ class Finder
       top_docs.hits.each{|hit|
         ferret_doc,score=hit.doc,hit.score
         begin
-            found_doc=Document.new(index[ferret_doc][:complete_path])
-            found_doc.matching_content=index.highlight(query, ferret_doc,
-                                                       :field => :content, :excerpt_length => 80,
-                                                       :pre_tag => "<<", :post_tag => ">>"
-            ) unless @raw_query=~/^\*+\.\w*$/
-            #TODO: Report this bug (index dependent :()
-            #/var/lib/gems/1.8/gems/ferret-0.11.4/lib/ferret/index.rb:197: [BUG] Segmentation fault
-            #ruby 1.8.5 (2006-08-25) [i486-linux]
-
-            #Aborted (core dumped)
-            #rake aborted!
-            
-            found_doc.score=score
-            @matching_documents<<found_doc
+          found_doc=Document.new(index[ferret_doc][:complete_path])
+          found_doc.matching_content=index.highlight(query, ferret_doc,
+                                                     :field => :content, :excerpt_length => 80,
+                                                     :pre_tag => "<<", :post_tag => ">>"
+          ) unless @raw_query=~/^\*+\.\w*$/
+          #TODO: Report this bug (index dependent :()
+          #/var/lib/gems/1.8/gems/ferret-0.11.4/lib/ferret/index.rb:197: [BUG] Segmentation fault
+          #ruby 1.8.5 (2006-08-25) [i486-linux]
+          
+          #Aborted (core dumped)
+          #rake aborted!
+          
+          found_doc.score=score
+          @matching_documents<<found_doc
         rescue Errno::ENOENT
           #"File has been moved/deleted!"
         end
@@ -75,14 +75,16 @@ class Finder
    
    def convert_to_english(str)
      to_en={
-       /\bUND\b/=>'AND',
-       /\bODER\b/=>'OR',
-       /\bNICHT\b/=>'NOT',
-       /(erweiterung|ext):/=>'filetype:',
-       /inhalt:/ => 'content:',
-       /\bWIE\s+(\S+)/=>'\1~'
+       /\b#{:AND.l}\b/=>'AND',
+       /\b#{:OR.l}\b/=>'OR',
+       /\b#{:NOT.l}\b/=>'NOT',
+       /(#{:filetype.l}):/=>'filetype:',
+       /#{:content.l}:/ => 'content:',
+       /\b#{:LIKE.l}\s+(\S+)/=>'\1~'
      }
-     to_en.inject(str){|mem,a| mem.gsub(a.first,a.last)}
+     to_en.inject(str){|mem,non_english_to_english_keyword|
+       mem.gsub(*non_english_to_english_keyword)
+     }
    end
    
    def self.index_filename

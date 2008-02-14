@@ -8,3 +8,13 @@ nothing_found_for: Ningún documento encontrado por
 results: Resultados
 of: de
 for: por
+
+## Boolean operators
+AND: Y
+OR: O
+NOT: "NO"
+LIKE: COMO
+
+## Fields
+filetype: extensión|ext
+content: contenido

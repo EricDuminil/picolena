@@ -26,11 +26,11 @@ describe Finder do
   before(:all) do
     File.open('spec/test_dirs/indexed/others/bäñüßé.txt','w'){|weird_file|
       weird_file.write "just to know if files are indexed with utf8 filenames"
-     }
+    }
     
     Finder.force_index_creation
   end
-
+  
   ext_and_content_examples.each_pair do |ext,content_to_be_found|
     it "should be able to find .#{ext} documents according to their content" do
       finder=Finder.new(content_to_be_found)
@@ -133,7 +133,7 @@ describe Finder do
     lambda{@finder=Finder.new("*.pdf")}.should_not raise_error
     @finder.matching_documents.should_not be_empty
   end
-  
+
   it "should not be case sensitive" do
     a=Finder.new("test").total_hits
     b=Finder.new("TEst").total_hits
@@ -142,23 +142,41 @@ describe Finder do
     b.should == c
   end
   
-  #TODO: remove language specific ops from specs
-  it "should accept ~ WIE and - NICHT as boolean ops" do
+  it "should accept LIKE and NOT boolean ops in different languages" do
     fuzzy_query=Finder.new("test~").total_hits
     test_query=Finder.new("test").total_hits
-    minus_query=Finder.new("WIE test NICHT test").total_hits
-     (fuzzy_query-test_query).should == minus_query
+    
+    language_and_keywords={
+      :en=>["LIKE", "NOT"],
+      :de=>["WIE", "NICHT"],
+      :es=>["COMO", "NO"],
+      :fr=>["COMME","NON"]
+    }
+    
+    language_and_keywords.each_pair{|ln,keywords|
+      Globalite.language = ln
+      like_bool, not_bool = keywords
+      minus_query=Finder.new("#{like_bool} test #{not_bool} test").total_hits
+      (fuzzy_query-test_query).should == minus_query
+    }
   end
   
-  it "should accept AND/UND and OR/ODER as boolean ops" do
-    ['OR', 'ODER'].each{|or_bool|
-      ['AND', 'UND'].each{|and_bool|
-        or_query=Finder.new("test #{or_bool} another").total_hits
-        and_query=Finder.new("test #{and_bool} another").total_hits
-        test_query=Finder.new("test").total_hits
-        another_query=Finder.new("another").total_hits
-         (test_query+another_query-and_query).should == or_query
-      }
+  it "should accept AND and OR boolean ops in different languages" do
+    language_and_keywords={
+      :en=>["OR", "AND"],
+      :de=>["ODER", "UND"],
+      :es=>["O", "Y"],
+      :fr=>["OU","ET"]
+    }
+    
+    language_and_keywords.each_pair{|ln,keywords|
+      Globalite.language = ln
+      or_bool, and_bool = keywords
+      or_query=Finder.new("test #{or_bool} another").total_hits
+      and_query=Finder.new("test #{and_bool} another").total_hits
+      test_query=Finder.new("test").total_hits
+      another_query=Finder.new("another").total_hits
+      (test_query+another_query-and_query).should == or_query
     }
   end
   
@@ -167,14 +185,18 @@ describe Finder do
     and_query=Finder.new("test another").total_hits
     test_query=Finder.new("test").total_hits
     another_query=Finder.new("another").total_hits
-     (test_query+another_query-and_query).should == or_query
+    
+    (test_query+another_query-and_query).should == or_query
     and_query.should <= or_query
     and_query.should <= test_query
     and_query.should <= another_query
   end
   
-  it "should convert UND to AND and ODER to OR only as whole-word" do
-    Finder.new("STRALSUND UND BRODERBUND").matching_documents.should_not be_empty
+  it "should convert foreign keywords to boolean operators only as whole-word" do
+    Globalite.language = :de
+      Finder.new("STRALSUND UND BRODERBUND").matching_documents.should_not be_empty
+    Globalite.language = :fr
+      Finder.new("CETTE ET MIETTE").matching_documents.should_not be_empty
   end
   
   it "should use ? as placeholder" do
@@ -188,7 +210,7 @@ describe Finder do
     results.should_not be_empty
     results.first.matching_content.should include("<<Absorption>> and <<Adsorption>> cooling <<machines>>!!!")
   end
-
+  
   it "should not index those stupid Thumbs.db files" do
     Finder.new("Thumbs.db").matching_documents.should be_empty
     Finder.new("filetype:db").matching_documents.should_not be_empty
