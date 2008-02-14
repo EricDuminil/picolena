@@ -27,6 +27,8 @@ Globalite.language = :en
 # Specify which locale should be used by Ferret
 Ferret.locale = "en_US.UTF-8"
 
+# Results per page
+ResultsPerPage = 10
 
 # Specify the default Levenshtein distance when using FuzzyQuery
 # see http://ferret.davebalmain.com/api/classes/Ferret/QueryParser.html for more information.

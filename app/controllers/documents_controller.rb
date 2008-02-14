@@ -10,18 +10,16 @@ class DocumentsController < ApplicationController
   
   
   # Show the matching documents for a given query
-  #
-  # FIXME: should not initialize a finder twice.
   def show
     start=Time.now
       @query=[params[:id],params.delete(:format)].compact.join('.')
-      finder=Finder.new(@query)
+      page=params[:page]||1
+      finder=Finder.new(@query,page)
       finder.execute!
-      @pager=::Paginator.new(finder.total_hits,10) do |offset, per_page|
-        #FIXME: Shouldn't use a new finder.
-        Finder.new(@query,offset,per_page).matching_documents
+      @pager=::Paginator.new(finder.total_hits, ResultsPerPage) do |offset, per_page|
+        finder.matching_documents
       end
-      @matching_documents=@pager.page(params[:page])
+      @matching_documents=@pager.page(page)
       @total_hits=finder.total_hits
     @time_needed=Time.now-start
   end

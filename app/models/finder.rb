@@ -3,14 +3,14 @@ require 'ff'
 class Finder
   attr_reader :index, :query
   
-  def initialize(raw_query,offset=0, per_page=10)
+  def initialize(raw_query,page=1,results_per_page=ResultsPerPage)
     query_parser = Ferret::QueryParser.new(:fields => [:content, :file, :basename, :filetype], :or_default => false, :analyzer=>Analyzer)
     @query = query_parser.parse(convert_to_english(raw_query))
     @raw_query= raw_query
     Finder.ensure_that_index_exists_on_disk
     @index = Ferret::Index::Index.new(:path => IndexSavePath, :analyzer=>Analyzer)
-    @per_page=per_page
-    @offset=offset
+    @per_page=results_per_page
+    @offset=(page.to_i-1)*results_per_page
     validate_that_index_has_documents
   end
   
