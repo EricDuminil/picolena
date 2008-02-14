@@ -43,7 +43,7 @@ describe "Basic Finder" do
     Finder.force_index_creation
   end
   
-  it "should accept one parameter as query, and 1 optional for paginating" do
+  it "should accept one parameter as query, and 2 optionals for paginating" do
     lambda {Finder.new}.should raise_error(ArgumentError, "wrong number of arguments (0 for 1)")
     # show first page with 10 results per page
     lambda {Finder.new("a b")}.should_not raise_error

@@ -25,10 +25,6 @@ describe Document do
     lambda {Document.new("spec/test_dirs/not_indexed/Rakefile")}.should raise_error(ArgumentError, "required document is not in indexed directory")
   end
   
-#  it "should be able to pick a random valid document" do
-#    lambda {Document.find(:random)}.should_not raise_error
-#  end
-  
   basic_pdf_attribute.each{|attribute,expected_value|
     it "should know its #{attribute}" do
       @valid_random_doc.should respond_to(attribute)

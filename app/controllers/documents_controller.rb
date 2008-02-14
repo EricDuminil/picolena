@@ -16,10 +16,10 @@ class DocumentsController < ApplicationController
       page=params[:page]||1
       finder=Finder.new(@query,page)
       finder.execute!
-      @pager=::Paginator.new(finder.total_hits, ResultsPerPage) do |offset, per_page|
+      pager=::Paginator.new(finder.total_hits, ResultsPerPage) do |offset, per_page|
         finder.matching_documents
       end
-      @matching_documents=@pager.page(page)
+      @matching_documents=pager.page(page)
       @total_hits=finder.total_hits
     @time_needed=Time.now-start
   end
