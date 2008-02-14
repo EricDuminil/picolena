@@ -37,7 +37,7 @@ namespace :install_dependencies do
   desc 'Install required gems'  
   task :gems do
     root_privileges_required!
-    required_gems=%w{ferret paginator}
+    required_gems=%w{ferret paginator haml}
     puts "Installing required gems : "<<required_gems.join(", ")
     required_gems.each do |gem_name|
       begin

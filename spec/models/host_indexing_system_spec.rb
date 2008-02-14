@@ -2,7 +2,7 @@ require 'rubygems'
 require 'spec'
 
 describe "Host indexing system" do
-  %w{ferret paginator}.each  do |gem_name|
+  %w{ferret paginator haml}.each  do |gem_name|
     it "should have #{gem_name} installed as a gem" do
       lambda {gem gem_name}.should_not raise_error
     end
