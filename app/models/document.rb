@@ -38,10 +38,6 @@ class Document
     absolute_dirname.sub(original_dir,alias_dir)
   end
   
-  def smb_client_containing_directory
-    'file:///'<<alias_path
-  end
-  
   def md5
     @md5=Digest::MD5.hexdigest(complete_path)
   end

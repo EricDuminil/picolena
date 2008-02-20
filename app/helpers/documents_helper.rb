@@ -57,8 +57,8 @@ module DocumentsHelper
     link_to "Google?", "http://www.google.de/search?q=#{query}"
   end
   
-  def link_to_smb_containing_directory(result)
+  def link_to_containing_directory(result)
     link_name=image_tag('icons/remote_folder.png')<<content_tag(:small,result.alias_path)
-    link_to link_name, result.smb_client_containing_directory, :target=>'_blank'
+    link_to link_name, result.alias_path, :target=>'_blank'
   end
 end
