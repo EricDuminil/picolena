@@ -1,4 +1,10 @@
 development:
-  "spec/test_dirs/indexed": "file://///test_server/some_dirs"
+  #"first directory that should be indexed": "alias path that will be used to display 'containing directory' link"
+  #"second directory that should be indexed": "alias path that will be used to display 'containing directory' link"
+  #....
+  #alias path could be a smb, http or ftp directory.
+  "spec/test_dirs/indexed": "http://picolena.devjavu.com/browser/trunk/spec/test_dirs/indexed"
 test:
-  "spec/test_dirs/indexed": "file://///test_server/some_dirs"
+  "spec/test_dirs/indexed": "http://picolena.devjavu.com/browser/trunk/spec/test_dirs/indexed"
+production:
+  #up to you!

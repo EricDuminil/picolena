@@ -11,6 +11,6 @@ PlainText.extract {
         tr "<" "\012" < $TEMPDIR/content.xml | egrep '^text:p|text:span' | cut '-d>' -f2, | uniq > "#{destination}"
         rm -r $TEMPDIR}
   }
-  which_requires 'unzip', 'tr', 'egrep', 'cut', 'uniq'
+  which_requires 'mktemp', 'unzip', 'tr', 'egrep', 'cut', 'uniq'
   which_should_for_example_extract 'Picolena can it find me\?\?\? maybe!', :from => 'ubuntu_theme.odp'
 }
