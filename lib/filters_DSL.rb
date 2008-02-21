@@ -18,7 +18,7 @@ module PlainText
   end
   
   class Filter
-    attr_reader :exts, :mime_name, :description, :commands     
+    attr_reader :exts, :mime_name, :description, :command
     
     def from(*exts)
       @exts=exts
@@ -33,14 +33,22 @@ module PlainText
     end
     
     def with(commands_hash={},&block)
-      @commands=commands_hash.invert
+      platform=case RUBY_PLATFORM
+        when /linux/
+          :on_linux
+        when /win/
+          :on_windows
+      end
+      @command=commands_hash.invert[platform] || block
     end
     
     def apply!(source,destination)
-      # TODO: should be multi-platform, this on_linux should be removed!
-      cmd=commands[:on_linux]
-      return unless cmd
-      system(cmd.sub('SOURCE','"'<<source<<'"').sub('DESTINATION','"'<<destination<<'"'))
+      return unless command
+      if command.is_a?(String) then
+        system(command.sub('SOURCE','"'<<source<<'"').sub('DESTINATION','"'<<destination<<'"'))
+      else
+        command.call(source,destination)
+      end
       raise "missing #{cmd.split(' ').first} command" if $?.exitstatus == 127
       raise "failed to convert #{mime_name}: #{source}" unless $?.exitstatus == 0
     end

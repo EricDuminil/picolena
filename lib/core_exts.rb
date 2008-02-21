@@ -28,10 +28,10 @@ class File
   
   def self.encoding(source)
     parse_for_charset="grep -o charset=[a-z0-9\\-]* | sed 's/charset=//'"
-    if File.extname(src)[0,4]==".htm" then
-      enc=%x{head -n20 \"#{src}\" | #{parse_for_charset}}.chomp      
+    if File.extname(source)[0,4]==".htm" then
+      enc=%x{head -n20 \"#{source}\" | #{parse_for_charset}}.chomp      
     else
-      enc=%x{file -i \"#{src}\"  | #{parse_for_charset}}.chomp
+      enc=%x{file -i \"#{source}\"  | #{parse_for_charset}}.chomp
     end
     #iso-8859-15 should be used instead of iso-8859-1, for € char
     enc=="iso-8859-1" ? "iso-8859-15" : enc

@@ -15,9 +15,9 @@
 
 Analyzer=Ferret::Analysis::StandardAnalyzer.new
 
-def convert_to_text_file(src, dst, mime_type=nil)
-  FileUtils.rm dst, :force => true
-  PlainText.find_filter_for(src).apply!(src,dst)
+def convert_to_text_file(source, destination, mime_type=nil)
+  FileUtils.rm destination, :force => true
+  PlainText.find_filter_for(source).apply!(source,destination)
 end
 
 # Convert file to text string.
