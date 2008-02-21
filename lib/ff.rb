@@ -13,55 +13,52 @@
 # - External text file converters documented in ferret_helper.rb file.
 #
 
-require 'ferret_helper'
-
-#require 'ferret_analyser_ext'
-#Analyzer=CustomAnalyzer.new
 Analyzer=Ferret::Analysis::StandardAnalyzer.new
 
-include FerretHelper
-
-def puts_to_stderr_if_dev(string)
-  $stderr.puts string if RAILS_ENV=="development"
+def convert_to_text_file(source, destination, mime_type=nil)
+  FileUtils.rm destination, :force => true
+  PlainText.find_filter_for(source).apply!(source,destination)
 end
 
-def puts_to_stderr_if_not_test(string)
-  $stderr.puts string if RAILS_ENV!="test"
+# Convert file to text string.
+def convert_to_text_string(filename, mime_type)
+  @temp_file ||= "/tmp/ferret_#{Time.now.to_i}"
+  convert_to_text_file(filename, @temp_file, mime_type)
+  File.read(@temp_file)
 end
 
 # Add file +filename+ to the +index+.
 def index_file(index, filename, mime_type=nil)
-  fields = {}
+  complete_path=File.expand_path(filename)
+  fields = {
+    :complete_path=> complete_path,
+    :md5 => Digest::MD5.hexdigest(complete_path),
+    :file => File.basename(filename),
+    :basename => File.basename(filename, File.extname(filename)).gsub(/_/,' '),
+    :filetype => File.extname(filename)
+  }
+
   if mime_type then
-    text = convert_to_text_string(filename, mime_type) if mime_type
+    text = convert_to_text_string(filename, mime_type)
     raise "empty document #{filename}" if text.strip.empty?
     fields[:content] = text
   end
-  complete_path=File.expand_path(filename)
-  fields[:complete_path] = complete_path
-  fields[:md5]=Digest::MD5.hexdigest(complete_path)
-  fields[:file] = File.basename(filename)
-  fields[:basename] = File.basename(filename, File.extname(filename)).gsub(/_/,' ')
-  fields[:filetype] = File.extname(filename)
+  
   index << fields
 end
 
 # Recursively add all qualifying files in directory +dir+ to +index+.
-def index_directory(index, dir, excludes, includes, counters)
+def index_directory(index, dir, counters)
   #Index just everything!
   Dir.glob(File.join(dir,"**/*.*"), File::FNM_CASEFOLD) do |filename|
-    add = (includes.empty? or includes.any? { |m| File.fnmatch(m, filename, File::FNM_DOTMATCH) })
-    if add
-      add = (not excludes.any? { |m| File.fnmatch(m, filename, File::FNM_DOTMATCH) })
-    end
-    # Skip files in Darcs repositories or hidden directories.
-    if add and File.file?(filename) and not filename =~ /(Thumbs\.db)/
+    # Skip Thumbs.db files
+    if File.file?(filename) and not filename =~ /(Thumbs\.db)/
       begin
         puts_to_stderr_if_dev("indexing: #{filename}")
         # Trying to guess MIME type from file contents is not reliable for text
         # files.  The strategy used here is to infer from file name extension
         # and rely on the convertor routine to fail if type is incorrect.
-        mime_type = filename_mime_type(filename)
+        mime_type = File.mime(filename)
         counters[mime_type] ||= Struct::Counter.new(0,0,0,0)
         counters[mime_type].count += 1
         counters[mime_type].size += File.size(filename)
@@ -69,6 +66,7 @@ def index_directory(index, dir, excludes, includes, counters)
         index_file(index, filename, mime_type)
         counters[mime_type].time_needed += Time.now-start
       rescue => e
+        # if mime is unknown, just index filename, basename and extension
         puts_to_stderr_if_dev("indexing without content: #{e.message}")
         index_file(index, filename)
         counters[mime_type||'Unknown mime type'].without_content += 1
@@ -77,11 +75,11 @@ def index_directory(index, dir, excludes, includes, counters)
   end
 end
 
-def create_index(dirs, excludes=[], includes=[])
+def create_index(dirs)
   FileUtils.mkpath File.dirname(IndexSavePath)
   index = Ferret::Index::IndexWriter.new(:create => true, :path => IndexSavePath, :analyzer => Analyzer)
-    
-  # Although not intuitively obvious, until I tokenized the file name, wildcard
+  
+  # Although not intuitively obvious, until I (Stuart Rackham) tokenized the file name, wildcard
   # file name searches did not return all matching documents.
   index.field_infos.add_field(:complete_path, :store => :yes, :index => :yes)
   index.field_infos.add_field(:content, :store => :yes, :index => :yes)
@@ -89,11 +87,11 @@ def create_index(dirs, excludes=[], includes=[])
   index.field_infos.add_field(:file, :store => :no, :index => :yes, :boost => 1.5)
   index.field_infos.add_field(:filetype, :store => :no, :index => :yes, :boost => 1.5)
   index.field_infos.add_field(:md5, :store=>:no, :index=>:yes)
-    
+  
   Struct.new('Counter', :size, :count, :without_content, :time_needed) unless Struct.constants.include?("Counter")
   counters = {}
   begin
-    dirs.each { |dir| index_directory(index, dir, excludes, includes, counters) }
+    dirs.each { |dir| index_directory(index, dir, counters) }
     index.optimize
   ensure
     index.close
