@@ -21,8 +21,9 @@ def convert_to_text_file(source, destination, mime_type=nil)
 end
 
 # Convert file to text string.
+require 'tmpdir'
 def convert_to_text_string(filename, mime_type)
-  @temp_file ||= "/tmp/ferret_#{Time.now.to_i}"
+  @temp_file ||= File.join(Dir::tmpdir,"ferret_#{Time.now.to_i}")
   convert_to_text_file(filename, @temp_file, mime_type)
   File.read(@temp_file)
 end

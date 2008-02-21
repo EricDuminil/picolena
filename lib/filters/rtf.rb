@@ -9,4 +9,5 @@ PlainText.extract {
   as "application/rtf"
   aka "Microsoft Rich Text Format"
   with "unrtf  SOURCE -t text > DESTINATION 2>/dev/null" => :on_linux, "some other command" => :on_windows
+  which_should_for_example_extract 'Resampling when limiting', :from => 'ReadMe.rtf'
 }

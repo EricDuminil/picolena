@@ -1,20 +1,4 @@
-require "tmpdir"
 require File.dirname(__FILE__) + '/../spec_helper'
-
-ext_and_content_examples={
-  :doc=>'district heating',
-  :odt=>'OpenOffice.org',
-  :txt=>'text inside!',
-  :text=>'txt inside!',
-  :pdf=>'in a pdf file',
-  :html=>'zentrum für angewandte forschung an fachhochschulen nachhaltige energietechnik Baden-Württemberg',
-  :htm=>'le monde',
-  :ppt=>'unofficial written by OOo Impress',
-  :xls=>'Some text (should be indexed!)',
-  :tex=>'should index LaTeX too',
-  :rtf=>'Resampling when limiting',
-  :rb=>'Hello world!'
-}
 
 encoding_and_content_examples={'utf-8'=>"püöüökäößß AND ßklüöü",
   'iso-8859-1'=>"Themenliste für Adsorptionskälte",
@@ -22,23 +6,12 @@ encoding_and_content_examples={'utf-8'=>"püöüökäößß AND ßklüöü",
 }
 
 describe Finder do
-  
   before(:all) do
     File.open('spec/test_dirs/indexed/others/bäñüßé.txt','w'){|weird_file|
       weird_file.write "just to know if files are indexed with utf8 filenames"
     }
     
     Finder.force_index_creation
-  end
-  
-  ext_and_content_examples.each_pair do |ext,content_to_be_found|
-    it "should be able to find .#{ext} documents according to their content" do
-      finder=Finder.new(content_to_be_found)
-      finder.execute!
-      matching_documents=finder.matching_documents
-      matching_documents_extname=matching_documents.collect{|d| d.extname}
-      matching_documents_extname.should include(".#{ext}")
-    end
   end
   
   it "should find documents according to their basename when specified with basename:query" do

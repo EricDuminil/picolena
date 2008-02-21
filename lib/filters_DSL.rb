@@ -5,6 +5,10 @@ module PlainText
     @@filters
   end
   
+  def self.filter_dependencies
+    filters.collect{|filter| filter.dependencies}.flatten.compact.uniq.sort
+  end
+  
   def self.extract(&block)
     filter = Filter.new
     filter.instance_eval(&block)
@@ -18,7 +22,11 @@ module PlainText
   end
   
   class Filter
-    attr_reader :exts, :mime_name, :description, :command
+    attr_reader :exts, :mime_name, :description, :command, :content_and_file_examples
+    
+    def initialize
+      @content_and_file_examples=[]   
+    end
     
     def from(*exts)
       @exts=exts
@@ -31,6 +39,24 @@ module PlainText
     def aka(description)
       @description=description
     end
+    
+    def which_requires(*dependencies)
+      @dependencies=dependencies
+    end
+    
+    def dependencies
+      if command.is_a?(String) then
+        command.split(/\|\s*/).collect{|command_part| command_part.split(/ /).first}
+      else
+        @dependencies
+      end
+    end
+    
+    def which_should_for_example_extract(content, file)
+      @content_and_file_examples << [content,file[:from]]
+    end
+    
+    alias_method :or_extract, :which_should_for_example_extract
     
     def with(commands_hash={},&block)
       platform=case RUBY_PLATFORM
