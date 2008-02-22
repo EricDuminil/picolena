@@ -9,24 +9,9 @@
 # Requisites:
 # - Ferret 0.10.4 or better installed as a Ruby Gem.
 #   See http://ferret.davebalmain.com/trac for Ferret installation.
-# - The accompanying ferret_helper.rb file.
-# - External text file converters documented in ferret_helper.rb file.
-#
+# - External text file filters documented in lib/filters/*.rb.
 
 Analyzer=Ferret::Analysis::StandardAnalyzer.new
-
-def convert_to_text_file(source, destination, mime_type=nil)
-  FileUtils.rm destination, :force => true
-  PlainText.find_filter_for(source).apply!(source,destination)
-end
-
-# Convert file to text string.
-require 'tmpdir'
-def convert_to_text_string(filename, mime_type)
-  @temp_file ||= File.join(Dir::tmpdir,"ferret_#{Time.now.to_i}")
-  convert_to_text_file(filename, @temp_file, mime_type)
-  File.read(@temp_file)
-end
 
 # Add file +filename+ to the +index+.
 def index_file(index, filename, mime_type=nil)
@@ -40,7 +25,7 @@ def index_file(index, filename, mime_type=nil)
   }
 
   if mime_type then
-    text = convert_to_text_string(filename, mime_type)
+    text = PlainText.extract_content_from(filename)
     raise "empty document #{filename}" if text.strip.empty?
     fields[:content] = text
   end
