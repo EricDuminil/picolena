@@ -1,10 +1,5 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-encoding_and_content_examples={'utf-8'=>"püöüökäößß AND ßklüöü",
-  'iso-8859-1'=>"Themenliste für Adsorptionskälte",
-  'iso-8859-15'=>"F€rnwärme"
-}
-
 describe Finder do
   before(:all) do
     File.open('spec/test_dirs/indexed/others/bäñüßé.txt','w'){|weird_file|
@@ -188,15 +183,6 @@ describe Finder do
     Finder.new("Thumbs.db").matching_documents.should be_empty
     Finder.new("filetype:db").matching_documents.should_not be_empty
   end
-  
-  encoding_and_content_examples.each_pair do |encoding,content_to_be_found|
-    it "should also index non-ascii characters from #{encoding} txt files" do
-      one_iso_doc=Finder.new(content_to_be_found).matching_documents
-      one_iso_doc.should_not be_empty
-      one_iso_doc.first.basename.should == encoding
-    end
-  end  
-
 
 #  Not sure about this spec!
 #  English, or German?
