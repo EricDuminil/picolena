@@ -8,6 +8,6 @@ PlainText.extract {
   from :ppt, :pps
   as "application/powerpoint"
   aka "Microsoft Office Powerpoint document"
-  with "catppt  SOURCE > DESTINATION 2>/dev/null" => :on_linux, "some other command" => :on_windows
+  with "catppt SOURCE" => :on_linux, "some other command" => :on_windows
   which_should_for_example_extract 'unofficial written by OOo Impress', :from => 'one_page.ppt'
 }

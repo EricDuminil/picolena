@@ -2,12 +2,12 @@ PlainText.extract {
   from :txt, :text, :tex, :for, :cpp, :c, :rb, :ins, :vee, :java
   as "application/plain"
   aka "plain text file"
-  with {|source,destination|
+  with {|source|
     encoding=File.encoding(source)
     if encoding.empty? then
-       FileUtils.cp source, destination
+       File.read(source)
     else
-       %x{iconv -f #{encoding} -t utf8  "#{source}" > "#{destination}" 2>/dev/null}
+       %x{iconv -f #{encoding} -t utf8  "#{source}"}
     end
   }
   # for dependencies spec

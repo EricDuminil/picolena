@@ -36,6 +36,12 @@ class File
     #iso-8859-15 should be used instead of iso-8859-1, for € char
     enc=="iso-8859-1" ? "iso-8859-15" : enc
   end
+  
+  def self.read_and_remove(filename)
+    content=read(filename)
+    FileUtils.rm filename, :force=>true
+    content
+  end
 end
 
 

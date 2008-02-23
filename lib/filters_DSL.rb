@@ -11,7 +11,7 @@ require 'tmpdir'
 module PlainText
   @@filters=[]
   
-  #returns every already defined filter
+  #returns every defined filter
   def self.filters
     @@filters
   end
@@ -32,21 +32,23 @@ module PlainText
   #finds which filter should be used for a given file, according to its extension
   def self.find_filter_for(filename)
     ext=File.ext_as_sym(filename)
-    filters.find{|filter| filter.exts.include?(ext)} || raise(ArgumentError, "no convertor for #{filename}")
+    filter=filters.find{|filter| filter.exts.include?(ext)} || raise(ArgumentError, "no convertor for #{filename}")
+    filter.source=filename
+    filter
   end
   
   #launches filter on given file and outputs plain text result
   def self.extract_content_from(source)
-    @@temp_file ||= File.join(Dir::tmpdir,"ferret_#{Time.now.to_i}")
-    FileUtils.rm @@temp_file, :force => true
-    find_filter_for(source).apply!(source,@@temp_file)
-    File.read(@@temp_file)
+    find_filter_for(source).extract_content
   end
   
   #defined by DSL described in PlainText
   class Filter
+    require 'tmpdir'
+    
     #DSL part
     attr_reader :exts, :mime_name, :description, :command, :content_and_file_examples
+    attr_accessor :source
     
     def initialize
       @content_and_file_examples=[]   
@@ -67,17 +69,7 @@ module PlainText
     def which_requires(*dependencies)
       @dependencies=dependencies
     end
-    
-    #parses command in order to know which programs are needed.
-    #rspec will then check that every dependecy is installed on the system
-    def dependencies
-      if command.is_a?(String) then
-        command.split(/\|\s*/).collect{|command_part| command_part.split(/ /).first}
-      else
-        @dependencies
-      end
-    end
-    
+        
     #used by rspec to test filters:
     #  which_should_for_example_extract 'in a pdf file', :from => 'basic.pdf'
     #  or_extract 'some other stuff inside another pdf file', :from => 'yet_another.pdf'
@@ -100,19 +92,51 @@ module PlainText
         when /win/
           :on_windows
       end
-      @command=commands_hash.invert[platform] || block
+      #dup must be used, otherwise @command gets frozen. No idea why though....
+      @command=commands_hash.invert[platform].dup rescue block
+      @command<<' 2>/dev/null' if (command.is_a?(String) && platform==:on_linux)
     end
     
-    #conversion part
-    def apply!(source,destination)
-      return unless command
+
+    
+    #parses command in order to know which programs are needed.
+    #rspec will then check that every dependecy is installed on the system
+    def dependencies
       if command.is_a?(String) then
-        system(command.sub('SOURCE','"'<<source<<'"').sub('DESTINATION','"'<<destination<<'"'))
+        command.split(/\|\s*/).collect{|command_part| command_part.split(/ /).first}
       else
-        command.call(source,destination)
+        @dependencies
+      end
+    end
+
+    
+    #Conversion part
+    
+    #destination method can be used by some conversion command that cannot output to stdout (example?)
+    #a file containing plain text result will first be written by command, and then be read by extract_content.
+    def destination
+      @@temp_file_as_destination ||= File.join(Dir::tmpdir,"ferret_#{Time.now.to_i}")
+    end
+    
+    #Replaces generic command with specific source and destination (if specified) files
+    def specific_command
+      command.sub('SOURCE','"'<<source<<'"').sub('DESTINATION','"'<<destination<<'"')
+    end
+    
+    def extract_content
+      content=if command.is_a?(String) then
+        if command.include?('DESTINATION') then
+          system(specific_command)
+          File.read_and_remove(destination)
+        else
+          IO.popen(specific_command){|io| io.read}
+        end
+      else
+        command.call(source)
       end
       raise "missing #{cmd.split(' ').first} command" if $?.exitstatus == 127
       raise "failed to convert #{mime_name}: #{source}" unless $?.exitstatus == 0
+      content
     end
   end
 end
@@ -122,5 +146,3 @@ end
 Dir.glob(File.join(File.dirname(__FILE__),'filters/*.rb')).each{|filter|
   require filter
 }
-
-#puts PlainText.filters.inspect

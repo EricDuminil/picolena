@@ -8,6 +8,6 @@ PlainText.extract {
   from :xls
   as "application/excel"
   aka "Microsoft Office Excel document"
-  with "xls2csv SOURCE 2>/dev/null | grep -i [a-z] | sed -e 's/\"//g' -e 's/,*$//' -e 's/,/ /g' > DESTINATION" => :on_linux, "some other command" => :on_windows
+  with "xls2csv SOURCE | grep -i [a-z] | sed -e 's/\"//g' -e 's/,*$//' -e 's/,/ /g'" => :on_linux, "some other command" => :on_windows
   which_should_for_example_extract 'Some text (should be indexed!)', :from => 'table.xls'
 }

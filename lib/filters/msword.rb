@@ -8,6 +8,6 @@ PlainText.extract {
   from :doc, :dot
   as "application/msword"
   aka "Microsoft Office Word document"
-  with "antiword SOURCE > DESTINATION 2>/dev/null" => :on_linux, "some other command" => :on_windows
+  with "antiword SOURCE" => :on_linux, "some other command" => :on_windows
   which_should_for_example_extract 'district heating', :from => 'Types of malfunction in DH substations.doc'
 }
