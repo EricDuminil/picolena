@@ -11,6 +11,8 @@
 #   See http://ferret.davebalmain.com/trac for Ferret installation.
 # - External text file filters documented in lib/filters/*.rb.
 
+#TODO: Not Rubyish at all. Refactor all this!
+
 Analyzer=Ferret::Analysis::StandardAnalyzer.new
 
 # Add file +filename+ to the +index+.
@@ -23,7 +25,7 @@ def index_file(index, filename, mime_type=nil)
     :basename => File.basename(filename, File.extname(filename)).gsub(/_/,' '),
     :filetype => File.extname(filename)
   }
-
+  
   if mime_type then
     text = PlainText.extract_content_from(filename)
     raise "empty document #{filename}" if text.strip.empty?
@@ -31,6 +33,15 @@ def index_file(index, filename, mime_type=nil)
   end
   
   index << fields
+end
+
+def index_file_and_increment_counter(index,filename,mime_type,counters)
+  counters[mime_type] ||= Struct::Counter.new(0,0,0,0)
+  counters[mime_type].count += 1
+  counters[mime_type].size += File.size(filename)
+  start=Time.now
+  index_file(index, filename,mime_type)
+  counters[mime_type].time_needed += Time.now-start
 end
 
 # Recursively add all qualifying files in directory +dir+ to +index+.
@@ -41,16 +52,12 @@ def index_directory(index, dir, counters)
     if File.file?(filename) and not filename =~ /(Thumbs\.db)/
       begin
         puts_to_stderr_if_dev("indexing: #{filename}")
+        
         # Trying to guess MIME type from file contents is not reliable for text
         # files.  The strategy used here is to infer from file name extension
         # and rely on the convertor routine to fail if type is incorrect.
         mime_type = File.mime(filename)
-        counters[mime_type] ||= Struct::Counter.new(0,0,0,0)
-        counters[mime_type].count += 1
-        counters[mime_type].size += File.size(filename)
-        start=Time.now
-        index_file(index, filename, mime_type)
-        counters[mime_type].time_needed += Time.now-start
+        index_file_and_increment_counter(index,filename,mime_type,counters)
       rescue => e
         # if mime is unknown, just index filename, basename and extension
         puts_to_stderr_if_dev("indexing without content: #{e.message}")
@@ -65,14 +72,7 @@ def create_index(dirs)
   FileUtils.mkpath File.dirname(IndexSavePath)
   index = Ferret::Index::IndexWriter.new(:create => true, :path => IndexSavePath, :analyzer => Analyzer)
   
-  # Although not intuitively obvious, until I (Stuart Rackham) tokenized the file name, wildcard
-  # file name searches did not return all matching documents.
-  index.field_infos.add_field(:complete_path, :store => :yes, :index => :yes)
-  index.field_infos.add_field(:content, :store => :yes, :index => :yes)
-  index.field_infos.add_field(:basename, :store => :no, :index => :yes, :boost => 1.5)
-  index.field_infos.add_field(:file, :store => :no, :index => :yes, :boost => 1.5)
-  index.field_infos.add_field(:filetype, :store => :no, :index => :yes, :boost => 1.5)
-  index.field_infos.add_field(:md5, :store=>:no, :index=>:yes)
+  add_fields(index)
   
   Struct.new('Counter', :size, :count, :without_content, :time_needed) unless Struct.constants.include?("Counter")
   counters = {}
@@ -101,4 +101,15 @@ def create_index(dirs)
     puts_to_stderr_if_not_test("total time needed: #{(total_time_needed*1000).to_i} ms")
     puts_to_stderr_if_not_test("avg. time needed: #{(total_time_needed*1000/(total_count-total_without_content)).to_i} ms/file")
   end
+end
+
+def add_fields(index)
+  # Although not intuitively obvious, until I (Stuart Rackham) tokenized the file name, wildcard
+  # file name searches did not return all matching documents.
+  index.field_infos.add_field(:complete_path, :store => :yes, :index => :yes)
+  index.field_infos.add_field(:content, :store => :yes, :index => :yes)
+  index.field_infos.add_field(:basename, :store => :no, :index => :yes, :boost => 1.5)
+  index.field_infos.add_field(:file, :store => :no, :index => :yes, :boost => 1.5)
+  index.field_infos.add_field(:filetype, :store => :no, :index => :yes, :boost => 1.5)
+  index.field_infos.add_field(:md5, :store=>:no, :index=>:yes)
 end
