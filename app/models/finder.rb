@@ -27,13 +27,6 @@ class Finder
                                                      :field => :content, :excerpt_length => 80,
                                                      :pre_tag => "<<", :post_tag => ">>"
           ) unless @raw_query=~/^\*+\.\w*$/
-          #TODO: Report this bug (index dependent :()
-          #/var/lib/gems/1.8/gems/ferret-0.11.4/lib/ferret/index.rb:197: [BUG] Segmentation fault
-          #ruby 1.8.5 (2006-08-25) [i486-linux]
-          
-          #Aborted (core dumped)
-          #rake aborted!
-          
           found_doc.score=score
           @matching_documents<<found_doc
         rescue Errno::ENOENT
