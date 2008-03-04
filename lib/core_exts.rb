@@ -27,7 +27,7 @@ class File
   end
   
   def self.encoding(source)
-    parse_for_charset="grep -o charset=[a-z0-9\\-]* | sed 's/charset=//'"
+    parse_for_charset="grep -io charset=[a-z0-9\\-]* | sed 's/charset=//i'"
     if File.extname(source)[0,4]==".htm" then
       enc=%x{head -n20 \"#{source}\" | #{parse_for_charset}}.chomp      
     else
