@@ -5,7 +5,6 @@ PlainText.extract {
   as 'application/vnd.openxmlformats-officedocument.presentationml.presentation' #could that mime BE any longer?
   aka "Microsoft Office 2007 Powerpoint document"
   with {|source|
-  puts source
     Zip::ZipFile.open(source){|zipfile|
       zipfile.entries.select{|l|
         l.name=~/^ppt\/slides\/slide\d+.xml/
