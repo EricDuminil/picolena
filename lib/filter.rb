@@ -55,7 +55,7 @@ module PlainText
     end
     
     def extract_content
-      content=if command.is_a?(String) then
+      if command.is_a?(String) then
         if command.include?('DESTINATION') then
           system(specific_command)
           File.read_and_remove(destination)
@@ -65,9 +65,6 @@ module PlainText
       else
         command.call(source)
       end
-      raise "missing #{cmd.split(' ').first} command" if $?.exitstatus == 127
-      raise "failed to convert #{mime_name}: #{source}" unless $?.exitstatus == 0
-      content
     end    
   end
 end
