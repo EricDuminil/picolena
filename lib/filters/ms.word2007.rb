@@ -1,5 +1,5 @@
-# MS OOXML word to text conversion:
-# http://wiki.opengarden.org/Deki_Wiki/Community_Contributions/Extended_Search
+# MS OOXML word to text conversion
+
 require 'zip/zip'
 PlainText.extract {
   from :docx

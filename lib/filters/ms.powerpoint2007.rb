@@ -1,5 +1,4 @@
-# MS OOXML word to text conversion:
-# http://wiki.opengarden.org/Deki_Wiki/Community_Contributions/Extended_Search
+# MS OOXML word to text conversion
 
 PlainText.extract {
   from :pptx

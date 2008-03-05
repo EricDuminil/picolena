@@ -1,5 +1,4 @@
-# Open Document Spreadsheet to text conversion:
-# http://wiki.opengarden.org/Deki_Wiki/Community_Contributions/Extended_Search
+# Open Document Spreadsheet to text conversion
 
 PlainText.extract {
   from :ods

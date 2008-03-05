@@ -1,7 +1,4 @@
-# Open Document to text conversion:
-#   Program: odt2txt
-#   Version tested: 0.3
-#   Home page: http://www.freewisdom.org/projects/python-markdown/odt2txt.php
+# Open Document to text conversion
 
 PlainText.extract {
   from :odt

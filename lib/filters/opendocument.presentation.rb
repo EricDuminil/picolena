@@ -1,5 +1,5 @@
-# Open Document Presentation to text conversion:
-# http://wiki.opengarden.org/Deki_Wiki/Community_Contributions/Extended_Search
+# Open Document Presentation to text conversion
+
 require 'zip/zip'
 PlainText.extract {
   from :odp
