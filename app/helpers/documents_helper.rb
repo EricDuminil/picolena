@@ -32,13 +32,13 @@ module DocumentsHelper
   
   def icon_for(filetype)    
     pic_for_exts={
-      :xls=>%w{xls},
-      :doc=>%w{doc odt rtf dot},
+      :xls=>%w{xls xlsx},
+      :doc=>%w{doc odt rtf dot docx},
       :pdf=>%w{pdf},
       :txt=>%w{txt text tex bib log ini},
       :ogg=>%w{mp3 ogg wma wav wmv tee},
       :html=>%w{html htm},
-      :ppt=>%w{ppt pps},
+      :ppt=>%w{ppt pps pptx},
       :package=>%w{gz rar zip bak},
       :picture=>%w{psd jpg png gif eps bmp ico},
       :cad=>%w{dwg dxf},

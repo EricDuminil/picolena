@@ -5,7 +5,7 @@ PlainText.extract {
   from :ods
   as 'application/vnd.oasis.opendocument.spreadsheet'
   aka "Open Document Format for spreadsheet"
-  #Should be written in Ruby!
+  #TODO: Should be written in Ruby!
   with {|source|
         %x{TEMPDIR=`mktemp -d`
         unzip -oq "#{source}" -d $TEMPDIR   # Extract the file

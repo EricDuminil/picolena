@@ -5,7 +5,7 @@ PlainText.extract {
   from :odp
   as 'application/vnd.oasis.opendocument.presentation'
   aka "Open Document Format for presentation"
-  #Should be written in Ruby!
+  #TODO: Should be written in Ruby!
   with {|source|
         %x{TEMPDIR=`mktemp -d`
         unzip -oq "#{source}" -d $TEMPDIR   # Extract the file
