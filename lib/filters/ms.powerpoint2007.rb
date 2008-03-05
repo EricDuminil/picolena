@@ -6,9 +6,8 @@ PlainText.extract {
   aka "Microsoft Office 2007 Powerpoint document"
   with {|source|
     Zip::ZipFile.open(source){|zipfile|
-      zipfile.entries.select{|l|
-        l.name=~/^ppt\/slides\/slide\d+.xml/
-      }.collect{|entry|
+      slides=zipfile.entries.select{|l| l.name=~/^ppt\/slides\/slide\d+.xml/}
+      slides.collect{|entry|
         zipfile.read(entry).split(/</).grep(/^a:t/).collect{|l|
             l.sub(/^[^>]+>/,'')
           }
