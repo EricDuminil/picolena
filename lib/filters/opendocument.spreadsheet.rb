@@ -1,5 +1,6 @@
 # Open Document Spreadsheet to text conversion
 
+require 'zip/zip'
 PlainText.extract {
   from :ods
   as 'application/vnd.oasis.opendocument.spreadsheet'

@@ -1,5 +1,6 @@
-# MS OOXML word to text conversion
+# MS OOXML presentation to text conversion
 
+require 'zip/zip'
 PlainText.extract {
   from :pptx
   as 'application/vnd.openxmlformats-officedocument.presentationml.presentation' #could that mime BE any longer?

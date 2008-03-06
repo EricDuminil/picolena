@@ -33,7 +33,7 @@ module DocumentsHelper
   def icon_for(filetype)    
     pic_for_exts={
       :xls=>%w{xls xlsx ods},
-      :doc=>%w{doc odt rtf dot docx},
+      :doc=>%w{doc odt rtf dot docx dotx},
       :pdf=>%w{pdf},
       :txt=>%w{txt text tex bib log ini},
       :ogg=>%w{mp3 ogg wma wav wmv tee},

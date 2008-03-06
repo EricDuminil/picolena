@@ -1,5 +1,6 @@
 # Open Document to text conversion
 
+require 'zip/zip'
 PlainText.extract {
   from :odt
   as 'application/vnd.oasis.opendocument.text'
