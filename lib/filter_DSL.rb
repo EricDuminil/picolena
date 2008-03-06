@@ -71,7 +71,7 @@ module PlainText
         else
           block || raise("No command defined for this filter: #{description}")
         end
-      @command<<' 2>/dev/null' if (@command.is_a?(String) && platform==:on_linux)
+      @command<<' 2>/dev/null' if (@command.is_a?(String) && platform==:on_linux && !@command.include?('|'))
     end
   end
 end
