@@ -4,7 +4,6 @@ PlainText.extract {
   aka "plain text file"
   with {|source|
     encoding=File.encoding(source)
-    puts encoding.inspect
     if encoding.empty? then
        File.read(source)
     else
