@@ -4,10 +4,11 @@ PlainText.extract {
   aka "plain text file"
   with {|source|
     encoding=File.encoding(source)
+    puts encoding.inspect
     if encoding.empty? then
        File.read(source)
     else
-       %x{iconv -f #{encoding} -t utf8  "#{source}"}
+       %x{iconv -f #{encoding} -t utf8  "#{source}" 2>/dev/null}
     end
   }
   # for dependencies spec
@@ -29,4 +30,5 @@ PlainText.extract {
   or_extract 'püöüökäößß AND ßklüöü', :from => 'utf-8.txt'
   or_extract 'Themenliste für Adsorptionskälte', :from => 'iso-8859-1.txt'
   or_extract 'F€rnwärme', :from => 'iso-8859-15.txt'
+  or_extract 'The previous line includes some weird chars. Will this file be indexed\?', :from => 'weird_chars.txt'
 }

@@ -34,7 +34,14 @@ class File
       enc=%x{file -i \"#{source}\"  | #{parse_for_charset}}.chomp
     end
     #iso-8859-15 should be used instead of iso-8859-1, for € char
-    enc=="iso-8859-1" ? "iso-8859-15" : enc
+    case enc
+     when "iso-8859-1"
+       "iso-8859-15"
+     when "unknown"
+       ""
+     else
+       enc
+     end
   end
   
   def self.read_and_remove(filename)
