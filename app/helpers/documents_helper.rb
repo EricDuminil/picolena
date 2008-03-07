@@ -44,7 +44,7 @@ module DocumentsHelper
       :cad=>%w{dwg dxf},
       :exe=>%w{exe dll},
       :video=>%w{avi wmv mpg mpeg},
-      :code=>%w{for cpp c rb},
+      :code=>%w{for cpp c rb java},
       :insel=>%w{ins vee}
     }
     pic=pic_for_exts.find{|pic, extensions|
@@ -64,7 +64,7 @@ module DocumentsHelper
   
   def link_to_plain_text_content(document)
     return unless document.supported?
-    link_name=image_tag('icons/plain_text_small.png')<<'&nbsp;'<<content_tag(:small,'text content')
+    link_name=image_tag('icons/plain_text_small.png')<<'&nbsp;'<<content_tag(:small,:text_content.l)
     link_to link_name, show_content_document_path(document.md5)
   end
 end
