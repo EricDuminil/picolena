@@ -46,6 +46,10 @@ class Document
     PlainText.supported_extensions.include?(self.ext_as_sym)
   end
   
+  def content
+    PlainText.extract_content_from(complete_path)
+  end
+  
   private
   
   def in_indexed_directory?

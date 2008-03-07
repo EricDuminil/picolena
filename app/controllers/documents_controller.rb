@@ -32,7 +32,6 @@ class DocumentsController < ApplicationController
   end
   
   def show_content
-    @plain_text=PlainText.extract_content_from(@document.complete_path)
   end
   
   private
