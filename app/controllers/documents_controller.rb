@@ -1,5 +1,5 @@
 class DocumentsController < ApplicationController  
-  before_filter :check_if_valid_link, :only=> :download
+  before_filter :check_if_valid_link, :only=> [:download, :show_content]
   
   # Actually doesn't check anything at all. Just a redirect to show_document(query)
   #
@@ -31,11 +31,15 @@ class DocumentsController < ApplicationController
     send_file @document.complete_path  
   end
   
+  def show_content
+    @plain_text=PlainText.extract_content_from(@document.complete_path)
+  end
+  
   private
   
   def check_if_valid_link
-    md5_hash=params[:id]
-    no_valid_link unless md5_hash=~/^[a-z0-9]{32}$/ && @document=Finder.new("md5:"<<md5_hash).matching_documents.first
+    @md5_hash=params[:id]
+    no_valid_link unless @md5_hash=~/^[a-z0-9]{32}$/ && @document=Finder.new("md5:"<<@md5_hash).matching_documents.first
   end
   
   def no_valid_link

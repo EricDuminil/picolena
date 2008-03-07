@@ -10,7 +10,12 @@ module PlainText
   
   #returns every required dependency for every defined filter
   def self.filter_dependencies
-    filters.collect{|filter| filter.dependencies}.flatten.compact.uniq.sort
+    @@dependencies||=filters.collect{|filter| filter.dependencies}.flatten.compact.uniq.sort
+  end
+  
+  #returns every supported file extensions
+  def self.supported_extensions
+    @@supported_exts||=filters.collect{|filter| filter.exts}.flatten.compact.uniq
   end
 
   #finds which filter should be used for a given file, according to its extension

@@ -22,7 +22,7 @@ module DocumentsHelper
 
   def highlight_matching_content(document)
     content_tag(:ul,document.matching_content.collect{|sentence|
-      content_tag(:li,sentence.gsub(/<<(.*?)>>/,'<strong>\1</strong>').gsub(/\v|\f/,''))
+      content_tag(:li,h(sentence).gsub(/&lt;&lt;(.*?)&gt;&gt;/,'<strong>\1</strong>').gsub(/\v|\f/,''))
     }) if document.matching_content
   end
   
@@ -57,8 +57,14 @@ module DocumentsHelper
     link_to "Google?", "http://www.google.de/search?q=#{query}"
   end
   
-  def link_to_containing_directory(result)
-    link_name=image_tag('icons/remote_folder.png')<<content_tag(:small,result.alias_path)
-    link_to link_name, result.alias_path, :target=>'_blank'
+  def link_to_containing_directory(document)
+    link_name=image_tag('icons/remote_folder.png')<<'&nbsp;'<<content_tag(:small,document.alias_path)
+    link_to link_name, document.alias_path, :target=>'_blank'
+  end
+  
+  def link_to_plain_text_content(document)
+    return unless document.supported?
+    link_name=image_tag('icons/plain_text_small.png')<<'&nbsp;'<<content_tag(:small,'text content')
+    link_to link_name, show_content_document_path(document.md5)
   end
 end

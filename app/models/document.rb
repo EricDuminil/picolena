@@ -17,7 +17,7 @@ class Document
   end
   
   #Delegating properties to File::method_name(complete_path)
-  [:dirname, :basename, :extname, :size?, :file?, :read].each{|method_name|
+  [:dirname, :basename, :extname, :size?, :file?, :read, :ext_as_sym].each{|method_name|
     define_method(method_name){File.send(method_name,complete_path)}
   }
   alias_method :size, :size?
@@ -40,6 +40,10 @@ class Document
   
   def md5
     @md5=Digest::MD5.hexdigest(complete_path)
+  end
+  
+  def supported?
+    PlainText.supported_extensions.include?(self.ext_as_sym)
   end
   
   private
