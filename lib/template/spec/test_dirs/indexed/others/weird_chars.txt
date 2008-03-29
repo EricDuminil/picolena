@@ -1,2 +1,0 @@
-Euroheat & Power publishes 2007 edition of its biannual publication “District Heating and Cooling – country by country survey”
-The previous line includes some weird chars. Will this file be indexed?

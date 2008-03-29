@@ -1,5 +1,0 @@
-Whatever....
-Still inside blockquote
-</blockquote>
-<h1>HAHA</h1>
-<script>alert('Hi! I could be a malicous script!')</script>

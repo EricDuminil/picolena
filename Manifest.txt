@@ -1,11 +1,16 @@
+.loadpath
+.project
 History.txt
 MIT-LICENSE
 Manifest.txt
 README.txt
 Rakefile
+app_generators/picolena/USAGE
+app_generators/picolena/picolena_generator.rb
 bin/picolena
-config/hoe.rb
+bin/picolena_bak
 config/requirements.rb
+lib/picolena/version.rb
 lib/template/MIT-LICENSE
 lib/template/Rakefile
 lib/template/app/controllers/application.rb
@@ -755,7 +760,7 @@ lib/template/vendor/plugins/rspec_on_rails/stories/steps/people.rb
 lib/template/vendor/plugins/rspec_on_rails/stories/transactions_should_rollback
 lib/template/vendor/plugins/rspec_on_rails/stories/transactions_should_rollback.rb
 lib/template/vendor/plugins/rspec_on_rails/tasks/rspec.rake
-lib/picolena/version.rb
+log/debug.log
 script/destroy
 script/generate
 script/txt2html
@@ -767,3 +772,5 @@ tasks/deployment.rake
 tasks/environment.rake
 tasks/rspec.rake
 tasks/website.rake
+test/test_generator_helper.rb
+test/test_picolena_generator.rb
