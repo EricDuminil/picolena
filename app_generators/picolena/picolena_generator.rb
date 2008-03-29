@@ -10,7 +10,7 @@ class PicolenaGenerator < RubiGen::Base
   def initialize(runtime_args, runtime_options = {})
     super
     usage if args.empty?
-    @destination_root = File.expand_path(args.shift)
+    @destination_root = 'picolena'
     @name = base_name
     extract_options
   end
@@ -35,7 +35,7 @@ class PicolenaGenerator < RubiGen::Base
       <<-EOS
 Creates a documents search engine
 
-USAGE: #{spec.name} one_directory_to_be_indexed another_one and_yet_another_one
+USAGE: #{spec.name} one_directory_to_be_indexed as_well_as_other_dirs_if_you_want
 EOS
     end
 

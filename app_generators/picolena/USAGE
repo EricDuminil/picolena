@@ -1,9 +1,9 @@
 Description:
-	The 'picolena' command creates a new documents search engine,
-	indexing directories specified as parameters.
-	A default structure will be created in 'picolena' directory.
-	Since picolena is Rails-based, you can launch the search-engine
-	web-server just like you would with any Rails application.
+    The 'picolena' command creates a new documents search engine,
+    indexing directories specified as parameters.
+    A default structure will be created in 'picolena' directory.
+    Since picolena is Rails-based, you can launch the search-engine
+    web-server just like you would with any Rails application.
 
 Example:
     picolena ~/shared_documents /media/literature
