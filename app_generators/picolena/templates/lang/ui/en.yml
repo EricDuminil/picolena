@@ -1,0 +1,25 @@
+locale_name: English
+page_title: Picolena Search Engine
+help: Help
+help_file: /help/PicolenaHowTo-en.pdf
+type_your_query_here: Type your query here
+search: Search!
+nothing_found_for: Nothing found for
+results: Results
+of: of
+for: for
+text_content: Text content
+
+## Link to a website, located in the bottom-left corner.
+website_name: Picolena
+website_url:  http://picolena.devjavu.com/
+
+## Boolean operators
+AND: AND
+OR: OR
+NOT: NOT
+LIKE: LIKE
+
+## Fields
+filetype: filetype|ext
+content: content
