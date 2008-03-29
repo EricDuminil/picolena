@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+# In no way, the final implementation!
+# For testing purpose only.
+
+
+app_path='picolena'
+gem_path=File.dirname(__FILE__) + '/../'
+require 'fileutils'
+require gem_path+'/lib/version'
+
+puts "Installing picolena v#{Picolena::VERSION::STRING}"
+FileUtils.cp_r(File.join(gem_path,'lib/template'),app_path)
+FileUtils.mkpath(File.join(app_path,'log/'))
+FileUtils.cp(File.join(gem_path,'README.txt'),File.join(app_path,'README'))
+
+indexed_directories_yml_template=File.read(File.join(gem_path,'lib/template/config/indexed_directories.yml.template'))
+
+indexed_directories=ARGV.collect{|dir| "\"#{dir}\" : \"#{dir}\""}.join("\n  ")
+indexed_directories='"spec/test_dirs/indexed": "http://picolena.devjavu.com/browser/trunk/spec/test_dirs/indexed"' if ARGV.empty?
+
+File.open(File.join(app_path,'config/indexed_directories.yml'),'w'){|f|
+  f.write(indexed_directories_yml_template.gsub('#{INDEXED_DIRECTORIES}',indexed_directories))
+}
+
+Dir.chdir(app_path) {
+	puts "Preparing configuration"
+	system("rake index:prepare_config")
+	puts "Creating index"
+	system("rake index:create")
+	FileUtils.cp_r('tmp/ferret_indexes/development','tmp/ferret_indexes/production')
+	puts "Launching specs"
+	system("rake spec")
+	puts "picolena v#{Picolena::VERSION::STRING} has been installed"
+}

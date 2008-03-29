@@ -1,32 +1,43 @@
-= picolena
+= Picolena
 
-* FIX (url)
+* http://picolena.devjavu.com/
+* http://svn.devjavu.com/picolena
 
 == DESCRIPTION:
 
-FIX (describe your package)
+Picolena is a lightweight ferret-powered documents search engine written in Ruby on rails:
 
-== FEATURES/PROBLEMS:
+   1. Just let Ferret index any directory you want.
+   2. Enter queries on your browser to get corresponding documents in a few milliseconds. 
 
-* FIX (list of features or problems)
+== FEATURES:
+
+Picolena has many advantages:
+
+   * it can index .pdf, .doc, .docx, .odt, .xls, .ods, .ppt, .pptx, .odp, .rtf, .html and plain text files will full text search, and offers a very easy way to add new filters to index other filetype.
+   * it is free as in free beer and as in free speech
+   * thanks to Ferret, it is very fast
+   * it keeps your data private. By default, only the computer on which it is installed can get access to the search engine. Other IP addresses can then be added to a white list.
+   * it does not phone home. This claim is somewhat easier to verify on your server, with just a few lines of codes added, than on a Don't be evil black-box server.
+   * it can be used to index any ftp, smb, ssh, webdav or local directory.
+   * its user interface is available in English, German, Spanish and French.
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+  picolena first_directory_to_index second_directory_to_index
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* packages : antiword poppler-utils odt2txt html2text catdoc unrtf
+* gems     : rails ferret paginator haml rubyzip
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* sudo gem install picolena
 
 == LICENSE:
 
-(The MIT License)
-
-Copyright (c) 2008 FIX
+Copyright (c) 2008 Eric Duminil
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

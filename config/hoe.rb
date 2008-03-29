@@ -1,16 +1,16 @@
 require 'picolena/version'
 
-AUTHOR = 'FIXME full name'  # can also be an array of Authors
-EMAIL = "FIXME email"
-DESCRIPTION = "description of gem"
+AUTHOR = 'Eric Duminil'
+EMAIL = "eric_duminil@rubyforge.org"
+DESCRIPTION = "Picolena is a lightweight ferret-powered documents search engine written in Ruby on rails"
 GEM_NAME = 'picolena' # what ppl will type to install your gem
 RUBYFORGE_PROJECT = 'picolena' # The unix name for your project
-HOMEPATH = "http://#{RUBYFORGE_PROJECT}.rubyforge.org"
+HOMEPATH = "http://picolena.devjavu.com/"
 DOWNLOAD_PATH = "http://rubyforge.org/projects/#{RUBYFORGE_PROJECT}"
 
 @config_file = "~/.rubyforge/user-config.yml"
 @config = nil
-RUBYFORGE_USERNAME = "unknown"
+RUBYFORGE_USERNAME = "Eric_Duminil"
 def rubyforge_username
   unless @config
     begin

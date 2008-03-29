@@ -1,0 +1,1 @@
+just to know if files are indexed with utf8 filenames
