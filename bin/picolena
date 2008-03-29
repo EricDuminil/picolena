@@ -7,7 +7,7 @@
 app_path='picolena'
 gem_path=File.dirname(__FILE__) + '/../'
 require 'fileutils'
-require gem_path+'/lib/version'
+require gem_path+'/lib/picolena/version'
 
 puts "Installing picolena v#{Picolena::VERSION::STRING}"
 FileUtils.cp_r(File.join(gem_path,'lib/template'),app_path)
