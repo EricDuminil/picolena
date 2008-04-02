@@ -9,7 +9,7 @@ class PicolenaGenerator < RubiGen::Base
   
   def initialize(runtime_args, runtime_options = {})
     super
-    usage if args.empty?
+    usage if args.empty? and !options[:spec_only]
     @destination_root = 'picolena'
 
     require 'pathname'
@@ -49,9 +49,12 @@ class PicolenaGenerator < RubiGen::Base
       m.file 'MIT-LICENSE', 'LICENSE'
       m.file '../../../README.txt', 'README'
       m.file 'Rakefile', 'Rakefile'
-
-      m.rake 'index:create'
-      m.mirror 'tmp/ferret_indexes/development', 'tmp/ferret_indexes/production'
+      
+      # Indexing documents for development environment
+      m.rake 'index:create' unless options[:spec_only]
+      # Mirroring Ferret development index instead of indexing documents for production again.
+      m.mirror 'tmp/ferret_indexes/development', 'tmp/ferret_indexes/production' unless options[:spec_only] 
+      # Launching specs
       m.rake 'spec'
     end
   end
@@ -74,6 +77,7 @@ EOS
       #         "Some comment about this option",
       #         "Default: none") { |options[:author]| }
       opts.on("-v", "--version", "Show the #{File.basename($0)} version number and quit.")
+      opts.on(nil, "--spec-only", "Test picolena framework without installing it."){options[:spec_only]=true}
     end
     
     def extract_options

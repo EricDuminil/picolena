@@ -1,13 +1,6 @@
-require 'rubygems'
-require 'spec'
+require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "Host indexing system" do
-  %w{ferret paginator haml rubyzip}.each  do |gem_name|
-    it "should have #{gem_name} installed as a gem" do
-      lambda {gem gem_name}.should_not raise_error
-    end
-  end
- 
  PlainText.filter_dependencies.each do |dependency|
     it "should have #{dependency} installed" do
        IO.popen("which #{dependency}"){|i| i.read.should_not be_empty}

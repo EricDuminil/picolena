@@ -4,6 +4,8 @@ Manifest.txt
 README.txt
 Rakefile
 app_generators/picolena/USAGE
+app_generators/picolena/config/indexed_directories.yml
+app_generators/picolena/config/white_list_ip.yml
 app_generators/picolena/picolena_generator.rb
 app_generators/picolena/templates/MIT-LICENSE
 app_generators/picolena/templates/Rakefile
@@ -23,13 +25,11 @@ app_generators/picolena/templates/config/environment.rb
 app_generators/picolena/templates/config/environments/development.rb
 app_generators/picolena/templates/config/environments/production.rb
 app_generators/picolena/templates/config/environments/test.rb
-app_generators/picolena/config/indexed_directories.yml
 app_generators/picolena/templates/config/initializers/001_prepare_and_load_custom_config.rb
 app_generators/picolena/templates/config/initializers/002_indexed_dirs.rb
 app_generators/picolena/templates/config/initializers/003_white_list_IPs.rb
 app_generators/picolena/templates/config/initializers/004_load_filters.rb
 app_generators/picolena/templates/config/routes.rb
-app_generators/picolena/config/white_list_ip.yml
 app_generators/picolena/templates/lang/ui/de.yml
 app_generators/picolena/templates/lang/ui/en.yml
 app_generators/picolena/templates/lang/ui/es.yml
@@ -764,10 +764,7 @@ script/txt2html
 setup.rb
 spec/picolena_spec.rb
 spec/spec.opts
-spec/spec_helper.rb
+tasks/default.rake
 tasks/deployment.rake
 tasks/environment.rake
 tasks/rspec.rake
-tasks/website.rake
-test/test_generator_helper.rb
-test/test_picolena_generator.rb
