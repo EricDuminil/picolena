@@ -6,16 +6,8 @@ namespace :index do
     Dir.glob(File.join(IndexSavePath,'/**/*')).each{|f| FileUtils.rm(f) if File.file?(f)}
   end
   
-  desc 'Create configuration files from template'
-  task :prepare_config => :environment do
-    require 'fileutils'
-    %w{config/indexed_directories.yml config/white_list_ip.yml}.each{|yaml_config_file|
-      FileUtils.cp(yaml_config_file+'.template', yaml_config_file) unless File.readable?(yaml_config_file)
-    }
-  end  
-
   desc 'Create index'
-  task :create => [:prepare_config, :environment] do
+  task :create => :environment do
     require 'ff'
     create_index(IndexedDirectories.keys)
   end
