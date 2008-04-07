@@ -1,6 +1,6 @@
 = Picolena
 
-* http://picolena.devjavu.com/
+* http://picolena.devjavu.com
 * http://svn.devjavu.com/picolena
 
 == DESCRIPTION:

@@ -35,7 +35,7 @@ module DocumentsHelper
       :xls=>%w{xls xlsx ods},
       :doc=>%w{doc odt rtf dot docx dotx},
       :pdf=>%w{pdf},
-      :txt=>%w{txt text tex bib log ini},
+      :txt=>%w{txt text tex bib log ini no_extension},
       :ogg=>%w{mp3 ogg wma wav wmv tee},
       :html=>%w{html htm},
       :ppt=>%w{ppt pps pptx odp},

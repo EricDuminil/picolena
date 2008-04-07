@@ -111,6 +111,7 @@ app_generators/picolena/templates/spec/models/index_directories_spec.rb
 app_generators/picolena/templates/spec/rcov.opts
 app_generators/picolena/templates/spec/spec.opts
 app_generators/picolena/templates/spec/spec_helper.rb
+app_generators/picolena/templates/spec/test_dirs/indexed/README
 app_generators/picolena/templates/spec/test_dirs/indexed/basic/another_plain.text
 app_generators/picolena/templates/spec/test_dirs/indexed/basic/basic.odt
 app_generators/picolena/templates/spec/test_dirs/indexed/basic/basic.pdf
@@ -133,7 +134,9 @@ app_generators/picolena/templates/spec/test_dirs/indexed/different_encodings/utf
 app_generators/picolena/templates/spec/test_dirs/indexed/just_one_doc/for_test.txt
 app_generators/picolena/templates/spec/test_dirs/indexed/literature/Simulation of district heating systems for evaluation of real-time control strategies.pdf
 app_generators/picolena/templates/spec/test_dirs/indexed/literature/Types of malfunction in DH substations.doc
+app_generators/picolena/templates/spec/test_dirs/indexed/others/'weird'filename.txt
 app_generators/picolena/templates/spec/test_dirs/indexed/others/7.html
+app_generators/picolena/templates/spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION
 app_generators/picolena/templates/spec/test_dirs/indexed/others/Thumbs.db
 app_generators/picolena/templates/spec/test_dirs/indexed/others/asfg.abc
 app_generators/picolena/templates/spec/test_dirs/indexed/others/ccmatrix1.cpp
@@ -763,7 +766,6 @@ script/generate
 script/txt2html
 setup.rb
 spec/picolena_spec.rb
-spec/spec.opts
 tasks/default.rake
 tasks/deployment.rake
 tasks/environment.rake

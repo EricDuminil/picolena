@@ -1,9 +1,10 @@
 PlainText.extract {
-  from :txt, :text, :tex, :for, :cpp, :c, :rb, :ins, :vee, :java
+  from :txt, :text, :tex, :for, :cpp, :c, :rb, :ins, :vee, :java, :no_extension
   as "application/plain"
   aka "plain text file"
   with {|source|
     encoding=File.encoding(source)
+    #TODO: Return "binary file" if binary
     if encoding.empty? then
        File.read(source)
     else
@@ -30,4 +31,6 @@ PlainText.extract {
   or_extract 'Themenliste für Adsorptionskälte', :from => 'iso-8859-1.txt'
   or_extract 'F€rnwärme', :from => 'iso-8859-15.txt'
   or_extract 'The previous line includes some weird chars. Will this file be indexed\?', :from => 'weird_chars.txt'
+  or_extract 'Incidentally this file should get indexed as well', :from => 'README'
+  or_extract 'OMG_thIs_Is_A_w3ird_fileN4mE!', :from => "'weird'filename.txt"
 }

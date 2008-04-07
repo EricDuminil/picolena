@@ -51,59 +51,45 @@ It would be totally useless without:
 
 To install ''Picolena'', you first need [http://www.rubyonrails.org/ Ruby on rails] and  [http://www.rubygems.org/ RubyGems]
 
-== Getting files ==
+== Getting picolena gem ==
+Launch
 {{{
-svn checkout http://svn.devjavu.com/picolena/trunk Picolena
-cd Picolena
+gem install picolena
+}}}
+with admin privileges.
+
+
+== Installing picolena ==
+Once the gem is installed, you can launch:
+{{{
+picolena
+}}}
+followed by a list of directories you would like to be indexed.
+
+For example:
+{{{
+picolena ~/shared_documents /media/literature
 }}}
 
-== Installing dependencies ==
-=== On Ubuntu ===
-Install required packages and gems:
+This would create picolena file structure, index every file inside ~/shared_documents and /media/literature, and launch specs to be sure everything is in order.
+
+Depending on the amount of indexed data, it can take anywhere between a few seconds and some hours.
+For example, 15000 documents (out of which 50% get their content extracted as to plain text) have been indexed in 30 minutes on an Ubuntu server VM running on an old Windows server.
+
+If every spec pass, you can be sure every file has been indexed properly.
+
+== Launching Picolena ==
 {{{
-sudo rake install_dependencies:on_ubuntu
+cd picolena
+ruby script/server
 }}}
+Time to open your browser and [http://localhost:3000 enjoy]!
 
-=== On Debian ===
-Install required packages and gems:
-{{{
-sudo rake install_dependencies:on_debian
-}}}
+== Optional configuration ==
 
-=== On Mac OS ===
-Yet to be implemented and tested!
+=== Allowing access to other computers === 
 
-=== On Windows ===
-Yet to be implemented and tested!
-
-
-== Checking everything is in order ==
-Copy configuration files from templates and launch rspec:
-{{{
-rake index:prepare_config
-rake spec
-}}}
-
-Hopefully, every spec will pass and we'll be ready for the next step
-
-
-== Some more configuration ==
-You can now edit ''config/indexed_directories.yml'' to add new directories to be indexed, both for development and production mode.
-{{{
-development:
-  #"first directory that should be indexed": "alias path that will be used to display 'containing directory' link"
-  #"second directory that should be indexed": "alias path that will be used to display 'containing directory' link"
-  #....
-  #alias path could be a smb, http or ftp directory.
-  "spec/test_dirs/indexed": "http://picolena.devjavu.com/browser/trunk/spec/test_dirs/indexed"
-test:
-  "spec/test_dirs/indexed": "http://picolena.devjavu.com/browser/trunk/spec/test_dirs/indexed"
-production:
-  #up to you!
-}}}
-The best way to index ftp, ssh, smb or webdav directories are to mount them to ''/media/whatever'', and then index ''/media/whatever''.
-
-Finally, you can add IP addresses to ''config/white_list_ip.yml'':
+You can allow access to other computers by adding IP addresses to ''config/white_list_ip.yml'':
 
 {{{
 # Only localhost is allowed by default, any request coming from another IP will get rejected.
@@ -120,23 +106,11 @@ Allow:
   - 0.0.0.0
 }}}
 
-== Almost there! Creating index ==
-{{{
-rake index:create
-}}}
-or
-{{{
-rake index:create RAILS_ENV=production
-}}}
+=== Modifying alias path of indexed directories ===
 
-Depending on the amount of indexed data, it can take anywhere between a few seconds and some hours.
-For example, 15000 documents (out of which 50% are converted to plain text) have been indexed in 30 minutes on an Ubuntu server VM running on an old Windows server.
+=== Changing interface language ===
 
-== Done! Launching Picolena ==
-{{{
-ruby script/server
-}}}
-Time to open your browser and [http://localhost:3000 enjoy]!
+=== Updating index periodically === 
 
 
 

@@ -1,6 +1,9 @@
+$:.unshift(File.join(File.dirname(__FILE__),'../lib/'))
+
 require 'rubygems'
 require 'rubigen'
 require 'rubigen_ext'
+
 require 'picolena/version'
 
 if %w(-v --version).include? ARGV.first

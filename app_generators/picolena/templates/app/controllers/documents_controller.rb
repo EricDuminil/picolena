@@ -38,7 +38,7 @@ class DocumentsController < ApplicationController
   
   def check_if_valid_link
     @md5_hash=params[:id]
-    no_valid_link unless @md5_hash=~/^[a-z0-9]{32}$/ && @document=Finder.new("md5:"<<@md5_hash).matching_documents.first
+    @document=Finder.new("md5:"<<@md5_hash).matching_document rescue no_valid_link
   end
   
   def no_valid_link

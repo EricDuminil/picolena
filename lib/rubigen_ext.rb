@@ -14,6 +14,10 @@ module RubiGen
         destination = destination_path(relative_destination)
         FileUtils.cp_r source, destination
       end
+
+      def clean
+        FileUtils.remove_entry_secure destination_path('')
+      end
     end
   end
 end

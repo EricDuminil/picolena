@@ -1,10 +1,17 @@
 require File.dirname(__FILE__) + '/../spec_helper'
+require 'fileutils'
 
 describe Finder do
   before(:all) do
+    # SVN doesn't like non-ascii filenames.
     File.open('spec/test_dirs/indexed/others/bäñüßé.txt','w'){|weird_file|
       weird_file.write "just to know if files are indexed with utf8 filenames"
     }
+
+    # Used for modification date search.
+    FileUtils.touch 'spec/test_dirs/indexed/basic/basic.pdf', :mtime => Time.local(1982,2,16,20,42)
+    FileUtils.touch 'spec/test_dirs/indexed/yet_another_dir/office2003-word-template.dot', :mtime => Time.local(1983,12,9,9)
+    FileUtils.touch 'spec/test_dirs/indexed/others/placeholder.txt', :mtime => Time.local(1990)
     
     Finder.force_index_creation
   end
@@ -44,11 +51,11 @@ describe Finder do
   end
   
   it "should also index files with unknown mimetypes" do
-    Finder.new("filetype:xyz").matching_documents.first.basename.should == "ghjopdfg"
-    Finder.new("filetype:abc").matching_documents.first.filename.should == "asfg.abc"
-    Finder.new("unreadable.png").matching_documents.first.size.should == 19696
+    Finder.new("filetype:xyz").matching_document.basename.should == "ghjopdfg"
+    Finder.new("filetype:abc").matching_document.filename.should == "asfg.abc"
+    Finder.new("unreadable.png").matching_document.size.should == 19696
     #Support for xls has been added meanwhile. The test is still valid though.
-    Finder.new("table.xls").matching_documents.first.size.should == 8704
+    Finder.new("table.xls").matching_document.size.should == 8704
   end
   
   it "should also index files with upper/mixed case extension" do
@@ -65,15 +72,22 @@ describe Finder do
   end
   
   it "should find documents according to their utf8 content" do
-    Finder.new("Éric Mößer").matching_documents.first.basename.should == "utf8"
-    Finder.new("no me hace daño").matching_documents.first.size.should == 30
-    Finder.new("Éric Mößer filetype:pdf").matching_documents.first.filename.should == "utf8.pdf"
+    Finder.new("Éric Mößer ext:pdf").matching_document.basename.should == "utf8"
+    Finder.new("no me hace daño").matching_document.size.should == 30
+    Finder.new("Éric Mößer filetype:pdf").matching_document.filename.should == "utf8.pdf"
   end
   
   it "should find documents according to their utf8 filenames" do
-    Finder.new("bäñüßé").matching_documents.first.content.should == "just to know if files are indexed with utf8 filenames"
+    Finder.new("bäñüßé").matching_document.content.should == "just to know if files are indexed with utf8 filenames"
   end
   
+  it "should find documents according to their modification date" do
+    Finder.new("date:<1982").matching_documents.should be_empty
+    Finder.new("19831209").matching_document.basename.should == "office2003-word-template"
+    Finder.new("date:<1983").matching_document.filename.should == "basic.pdf"
+    Finder.new("date:>=1989 AND date:<=1992").matching_document.filename.should == "placeholder.txt"
+  end
+
   it "should not concatenate cells from xls file" do
     Finder.new("content:ABC").matching_documents.select{|doc| doc.extname==".xls"}.should be_empty
   end
@@ -92,10 +106,9 @@ describe Finder do
     end
   end
   
-  it "should also index files without extension?"
+  it "should not index content of binary files"
   
-  it "should also index files with ' in filename"
-  
+  # Ferret sometimes SEGFAULT crashed with '*.pdf' queries
   it "should not crash while looking for *.pdf" do
     @finder=Finder.new("some query")
     lambda{@finder=Finder.new("*.pdf")}.should_not raise_error
@@ -110,6 +123,7 @@ describe Finder do
     b.should == c
   end
   
+  it "should accept field terms in different languages"
   it "should accept LIKE and NOT boolean ops in different languages" do
     fuzzy_query=Finder.new("test~").total_hits
     test_query=Finder.new("test").total_hits
@@ -168,15 +182,11 @@ describe Finder do
   end
   
   it "should use ? as placeholder" do
-    results=Finder.new("A?sorption machines").matching_documents
-    results.should_not be_empty
-    results.first.matching_content.should include("<<Absorption>> and <<Adsorption>> cooling <<machines>>!!!")
+    Finder.new("A?sorption machines").matching_document.matching_content.should include("<<Absorption>> and <<Adsorption>> cooling <<machines>>!!!")
   end
   
   it "should use * as placeholder" do
-    results=Finder.new("A*ption machines").matching_documents
-    results.should_not be_empty
-    results.first.matching_content.should include("<<Absorption>> and <<Adsorption>> cooling <<machines>>!!!")
+    results=Finder.new("A*ption machines").matching_document.matching_content.should include("<<Absorption>> and <<Adsorption>> cooling <<machines>>!!!")
   end
   
   it "should not index those stupid Thumbs.db files" do
@@ -195,7 +205,7 @@ describe Finder do
 #    complete_query="Beginning fished cats debates"
 #    stem_queries=%w{beginning begin fished fish cats cat debate debater debaters fishing}
 #    wrong_stem_queries=%w{beginni catty catties}
-#    stem_en_file=Finder.new(complete_query).matching_documents.first.filename
+#    stem_en_file=Finder.new(complete_query).matching_document.filename
 #    stem_queries.each{|q|
 #      stem_results=Finder.new(q).matching_documents
 #      stem_results.any?{|r| r.filename == stem_en_file}.should be_true
@@ -209,7 +219,7 @@ describe Finder do
 #    complete_query="Beginning fished cats debates"
 #    stem_queries=%w{beginning begin fished fish cats cat debate}
 #    wrong_stem_query="beginni fishe cats"
-#    stem_en_file=Finder.new(complete_query).matching_documents.first.filename
+#    stem_en_file=Finder.new(complete_query).matching_document.filename
 #    stem_queries.each{|q|
 #      stem_results=Finder.new(q).matching_documents
 #      puts q

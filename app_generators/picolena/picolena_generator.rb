@@ -1,22 +1,26 @@
+require 'tempfile'
+require 'fileutils'
+require 'pathname'
+
 class PicolenaGenerator < RubiGen::Base
   
   DEFAULT_SHEBANG = File.join(Config::CONFIG['bindir'],
                               Config::CONFIG['ruby_install_name'])
   
-  default_options :author => nil
+  default_options :destination => 'picolena'
   
   attr_reader :name
   
   def initialize(runtime_args, runtime_options = {})
     super
     usage if args.empty? and !options[:spec_only]
-    @destination_root = 'picolena'
+    @destination_root = options[:destination]
 
-    require 'pathname'
-    absolute_dirs=ARGV.collect{|relative_path|
-      Pathname.new(relative_path).realpath.to_s
-    } 
-    @directories_to_index = absolute_dirs.collect{|dir| "\"#{dir}\" : \"#{dir}\""}.join("\n  ")
+    @directories_to_index=ARGV.collect{|relative_path|
+      abs_dir=Pathname.new(relative_path).realpath.to_s
+      "\"#{abs_dir}\" : \"#{abs_dir}\""
+    }.join("\n  ")
+    
     extract_options
   end
 
@@ -49,13 +53,19 @@ class PicolenaGenerator < RubiGen::Base
       m.file 'MIT-LICENSE', 'LICENSE'
       m.file '../../../README.txt', 'README'
       m.file 'Rakefile', 'Rakefile'
-      
-      # Indexing documents for development environment
-      m.rake 'index:create' unless options[:spec_only]
-      # Mirroring Ferret development index instead of indexing documents for production again.
-      m.mirror 'tmp/ferret_indexes/development', 'tmp/ferret_indexes/production' unless options[:spec_only] 
+     
+      unless options[:spec_only] or options[:no_index]
+        # Indexing documents for development environment
+        m.rake 'index:create' 
+        # Mirroring Ferret development index instead of indexing documents again for production.
+        m.mirror 'tmp/ferret_indexes/development', 'tmp/ferret_indexes/production' unless options[:spec_only]
+     end
+
       # Launching specs
-      m.rake 'spec'
+      m.rake 'spec' unless options[:no_spec]
+
+      # Cleaning up temp folder if --spec-only
+      m.clean if options[:spec_only]
     end
   end
 
@@ -77,7 +87,13 @@ EOS
       #         "Some comment about this option",
       #         "Default: none") { |options[:author]| }
       opts.on("-v", "--version", "Show the #{File.basename($0)} version number and quit.")
-      opts.on(nil, "--spec-only", "Test picolena framework without installing it."){options[:spec_only]=true}
+      opts.on("-d", "--destination=path", "Specify destination path (default: 'picolena')"){|options[:destination]|}
+      opts.on(nil, "--no-spec", "Install picolena without launching specs."){options[:no_spec]=true}
+      opts.on(nil, "--no-index", "Install picolena without indexing documents."){options[:no_index]=true}
+      opts.on(nil, "--spec-only", "Test picolena framework without installing it."){
+        options[:spec_only]=true
+        options[:destination]=File.join(Dir::tmpdir,"picolena_test_#{Time.now.to_i}") 
+      }
     end
     
     def extract_options

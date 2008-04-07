@@ -4,7 +4,7 @@ class Finder
   attr_reader :index, :query
   
   def initialize(raw_query,page=1,results_per_page=ResultsPerPage)
-    query_parser = Ferret::QueryParser.new(:fields => [:content, :file, :basename, :filetype], :or_default => false, :analyzer=>Analyzer)
+    query_parser = Ferret::QueryParser.new(:fields => [:content, :file, :basename, :filetype, :date], :or_default => false, :analyzer=>Analyzer)
     @query = query_parser.parse(convert_to_english(raw_query))
     @raw_query= raw_query
     Finder.ensure_that_index_exists_on_disk
@@ -63,6 +63,17 @@ class Finder
    def self.up_to_date?
      IndexedDirectories.keys.all?{|dir| File.mtime(index_filename) > File.mtime(dir)}
    end
+
+   def matching_document
+     case matching_documents.size
+     when 0
+       raise IndexError, "No document found"
+     when 1
+       matching_documents.first
+     else
+       raise IndexError, "More than one document found"
+     end
+   end
    
    private
    
@@ -73,6 +84,7 @@ class Finder
        /\b#{:NOT.l}\b/=>'NOT',
        /(#{:filetype.l}):/=>'filetype:',
        /#{:content.l}:/ => 'content:',
+       /#{:date.l}:/ => 'date:',
        /\b#{:LIKE.l}\s+(\S+)/=>'\1~'
      }
      to_en.inject(str){|mem,non_english_to_english_keyword|

@@ -23,7 +23,8 @@ def index_file(index, filename, mime_type=nil)
     :md5 => Digest::MD5.hexdigest(complete_path),
     :file => File.basename(filename),
     :basename => File.basename(filename, File.extname(filename)).gsub(/_/,' '),
-    :filetype => File.extname(filename)
+    :filetype => File.extname(filename),
+    :date => File.mtime(filename).strftime("%Y%m%d")
   }
   
   if mime_type then
@@ -47,11 +48,11 @@ end
 # Recursively add all qualifying files in directory +dir+ to +index+.
 def index_directory(index, dir, counters)
   #Index just everything!
-  Dir.glob(File.join(dir,"**/*.*"), File::FNM_CASEFOLD) do |filename|
+  Dir.glob(File.join(dir,"**/*")) do |filename|
     # Skip Thumbs.db files
     if File.file?(filename) and not filename =~ /(Thumbs\.db)/
       begin
-        puts_to_stderr_if_dev("indexing: #{filename}")
+        IndexLogger.debug "indexing: #{filename}"
         
         # Trying to guess MIME type from file contents is not reliable for text
         # files.  The strategy used here is to infer from file name extension
@@ -60,7 +61,7 @@ def index_directory(index, dir, counters)
         index_file_and_increment_counter(index,filename,mime_type,counters)
       rescue => e
         # if mime is unknown, just index filename, basename and extension
-        puts_to_stderr_if_dev("indexing without content: #{e.message}")
+        IndexLogger.debug "indexing without content: #{e.message}"
         index_file(index, filename)
         counters[mime_type||'Unknown mime type'].without_content += 1
       end
@@ -83,23 +84,23 @@ def create_index(dirs)
     index.close
   end
   counters.each_pair do |key,value|
-    puts_to_stderr_if_not_test("\n#{key}:")
-    puts_to_stderr_if_not_test("files indexed: #{value.count} (#{value.size} bytes)")
-    puts_to_stderr_if_not_test("files without_content: #{value.without_content}") unless value.without_content.zero?
+    IndexLogger.info "\n#{key}:"
+    IndexLogger.info "files indexed: #{value.count} (#{value.size} bytes)"
+    IndexLogger.info("files without_content: #{value.without_content}") unless value.without_content.zero?
     unless value.count.zero? or value.without_content==value.count then
-      puts_to_stderr_if_not_test("time needed: #{(value.time_needed*1000).to_i} ms")
-      puts_to_stderr_if_not_test("avg. time needed: #{(value.time_needed*1000/(value.count-value.without_content)).to_i} ms/file")
+      IndexLogger.info "time needed: #{(value.time_needed*1000).to_i} ms"
+      IndexLogger.info "avg. time needed: #{(value.time_needed*1000/(value.count-value.without_content)).to_i} ms/file"
     end
   end
   total_count = counters.values.inject(0) {|sum,count| sum + count.count}
   total_size = counters.values.inject(0) {|sum,count| sum + count.size}
   total_without_content = counters.values.inject(0) {|sum,count| sum + count.without_content}
   total_time_needed = counters.values.inject(0) {|sum,count| sum + count.time_needed}
-  puts_to_stderr_if_not_test("\ntotal files indexed: #{total_count} (#{total_size} bytes)")
-  puts_to_stderr_if_not_test("total files without_content: #{total_without_content}") unless total_without_content.zero?
+  IndexLogger.info "\ntotal files indexed: #{total_count} (#{total_size} bytes)"
+  IndexLogger.info("total files without_content: #{total_without_content}") unless total_without_content.zero?
   unless total_count.zero? or total_count==total_without_content then
-    puts_to_stderr_if_not_test("total time needed: #{(total_time_needed*1000).to_i} ms")
-    puts_to_stderr_if_not_test("avg. time needed: #{(total_time_needed*1000/(total_count-total_without_content)).to_i} ms/file")
+    IndexLogger.info "total time needed: #{(total_time_needed*1000).to_i} ms"
+    IndexLogger.info "avg. time needed: #{(total_time_needed*1000/(total_count-total_without_content)).to_i} ms/file"
   end
 end
 
@@ -111,5 +112,6 @@ def add_fields(index)
   index.field_infos.add_field(:basename, :store => :no, :index => :yes, :boost => 1.5)
   index.field_infos.add_field(:file, :store => :no, :index => :yes, :boost => 1.5)
   index.field_infos.add_field(:filetype, :store => :no, :index => :yes, :boost => 1.5)
+  index.field_infos.add_field(:date, :store=>:no, :index=>:yes)
   index.field_infos.add_field(:md5, :store=>:no, :index=>:yes)
 end

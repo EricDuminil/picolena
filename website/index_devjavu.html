@@ -94,61 +94,49 @@
 	<p>To install &#8217;&#8217;Picolena&#8217;&#8217;, you first need [http://www.rubyonrails.org/ Ruby on rails] and  [http://www.rubygems.org/ RubyGems]</p>
 
 
- Getting files 
+ Getting picolena gem 
+Launch
 {{{
-svn checkout http://svn.devjavu.com/picolena/trunk Picolena
-cd Picolena
+gem install picolena
 }}}
+with admin privileges.
 
- Installing dependencies 
-=== On Ubuntu ===
-Install required packages and gems:
+ Installing picolena 
+Once the gem is installed, you can launch:
 {{{
-sudo rake install_dependencies:on_ubuntu
+picolena
 }}}
+followed by a list of directories you would like to be indexed.
 
-	<p>=== On Debian ===
-Install required packages and gems:
+	<p>For example:
 {{{
-sudo rake install_dependencies:on_debian
+picolena ~/shared_documents /media/literature
 }}}</p>
 
 
-	<p>=== On Mac OS ===
-Yet to be implemented and tested!</p>
+	<p>This would create picolena file structure, index every file inside ~/shared_documents and /media/literature, and launch specs to be sure everything is in order.</p>
 
 
-	<p>=== On Windows ===
-Yet to be implemented and tested!</p>
+	<p>Depending on the amount of indexed data, it can take anywhere between a few seconds and some hours.
+For example, 15000 documents (out of which 50% get their content extracted as to plain text) have been indexed in 30 minutes on an Ubuntu server VM running on an old Windows server.</p>
 
 
- Checking everything is in order 
-Copy configuration files from templates and launch rspec:
+	<p>If every spec pass, you can be sure every file has been indexed properly.</p>
+
+
+ Launching Picolena 
 {{{
-rake index:prepare_config
-rake spec
+cd picolena
+ruby script/server
 }}}
+Time to open your browser and [http://localhost:3000 enjoy]!
 
-	<p>Hopefully, every spec will pass and we&#8217;ll be ready for the next step</p>
+ Optional configuration 
+
+	<p>=== Allowing access to other computers ===</p>
 
 
- Some more configuration 
-You can now edit &#8217;&#8217;config/indexed_directories.yml&#8217;&#8217; to add new directories to be indexed, both for development and production mode.
-{{{
-development:
-  #&#8221;first directory that should be indexed&#8221;: &#8220;alias path that will be used to display &#8216;containing directory&#8217; link&#8221; 
-  #&#8221;second directory that should be indexed&#8221;: &#8220;alias path that will be used to display &#8216;containing directory&#8217; link&#8221; 
-  #....
-  #alias path could be a smb, http or ftp directory.
-  &#8220;spec/test_dirs/indexed&#8221;: &#8220;http://picolena.devjavu.com/browser/trunk/spec/test_dirs/indexed&#8221; 
-test:
-  &#8220;spec/test_dirs/indexed&#8221;: &#8220;http://picolena.devjavu.com/browser/trunk/spec/test_dirs/indexed&#8221; 
-production:
-  #up to you!
-}}}
-The best way to index ftp, ssh, smb or webdav directories are to mount them to &#8217;&#8217;/media/whatever&#8217;&#8217;, and then index &#8217;&#8217;/media/whatever&#8217;&#8217;.
-
-	<p>Finally, you can add IP addresses to &#8217;&#8217;config/white_list_ip.yml&#8217;&#8217;:</p>
+	<p>You can allow access to other computers by adding IP addresses to &#8217;&#8217;config/white_list_ip.yml&#8217;&#8217;:</p>
 
 
 {{{
@@ -169,26 +157,15 @@ Allow:
 	</ol>
 
 
- Almost there! Creating index 
-{{{
-rake index:create
-}}}
-or
-{{{
-rake index:create <span class="caps">RAILS</span>_ENV=production
-}}}
-
-	<p>Depending on the amount of indexed data, it can take anywhere between a few seconds and some hours.
-For example, 15000 documents (out of which 50% are converted to plain text) have been indexed in 30 minutes on an Ubuntu server VM running on an old Windows server.</p>
+	<p>=== Modifying alias path of indexed directories ===</p>
 
 
- Done! Launching Picolena 
-{{{
-ruby script/server
-}}}
-Time to open your browser and [http://localhost:3000 enjoy]!
+	<p>=== Changing interface language ===</p>
+
+
+	<p>=== Updating index periodically ===</p>
     <p class="coda">
-      <a href="FIXME email">FIXME full name</a>, 29th March 2008<br>
+      <a href="FIXME email">FIXME full name</a>, 5th April 2008<br>
       Theme extended from <a href="http://rb2js.rubyforge.org/">Paul Battley</a>,
       by Daniel Cadenas via <a href="http://depgraph.rubyforge.org/">DepGraph</a>
     </p>

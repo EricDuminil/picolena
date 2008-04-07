@@ -17,7 +17,7 @@ end
 
 class File
   def self.ext_as_sym(filename)
-    File.extname(filename).sub(/^\./,'').downcase.to_sym
+    File.extname(filename).sub(/^\./,'').downcase.to_sym rescue :no_extension
   end
   
   def self.mime(filename)
@@ -49,14 +49,4 @@ class File
     FileUtils.rm filename, :force=>true
     content
   end
-end
-
-
-# TODO: Move those 2 methods to some logger.
-def puts_to_stderr_if_dev(string)
-  $stderr.puts string if RAILS_ENV=="development"
-end
-
-def puts_to_stderr_if_not_test(string)
-  $stderr.puts string if RAILS_ENV!="test"
 end
