@@ -1,10 +1,10 @@
-== 0.1.0  2008-04-06
+== 0.0.99  2008-04-06
 
 * minor enhancements:
   * more complete specs
   * mtime is now indexed and available in queries as "date:20080406"
 
-== 0.0.99 2008-03-29
+== 0.0.98 2008-03-29
 
 * 1 major enhancement:
   * Initial release

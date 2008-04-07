@@ -33,10 +33,14 @@ describe "Finder without index on disk" do
 end
 
 
-fields={:content=>:content,
+fields={
+  # description => key
+  :content=>:content,
   :basename=>:basename,
   :filename=>:file,
-  :extension => :filetype}
+  :extension => :filetype,
+  :modification_time=>:date
+}
 
 describe "Basic Finder" do  
   before(:all) do
