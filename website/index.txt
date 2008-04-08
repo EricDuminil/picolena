@@ -1,9 +1,13 @@
-h1. picolena
-
+h1. Picolena
 h1. &#x2192; 'picolena'
 
 
 h2. What
+
+''Picolena'' is a lightweight "ferret-powered":http://ferret.davebalmain.com/trac documents search engine written in "Ruby on rails":http://www.rubyonrails.org/ :
+
+ 1. Just let Ferret index any directory you want.
+ 2. Enter queries on your browser to get corresponding documents in a few milliseconds.
 
 
 h2. Installing
@@ -12,22 +16,40 @@ h2. Installing
 
 h2. The basics
 
+The 'picolena' command creates a new documents search engine, indexing directories specified as parameters. A default structure will be created in 'picolena' directory. Since picolena is Rails-based, you can launch the search-engine web-server just like you would with any Rails application.
+
+ picolena ~/shared_documents /media/literature
+ cd picolena
+ ruby script/server
+
+This would create the picolena file structure, index every file inside ~/shared_documents and /media/literature, and launch a web-server available at http://localhost:3000
+
 
 h2. Demonstration of usage
 
+ * "Basic query":http://193.197.204.23:4000/documents/test
+ * "every indexed .doc":http://193.197.204.23:4000/documents/filetype:doc
+ * "Every indexed file":http://193.197.204.23:4000/documents/*
+ * "Fuzzy query":http://193.197.204.23:4000/documents/LIKE%20Einstien
+ * "Typo tracker :)":http://193.197.204.23:4000/documents/LIKE%20Einstein%20NOT%20Einstein
+ * "Accented queries thanks to UTF8 encoding":http://193.197.204.23:4000/documents/málaga
+ * "some hardcore UTF-8 query!":http://193.197.204.23:4000/documents/pʰəˈɹɪzɪənz
+
+
+h2. Trac
+
+"http://picolena.devjavu.com/":http://picolena.devjavu.com/
 
 
 h2. Forum
 
 "http://groups.google.com/group/picolena":http://groups.google.com/group/picolena
 
-TODO - create Google Group - picolena
-
 h2. How to submit patches
 
 Read the "8 steps for fixing other people's code":http://drnicwilliams.com/2007/06/01/8-steps-for-fixing-other-peoples-code/ and for section "8b: Submit patch to Google Groups":http://drnicwilliams.com/2007/06/01/8-steps-for-fixing-other-peoples-code/#8b-google-groups, use the Google Group above.
 
-The trunk repository is <code>svn://rubyforge.org/var/svn/picolena/trunk</code> for anonymous access.
+The trunk repository is <code>http://svn.devjavu.com/picolena/trunk</code> for anonymous access.
 
 h2. License
 
@@ -35,5 +57,5 @@ This code is free to use under the terms of the MIT license.
 
 h2. Contact
 
-Comments are welcome. Send an email to "FIXME full name":mailto:FIXME email via the "forum":http://groups.google.com/group/picolena
+Comments are welcome. Send an email to "Eric Duminil":mailto:eric_duminil@rubyforge.org email via the "forum":http://groups.google.com/group/picolena
 
