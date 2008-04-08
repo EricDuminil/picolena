@@ -54,12 +54,12 @@ class PicolenaGenerator < RubiGen::Base
       m.file '../../../README.txt', 'README'
       m.file 'Rakefile', 'Rakefile'
      
-      unless options[:spec_only] or options[:no_index]
+      unless options[:no_index]
         # Indexing documents for development environment
         m.rake 'index:create' 
         # Mirroring Ferret development index instead of indexing documents again for production.
-        m.mirror 'tmp/ferret_indexes/development', 'tmp/ferret_indexes/production' unless options[:spec_only]
-     end
+        m.mirror 'tmp/ferret_indexes/development', 'tmp/ferret_indexes/production'
+      end
 
       # Launching specs
       m.rake 'spec' unless options[:no_spec]
@@ -92,6 +92,7 @@ EOS
       opts.on(nil, "--no-index", "Install picolena without indexing documents."){options[:no_index]=true}
       opts.on(nil, "--spec-only", "Test picolena framework without installing it."){
         options[:spec_only]=true
+        options[:no_index]=true
         options[:destination]=File.join(Dir::tmpdir,"picolena_test_#{Time.now.to_i}") 
       }
     end

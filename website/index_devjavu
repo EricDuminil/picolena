@@ -76,7 +76,7 @@ This would create picolena file structure, index every file inside ~/shared_docu
 Depending on the amount of indexed data, it can take anywhere between a few seconds and some hours.
 For example, 15000 documents (out of which 50% get their content extracted as to plain text) have been indexed in 30 minutes on an Ubuntu server VM running on an old Windows server.
 
-If every spec pass, you can be sure every file has been indexed properly.
+If every spec passes, you can be sure every file has been indexed properly.
 
 == Launching Picolena ==
 {{{
