@@ -41,7 +41,7 @@ class PicolenaGenerator < RubiGen::Base
       m.directory 'script'
       m.directory 'script/performance'
       m.directory 'script/process'
-      %w( about console destroy generate performance/benchmarker performance/profiler performance/request process/reaper process/spawner process/inspector runner server plugin ).each do |file|
+      %w( about breakpointer console destroy generate performance/benchmarker performance/profiler performance/request process/reaper process/spawner process/inspector runner server plugin spec spec_server).each do |file|
         m.file "script/#{file}", "script/#{file}", script_options
       end
       
