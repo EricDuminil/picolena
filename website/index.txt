@@ -29,7 +29,7 @@ h2. Demonstration of usage
 
  * "Basic query":http://193.197.204.23:4000/documents/test
  * "every indexed .doc":http://193.197.204.23:4000/documents/filetype:doc
- * "Every indexed file":http://193.197.204.23:4000/documents/*
+ * "Every indexed file":http://193.197.204.23:4000/documents/%2A
  * "Fuzzy query":http://193.197.204.23:4000/documents/LIKE%20Einstien
  * "Typo tracker :)":http://193.197.204.23:4000/documents/LIKE%20Einstein%20NOT%20Einstein
  * "Accented queries thanks to UTF8 encoding":http://193.197.204.23:4000/documents/málaga
