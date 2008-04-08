@@ -59,8 +59,9 @@ hoe = Hoe.new(GEM_NAME, VERS) do |p|
   # == Optional
   p.changes = p.paragraphs_of("History.txt", 0..1).join("\n\n")
   p.extra_deps = [ ['rails', '>= 2.0.2'],
-                   ['ferret', '>= 0.11.6'],
-                   ['haml', '>= 1.8.1'],
+                   #Ferret 0.11.6 is not yet available for win32
+                   ['ferret', '>= 0.11.5'],
+                   ['haml', '>= 1.8.2'],
                    ['rubyzip', '>= 0.9.1'],
                    ['rubigen', '>= 1.2.4'],
                    ['paginator', '>= 1.1.0']
