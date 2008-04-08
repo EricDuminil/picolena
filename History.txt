@@ -1,3 +1,11 @@
+== 0.1.0  2008-04-08
+
+* minor enhancements:
+  * can now be installed on win32 (doesn't pass every spec though)
+  * 
+  *
+  *
+
 == 0.0.99  2008-04-06
 
 * minor enhancements:

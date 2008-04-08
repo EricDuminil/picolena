@@ -7,8 +7,7 @@ task :docs => :appdoc
 
 desc "Generate documentation for the application"
 rd = Rake::RDocTask.new("appdoc") do |rdoc|
-  #FIXME: Find out why 'doc' indexes every file, while 'doc/.' indexes only those specified below
-  rdoc.rdoc_dir = 'doc/.'
+  rdoc.rdoc_dir = 'doc'
   rdoc.title    = "Picolena Documentation"
   rdoc.options << '--line-numbers'
   rdoc.options << '--inline-source'
