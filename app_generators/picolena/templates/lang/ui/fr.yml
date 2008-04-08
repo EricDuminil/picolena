@@ -1,0 +1,26 @@
+locale_name: Francais
+page_title: Moteur de Recherche Picolena
+help: Aide
+help_file: /help/PicolenaHowTo-fr.pdf
+type_your_query_here: Veuillez taper votre recherche
+search: Recherche!
+nothing_found_for: Rien trouvé pour
+results: Résultats
+of: parmi
+for: pour
+text_content: contenu
+
+## Link to a website, located in the bottom-left corner.
+website_name: Picolena
+website_url:  http://picolena.devjavu.com/
+
+## Boolean operators
+AND: ET
+OR: OU
+NOT: NON
+LIKE: COMME
+
+## Fields
+filetype: extension|ext
+content: contenu
+date: année|date|annee

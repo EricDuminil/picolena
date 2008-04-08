@@ -1,0 +1,24 @@
+$:.unshift(File.join(File.dirname(__FILE__),'../lib/'))
+
+require 'rubygems'
+require 'rubigen'
+require 'rubigen_ext'
+
+require 'picolena/version'
+
+if %w(-v --version).include? ARGV.first
+  puts "#{File.basename($0)} #{Picolena::VERSION::STRING}"
+  exit(0)
+end
+
+action= ARGV.include?("--spec-only") ? "testing" : "installing"
+
+require 'rubigen/scripts/generate'
+source = RubiGen::PathSource.new(:application, 
+  File.join(File.dirname(__FILE__), "../app_generators"))
+RubiGen::Base.reset_sources
+RubiGen::Base.append_sources source
+RubiGen::Scripts::Generate.new.run(ARGV, :generator => 'picolena')
+
+done="Done #{action} picolena v#{Picolena::VERSION::STRING}"
+puts "\n"<<"#"*80<<"\n"<<(" "*(40-done.size/2))<<done<<"\n"<<"#"*80

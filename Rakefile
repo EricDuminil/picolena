@@ -1,10 +1,4 @@
-# Add your own tasks in files placed in lib/tasks ending in .rake,
-# for example lib/tasks/capistrano.rake, and they will automatically be available to Rake.
+require 'config/requirements'
+require 'config/hoe' # setup Hoe + all gem configuration
 
-require(File.join(File.dirname(__FILE__), 'config', 'boot'))
-
-require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
-
-require 'tasks/rails'
+Dir['tasks/**/*.rake'].each { |rake| load rake }

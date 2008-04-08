@@ -1,0 +1,116 @@
+= Welcome to Picolena! =
+
+
+== Description == 
+
+''Picolena'' is a lightweight [http://ferret.davebalmain.com/trac ferret-powered] documents search engine written in [http://www.rubyonrails.org/ Ruby on rails]:
+
+ 1. Just let Ferret index any directory you want.
+ 2. Enter queries on your browser to get corresponding documents in a few milliseconds.
+
+
+== Examples ==
+ * [http://193.197.204.23:4000/documents/test Basic query]
+ * [http://193.197.204.23:4000/documents/filetype:doc every indexed .doc]
+ * [http://193.197.204.23:4000/documents/* every indexed file]
+ * [http://193.197.204.23:4000/documents/LIKE%20Einstien Fuzzy query]
+ * [http://193.197.204.23:4000/documents/LIKE%20Einstein%20NOT%20Einstein Typo tracker :)]
+ * [http://193.197.204.23:4000/documents/málaga Accented queries thanks to UTF8 encoding]
+ * [http://193.197.204.23:4000/documents/pʰəˈɹɪzɪənz some hardcore UTF-8 query!]
+
+== Advantages ==
+
+''Picolena'' has many advantages:
+
+ * it can index .pdf, .doc, .docx, .odt, .xls, .ods, .ppt, .pptx, .odp, .rtf, .html and plain text files will '''full text search''', and offers a very easy way to [http://picolena.devjavu.com/browser/trunk/lib/filters add new filters] to index other filetype.
+ * it is '''free''' as in ''free beer'' and as in ''free speech''
+ * thanks to [http://ferret.davebalmain.com/trac Ferret], it is '''very fast'''
+ * it keeps your data '''private'''. By default, only the computer on which it is installed can get access to the search engine. Other IP addresses can then be added to a white list.
+ * it does not phone home. This claim is somewhat easier to verify on '''your server''', with just a few lines of codes added, than on a ''Don't be evil'' [http://www.google.co.uk/enterprise/ black-box server].
+ * it can be used to index any ftp, smb, ssh, webdav or local directory.
+ * its user interface is available in [http://picolena.devjavu.com/browser/trunk/lang/ui English, German, Spanish and French.]
+
+== License ==
+''Picolena'', ''Ferret'' and ''Ruby on Rails'' are all released under the [http://www.opensource.org/licenses/mit-license.php MIT license].
+
+== Authors ==
+''Picolena'' has been created by Eric Duminil, following the idea of [http://www.methods.co.nz/ff/ Ferret Finder utility] by Stuart Rackham.
+
+It would be totally useless without:
+
+ * Ferret, by Dave Balmain
+ * Ruby on Rails, by David Heinemeier Hansson
+ * the open source community that supports those projects.
+
+
+
+
+= Installation process =
+
+''Picolena'' has been tested on [http://www.ubuntu.com Ubuntu] 7.04 and 7.10, for both Desktop and Server editions.
+
+To install ''Picolena'', you first need [http://www.rubyonrails.org/ Ruby on rails] and  [http://www.rubygems.org/ RubyGems]
+
+== Getting picolena gem ==
+Launch
+{{{
+gem install picolena
+}}}
+with admin privileges.
+
+
+== Installing picolena ==
+Once the gem is installed, you can launch:
+{{{
+picolena
+}}}
+followed by a list of directories you would like to be indexed.
+
+For example:
+{{{
+picolena ~/shared_documents /media/literature
+}}}
+
+This would create picolena file structure, index every file inside ~/shared_documents and /media/literature, and launch specs to be sure everything is in order.
+
+Depending on the amount of indexed data, it can take anywhere between a few seconds and some hours.
+For example, 15000 documents (out of which 50% get their content extracted as to plain text) have been indexed in 30 minutes on an Ubuntu server VM running on an old Windows server.
+
+If every spec pass, you can be sure every file has been indexed properly.
+
+== Launching Picolena ==
+{{{
+cd picolena
+ruby script/server
+}}}
+Time to open your browser and [http://localhost:3000 enjoy]!
+
+== Optional configuration ==
+
+=== Allowing access to other computers === 
+
+You can allow access to other computers by adding IP addresses to ''config/white_list_ip.yml'':
+
+{{{
+# Only localhost is allowed by default, any request coming from another IP will get rejected.
+# You can either add an IP address to the list:
+#       - 192.168.0.37
+# or an IP address range:
+#       - 192.168.0.
+# that will match any IP address whose first octets are 192.168.0
+# If you want to allow everybody, just write:
+#       Allow:
+#         - all
+Allow:
+  - 127.0.0.1
+  - 0.0.0.0
+}}}
+
+=== Modifying alias path of indexed directories ===
+
+=== Changing interface language ===
+
+=== Updating index periodically === 
+
+
+
