@@ -15,6 +15,13 @@ class MimeType
   end
 end
 
+class String
+  # Creates a "unique" id with the desired length, and composed only of lowercase letters.
+  def base26_hash(length=10)
+    Digest::MD5.hexdigest(self).to_i(16).to_s(26).tr('0-9a-p', 'a-z')[-length,length]
+  end
+end
+
 class File
   def self.ext_as_sym(filename)
     File.extname(filename).sub(/^\./,'').downcase.to_sym rescue :no_extension

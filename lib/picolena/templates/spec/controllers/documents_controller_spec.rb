@@ -102,11 +102,11 @@ describe DocumentsController do
   end
   
   it "GET 'download' should redirect if wrong id" do
-    md5=Digest::MD5.hexdigest("Not a document")
+    md5="Not a document".base26_hash
     get 'download', :id=>md5
     response.should be_redirect
     response.should redirect_to(documents_url)
-    md5='sdfgsdgf'
+    md5='Whatever'
     get 'download', :id=>md5
     response.should be_redirect
     response.should redirect_to(documents_url)

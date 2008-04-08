@@ -39,7 +39,7 @@ class Document
   end
   
   def md5
-    @md5=Digest::MD5.hexdigest(complete_path)
+    @md5=complete_path.base26_hash
   end
   
   def supported?
