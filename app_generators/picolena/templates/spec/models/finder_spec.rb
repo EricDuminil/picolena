@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/../spec_helper'
-require 'fileutils'
 
 describe Finder do
   before(:all) do
@@ -8,11 +7,14 @@ describe Finder do
       weird_file.write "just to know if files are indexed with utf8 filenames"
     }
 
+
+    once_upon_a_time=Time.local(1982,2,16,20,42)
+    a_bit_later=Time.local(1983,12,9,9)
+    nineties=Time.local(1990)
     # Used for modification date search.
-    FileUtils.touch 'spec/test_dirs/indexed/basic/basic.pdf', :mtime => Time.local(1982,2,16,20,42)
-    FileUtils.touch 'spec/test_dirs/indexed/yet_another_dir/office2003-word-template.dot', :mtime => Time.local(1983,12,9,9)
-    FileUtils.touch 'spec/test_dirs/indexed/others/placeholder.txt', :mtime => Time.local(1990)
-    
+    File.utime(0, once_upon_a_time, 'spec/test_dirs/indexed/basic/basic.pdf')
+    File.utime(0, a_bit_later, 'spec/test_dirs/indexed/yet_another_dir/office2003-word-template.dot')
+    File.utime(0, nineties, 'spec/test_dirs/indexed/others/placeholder.txt')
     Finder.force_index_creation
   end
   
