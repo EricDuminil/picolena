@@ -1,3 +1,11 @@
+== 0.1.1  2008-04-
+
+* major enhancement:
+  * cache à la Google
+
+* minor enhancements:
+  * lots of refactoring
+
 == 0.1.0  2008-04-08
 
 * minor enhancements:
