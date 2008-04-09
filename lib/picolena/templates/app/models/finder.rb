@@ -1,14 +1,20 @@
 require 'ff'
 
 class Finder
-  attr_reader :index, :query
+  #FIXME: Should not use all those class methods to access index.
+  
+  attr_reader :query
+  
+  def self.index
+    #@@index ||= 
+    Ferret::Index::Index.new(:path => IndexSavePath, :analyzer=>Analyzer)  
+  end
   
   def initialize(raw_query,page=1,results_per_page=ResultsPerPage)
     query_parser = Ferret::QueryParser.new(:fields => [:content, :file, :basename, :filetype, :date], :or_default => false, :analyzer=>Analyzer)
     @query = query_parser.parse(convert_to_english(raw_query))
     @raw_query= raw_query
     Finder.ensure_that_index_exists_on_disk
-    @index = Ferret::Index::Index.new(:path => IndexSavePath, :analyzer=>Analyzer)
     @per_page=results_per_page
     @offset=(page.to_i-1)*results_per_page
     validate_that_index_has_documents
@@ -18,16 +24,17 @@ class Finder
     @matching_documents=[]
     start=Time.now
     begin
-      top_docs=index.search(query, :limit => @per_page, :offset=>@offset)
+      top_docs=Finder.index.search(query, :limit => @per_page, :offset=>@offset)
       top_docs.hits.each{|hit|
-        ferret_doc,score=hit.doc,hit.score
+        index_id,score=hit.doc,hit.score
         begin
-          found_doc=Document.new(index[ferret_doc][:complete_path])
-          found_doc.matching_content=index.highlight(query, ferret_doc,
+          found_doc=Document.new(Finder.index[index_id][:complete_path])
+          found_doc.matching_content=Finder.index.highlight(query, index_id,
                                                      :field => :content, :excerpt_length => 80,
                                                      :pre_tag => "<<", :post_tag => ">>"
           ) unless @raw_query=~/^\*+\.\w*$/
           found_doc.score=score
+          found_doc.index_id=index_id
           @matching_documents<<found_doc
         rescue Errno::ENOENT
           #"File has been moved/deleted!"
@@ -37,7 +44,7 @@ class Finder
       @time_needed=Time.now-start
       @total_hits=top_docs.total_hits
     ensure
-      index.close
+      #index.close
     end
   end
   
@@ -57,7 +64,7 @@ class Finder
    end
    
    def has_documents?
-     index.size>0
+     Finder.index.size>0
    end
    
    def self.up_to_date?

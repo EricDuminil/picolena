@@ -41,10 +41,9 @@ describe Finder do
   end
   
   it "should give a boost to basename, filename and filetype in index" do
-    @finder=Finder.new("some query")
-    @finder.index.field_infos[:basename].boost.should > 1.0
-    @finder.index.field_infos[:file].boost.should > 1.0
-    @finder.index.field_infos[:filetype].boost.should > 1.0
+    Finder.index.field_infos[:basename].boost.should > 1.0
+    Finder.index.field_infos[:file].boost.should > 1.0
+    Finder.index.field_infos[:filetype].boost.should > 1.0
   end
   
   it "should also index unreadable files with known mimetypes" do

@@ -63,8 +63,12 @@ module DocumentsHelper
   end
   
   def link_to_plain_text_content(document)
-    return unless document.supported?
     link_name=image_tag('icons/plain_text_small.png')<<'&nbsp;'<<content_tag(:small,:text_content.l)
-    link_to link_name, show_content_document_path(document.probably_unique_id)
+    link_to link_name, content_document_path(document.probably_unique_id)
+  end
+  
+  def link_to_cached_content(document)
+    link_name="("<<content_tag(:small,:cached.l)<<")"
+    link_to link_name, cached_document_path(document.probably_unique_id)
   end
 end

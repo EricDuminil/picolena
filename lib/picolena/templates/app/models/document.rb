@@ -1,6 +1,6 @@
 class Document
   attr_reader :complete_path
-  attr_accessor :user, :score, :matching_content
+  attr_accessor :user, :score, :matching_content, :index_id
   
   def initialize(complete_path)
     @complete_path=complete_path
@@ -50,7 +50,21 @@ class Document
     PlainText.extract_content_from(complete_path)
   end
   
+  # retrieve content as it was at the time it was indexed.
+  def cached
+    get_index_id! unless index_id
+    Finder.index[index_id][:content]
+  end
+  
   private
+  
+  def get_index_id!
+    @index_id = Document.find_by_unique_id(probably_unique_id).index_id
+  end
+  
+  def self.find_by_unique_id(some_id)
+    Finder.new("probably_unique_id:"<<some_id).matching_document
+  end
   
   def in_indexed_directory?
     !indexed_directory.nil?

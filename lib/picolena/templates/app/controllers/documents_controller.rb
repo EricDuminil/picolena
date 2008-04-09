@@ -1,5 +1,5 @@
 class DocumentsController < ApplicationController  
-  before_filter :check_if_valid_link, :only=> [:download, :show_content]
+  before_filter :check_if_valid_link, :only=> [:download, :content, :cached]
   
   # Actually doesn't check anything at all. Just a redirect to show_document(query)
   #
@@ -31,14 +31,17 @@ class DocumentsController < ApplicationController
     send_file @document.complete_path
   end
   
-  def show_content
+  def content
+  end
+  
+  def cached
   end
   
   private
   
   def check_if_valid_link
     @probably_unique_id=params[:id]
-    @document=Finder.new("probably_unique_id:"<<@probably_unique_id).matching_document rescue no_valid_link
+    @document=Document.find_by_unique_id(@probably_unique_id) rescue no_valid_link
   end
   
   def no_valid_link

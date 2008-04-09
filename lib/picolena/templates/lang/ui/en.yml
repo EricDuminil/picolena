@@ -9,6 +9,7 @@ results: Results
 of: of
 for: for
 text_content: Text content
+cached: cached
 
 ## Link to a website, located in the bottom-left corner.
 website_name: Picolena
