@@ -19,9 +19,9 @@ lib/picolena/templates/app/helpers/documents_helper.rb
 lib/picolena/templates/app/models/document.rb
 lib/picolena/templates/app/models/finder.rb
 lib/picolena/templates/app/views/documents/_document.html.haml
+lib/picolena/templates/app/views/documents/content.html.haml
 lib/picolena/templates/app/views/documents/index.html.haml
 lib/picolena/templates/app/views/documents/show.html.haml
-lib/picolena/templates/app/views/documents/show_content.html.haml
 lib/picolena/templates/app/views/layouts/application.html.haml
 lib/picolena/templates/config/boot.rb
 lib/picolena/templates/config/environment.rb
@@ -765,12 +765,12 @@ script/destroy
 script/generate
 script/txt2html
 setup.rb
-spec/picolena_spec.rb
 tasks/deployment.rake
 tasks/environment.rake
 tasks/rdoc.rake
 tasks/ri.rake
 tasks/rspec.rake
+tasks/test.rake
 tasks/website.rake
 website/index.html
 website/index.txt

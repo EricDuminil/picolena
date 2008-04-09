@@ -1,20 +1,6 @@
-begin
-  require 'spec'
-rescue LoadError
-  require 'rubygems'
-  require 'spec'
-end
-begin
-  require 'spec/rake/spectask'
-rescue LoadError
-  puts <<-EOS
-To use rspec for testing you must install rspec gem:
-    gem install rspec
-EOS
-  exit(0)
-end
-
-desc "Run the specs under spec/models"
-Spec::Rake::SpecTask.new do |t|
-  t.spec_files = FileList['spec/**/*_spec.rb']
+desc 'Create a temporary picolena structure and launch specs from it'
+task :spec do
+  require 'pathname'
+  picolena_bin=Pathname(File.join(File.dirname(__FILE__),'../bin/picolena')).realpath.to_s
+  system("ruby #{picolena_bin} --spec-only")
 end
