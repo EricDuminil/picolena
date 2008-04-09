@@ -17,7 +17,7 @@ describe "Host indexing system" do
   
   it "should be able to calculate base26 hash from strings" do
     "test_dirs/indexed/010/decrepito.pdf".base26_hash(5).should == "rails"
-    "test_dirs/indexed/migrations/000_restreins.rb".base26_hash(6).should == "ricou"
+    "test_dirs/indexed/migrations/000_restreins.rb".base26_hash(5).should == "ricou"
     # it would probably take ages to find a string whose hash == "picolena" :(
     "test_dirs/indexed/1148/plots.odt".base26_hash(8).should == "picolehn"
     "whatever.pdf".base26_hash.should == "bbuxhynait"
