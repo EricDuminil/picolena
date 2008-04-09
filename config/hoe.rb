@@ -64,7 +64,8 @@ hoe = Hoe.new(GEM_NAME, VERS) do |p|
                    ['haml', '>= 1.8.2'],
                    ['rubyzip', '>= 0.9.1'],
                    ['rubigen', '>= 1.2.4'],
-                   ['paginator', '>= 1.1.0']
+                   ['paginator', '>= 1.1.0'],
+                   ['rspec', '>= 1.1.3']
                  ]
   
   #p.spec_extras = {}    # A hash of extra values to set in the gemspec.
