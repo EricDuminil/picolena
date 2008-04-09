@@ -20,7 +20,7 @@ def index_file(index, filename, mime_type=nil)
   complete_path=File.expand_path(filename)
   fields = {
     :complete_path=> complete_path,
-    :md5 => complete_path.base26_hash,
+    :probably_unique_id => complete_path.base26_hash,
     :file => File.basename(filename),
     :basename => File.basename(filename, File.extname(filename)).gsub(/_/,' '),
     :filetype => File.extname(filename),
@@ -113,5 +113,5 @@ def add_fields(index)
   index.field_infos.add_field(:file, :store => :no, :index => :yes, :boost => 1.5)
   index.field_infos.add_field(:filetype, :store => :no, :index => :yes, :boost => 1.5)
   index.field_infos.add_field(:date, :store=>:no, :index=>:yes)
-  index.field_infos.add_field(:md5, :store=>:no, :index=>:yes)
+  index.field_infos.add_field(:probably_unique_id, :store=>:no, :index=>:yes)
 end

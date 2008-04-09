@@ -38,8 +38,8 @@ class Document
     absolute_dirname.sub(original_dir,alias_dir)
   end
   
-  def md5
-    @md5=complete_path.base26_hash
+  def probably_unique_id
+    @probably_unique_id||=complete_path.base26_hash
   end
   
   def supported?

@@ -96,18 +96,18 @@ describe DocumentsController do
     response.should be_success
     assigns[:matching_documents].entries.should_not be_empty
     d=assigns[:matching_documents].entries.first
-    get 'download', :id=>d.md5
+    get 'download', :id=>d.probably_unique_id
     assigns[:document].complete_path == d.complete_path
     response.should be_success
   end
   
   it "GET 'download' should redirect if wrong id" do
-    md5="Not a document".base26_hash
-    get 'download', :id=>md5
+    probably_unique_id="Not a document".base26_hash
+    get 'download', :id=>probably_unique_id
     response.should be_redirect
     response.should redirect_to(documents_url)
-    md5='Whatever'
-    get 'download', :id=>md5
+    probably_unique_id='Whatever'
+    get 'download', :id=>probably_unique_id
     response.should be_redirect
     response.should redirect_to(documents_url)
   end

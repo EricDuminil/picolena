@@ -1,5 +1,5 @@
 %h2
-  =link_to icon_and_filename_for(document), download_document_path(document.md5)
+  =link_to icon_and_filename_for(document), download_document_path(document.probably_unique_id)
   %small=number_to_percentage(document.score*100, :precision=>1)
 =highlight_matching_content(document)
 %p=link_to_containing_directory(document)

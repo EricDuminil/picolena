@@ -65,6 +65,6 @@ module DocumentsHelper
   def link_to_plain_text_content(document)
     return unless document.supported?
     link_name=image_tag('icons/plain_text_small.png')<<'&nbsp;'<<content_tag(:small,:text_content.l)
-    link_to link_name, show_content_document_path(document.md5)
+    link_to link_name, show_content_document_path(document.probably_unique_id)
   end
 end

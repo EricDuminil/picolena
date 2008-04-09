@@ -25,10 +25,10 @@ class DocumentsController < ApplicationController
   end
   
   
-  # Download the file whose md5 path's checksum is given.
+  # Download the file whose probably_unique_id is given.
   # If the checksum is incorrect, redirect to documents_url via no_valid_link
   def download
-    send_file @document.complete_path  
+    send_file @document.complete_path
   end
   
   def show_content
@@ -37,8 +37,8 @@ class DocumentsController < ApplicationController
   private
   
   def check_if_valid_link
-    @md5_hash=params[:id]
-    @document=Finder.new("md5:"<<@md5_hash).matching_document rescue no_valid_link
+    @probably_unique_id=params[:id]
+    @document=Finder.new("probably_unique_id:"<<@probably_unique_id).matching_document rescue no_valid_link
   end
   
   def no_valid_link
