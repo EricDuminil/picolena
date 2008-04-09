@@ -53,8 +53,8 @@ module DocumentsHelper
     image_tag("icons/#{pic.first}.png") if pic
   end
   
-  def google?(query)
-    link_to "Google?", "http://www.google.de/search?q=#{query}"
+  def backup_search_engine(query)
+    link_to :backup_search_engine_name.l, :backup_search_engine_url.l<<query
   end
   
   def link_to_containing_directory(document)
