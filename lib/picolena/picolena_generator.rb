@@ -60,6 +60,7 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
       # Picolena configuration files
       m.file '../config/white_list_ip.yml', 'config/white_list_ip.yml'
       m.template '../config/indexed_directories.yml', 'config/indexed_directories.yml', :assigns => {:directories_to_index => @directories_to_index}
+      m.template '../config/custom_localization.yml', 'lang/ui/custom_localization.yml', :assigns => {:version => Picolena::VERSION::STRING}
 
       # README, License & Rakefile
       m.file 'MIT-LICENSE', 'LICENSE'

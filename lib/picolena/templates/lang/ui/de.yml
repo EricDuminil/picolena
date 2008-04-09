@@ -12,14 +12,6 @@ text_content: Text-Inhalt
 cached: cached
 as_it_was_indexed_on: wie am
 
-## Link to a website, located in the bottom-left corner.
-website_name: Picolena
-website_url:  http://picolena.devjavu.com/
-
-## Link to a backup search engine, if no document was found.
-backup_search_engine_name: Google
-backup_search_engine_url: http://www.google.de/search?q=
-
 ## Boolean operators
 AND: UND
 OR: ODER
