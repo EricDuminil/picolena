@@ -20,6 +20,7 @@ lib/picolena/templates/app/helpers/documents_helper.rb
 lib/picolena/templates/app/models/document.rb
 lib/picolena/templates/app/models/finder.rb
 lib/picolena/templates/app/views/documents/_document.html.haml
+lib/picolena/templates/app/views/documents/cached.html.haml
 lib/picolena/templates/app/views/documents/content.html.haml
 lib/picolena/templates/app/views/documents/index.html.haml
 lib/picolena/templates/app/views/documents/show.html.haml
