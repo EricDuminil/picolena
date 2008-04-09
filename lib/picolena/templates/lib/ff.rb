@@ -112,6 +112,6 @@ def add_fields(index)
   index.field_infos.add_field(:basename, :store => :no, :index => :yes, :boost => 1.5)
   index.field_infos.add_field(:file, :store => :no, :index => :yes, :boost => 1.5)
   index.field_infos.add_field(:filetype, :store => :no, :index => :yes, :boost => 1.5)
-  index.field_infos.add_field(:date, :store=>:no, :index=>:yes)
+  index.field_infos.add_field(:date, :store=>:yes, :index=>:yes)
   index.field_infos.add_field(:probably_unique_id, :store=>:no, :index=>:yes)
 end

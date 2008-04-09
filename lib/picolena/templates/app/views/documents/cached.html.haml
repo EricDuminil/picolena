@@ -1,3 +1,7 @@
-%h2=link_to icon_and_filename_for(@document), download_document_path(@probably_unique_id)
+%h2
+  =link_to icon_and_filename_for(@document), download_document_path(@probably_unique_id)
+  (as it was indexed on
+  =@document.date
+  )
 %p=link_to_containing_directory(@document)
 %blockquote=h(@document.cached).gsub(/\n/,'<br/>')

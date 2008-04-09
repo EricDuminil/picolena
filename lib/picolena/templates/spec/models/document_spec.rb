@@ -2,9 +2,9 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 basic_pdf_attribute={
   :size=>9380,
-  :dirname=>'spec/test_dirs/indexed/basic',
+  :dirname=>File.join(RAILS_ROOT, 'spec/test_dirs/indexed/basic'),
   :basename=>'basic',
-  :complete_path=>'spec/test_dirs/indexed/basic/basic.pdf',
+  :complete_path=>File.join(RAILS_ROOT, '/spec/test_dirs/indexed/basic/basic.pdf'),
   :extname=>'.pdf',
   :filename=>'basic.pdf'
 }

@@ -2,8 +2,8 @@ class Document
   attr_reader :complete_path
   attr_accessor :user, :score, :matching_content, :index_id
   
-  def initialize(complete_path)
-    @complete_path=complete_path
+  def initialize(path)
+    @complete_path=File.expand_path(path)
     validate_existence_of_file
     validate_in_indexed_directory
   end
@@ -54,6 +54,11 @@ class Document
   def cached
     get_index_id! unless index_id
     Finder.index[index_id][:content]
+  end
+  
+  def date
+    get_index_id! unless index_id
+    Finder.index[index_id][:date].sub(/(\d{4})(\d{2})(\d{2})/,'\1-\2-\3')
   end
   
   private

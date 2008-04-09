@@ -1,13 +1,19 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+def revert_changes!(file,content)
+  File.open(file,'w'){|might_have_been_modified|
+    might_have_been_modified.write content
+  }  
+end
+
 describe Finder do
   before(:all) do
     # SVN doesn't like non-ascii filenames.
-    File.open('spec/test_dirs/indexed/others/bäñüßé.txt','w'){|weird_file|
-      weird_file.write "just to know if files are indexed with utf8 filenames"
-    }
+    revert_changes!('spec/test_dirs/indexed/others/bäñüßé.txt',"just to know if files are indexed with utf8 filenames")
 
-
+    # To be sure this file has the right content
+    revert_changes!("spec/test_dirs/indexed/others/placeholder.txt","Absorption and Adsorption cooling machines!!!")
+    
     once_upon_a_time=Time.local(1982,2,16,20,42)
     a_bit_later=Time.local(1983,12,9,9)
     nineties=Time.local(1990)
@@ -193,6 +199,24 @@ describe Finder do
   it "should not index those stupid Thumbs.db files" do
     Finder.new("Thumbs.db").matching_documents.should be_empty
     Finder.new("filetype:db").matching_documents.should_not be_empty
+  end
+  
+  it "should keep content cached" do
+    filename = "spec/test_dirs/indexed/others/placeholder.txt"
+    content_before = "Absorption and Adsorption cooling machines!!!"
+    some_doc=Document.new(filename)
+    some_doc.content.should == content_before
+    File.open(filename,'a'){|doc|
+      doc.write("This line should not be indexed. It shouldn't be found in cache")
+      }
+    some_doc.content.should_not == content_before
+    puts some_doc.inspect
+    puts some_doc.probably_unique_id
+    some_doc.cached.should == content_before
+  end
+  
+  after(:all) do
+    revert_changes!("spec/test_dirs/indexed/others/placeholder.txt","Absorption and Adsorption cooling machines!!!")
   end
 
 #  Not sure about this spec!
