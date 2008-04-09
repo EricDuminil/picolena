@@ -210,8 +210,6 @@ describe Finder do
       doc.write("This line should not be indexed. It shouldn't be found in cache")
       }
     some_doc.content.should_not == content_before
-    puts some_doc.inspect
-    puts some_doc.probably_unique_id
     some_doc.cached.should == content_before
   end
   
