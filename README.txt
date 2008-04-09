@@ -22,14 +22,24 @@ Picolena has many advantages:
    * it can be used to index any ftp, smb, ssh, webdav or local directory.
    * its user interface is available in English, German, Spanish and French.
 
-== SYNOPSIS:
+== DESCRIPTION:
 
-  picolena first_directory_to_index second_directory_to_index
+The 'picolena' command creates a new documents search engine, indexing directories specified as parameters.
+A default structure will be created in 'picolena' directory.
+Since picolena is Rails-based, you can launch the search-engine
+web-server just like you would with any Rails application.
+
+== EXAMPLE:
+    picolena ~/shared_documents /media/literature
+    cd picolena
+    ruby script/server
+    
+This would create the picolena file structure, index every file inside ~/shared_documents and /media/literature, and launch a web-server available at http://localhost:3000
 
 == REQUIREMENTS:
 
 * packages : antiword poppler-utils odt2txt html2text catdoc unrtf
-* gems     : rails ferret paginator haml rubyzip
+* gems     : rails ferret paginator haml rubyzip rubigen
 
 == INSTALL:
 
