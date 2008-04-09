@@ -4,6 +4,7 @@ Manifest.txt
 README.txt
 Rakefile
 bin/picolena
+config/files_to_clean
 config/hoe.rb
 config/requirements.rb
 lib/picolena/USAGE
@@ -767,6 +768,7 @@ script/txt2html
 setup.rb
 tasks/deployment.rake
 tasks/environment.rake
+tasks/hack.rake
 tasks/rdoc.rake
 tasks/ri.rake
 tasks/rspec.rake

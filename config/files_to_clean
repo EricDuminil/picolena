@@ -1,0 +1,9 @@
+lib/picolena/templates/LICENSE
+lib/picolena/templates/README
+lib/picolena/templates/config/custom.rb
+lib/picolena/templates/config/indexed_directories.yml
+lib/picolena/templates/config/white_list_ip.yml
+lib/picolena/templates/log
+lib/picolena/templates/spec/test_dirs/indexed/others/bäñüßé.txt
+lib/picolena/templates/tmp
+lib/picolena/templates/vendor

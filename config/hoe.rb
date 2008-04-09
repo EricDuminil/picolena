@@ -54,7 +54,9 @@ hoe = Hoe.new(GEM_NAME, VERS) do |p|
   p.url = HOMEPATH
   p.rubyforge_name = RUBYFORGE_PROJECT if RUBYFORGE_PROJECT
   p.test_globs = ["spec/picolena_spec.rb"]
-  p.clean_globs |= ['**/.*.sw?', '*.gem', '.config', '**/.DS_Store']  #An array of file patterns to delete on clean.
+  
+  files_to_clean = File.readlines(File.join(File.dirname(__FILE__),'files_to_clean')).collect{|line| line.chomp}
+  p.clean_globs |= ['**/.*.sw?', '*.gem', '.config', '**/.DS_Store']+files_to_clean  #An array of file patterns to delete on clean.
   
   # == Optional
   p.changes = p.paragraphs_of("History.txt", 0..1).join("\n\n")
