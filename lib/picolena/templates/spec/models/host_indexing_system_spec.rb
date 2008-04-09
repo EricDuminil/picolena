@@ -13,5 +13,11 @@ describe "Host indexing system" do
   
   it "should know which directories are to be indexed (config/indexed_directories.yml)" do
     File.should be_readable('config/indexed_directories.yml')
-  end   
+  end
+  
+  # it would probably take ages to find a string whose hash == "picolena" :(
+  it "should be able to calculate base26 hash from strings" do
+    "test_dirs/indexed/1148/plots.odt".base26_hash(8).should == "picolehn"
+    "whatever.pdf".base26_hash.should == "bbuxhynait"
+  end
 end
