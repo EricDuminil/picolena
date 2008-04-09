@@ -30,11 +30,23 @@ class PicolenaGenerator < RubiGen::Base
     record do |m|
       #Create base dir
       m.directory ''
+      
+      # Picolena file structure, without any plugin.
       BASEDIRS.each { |path|
-        # Ensure appropriate folder(s) exists
+        # Ensure appropriate folder exists
         m.directory path
         # Copy every file included in BASEDIRS
         m.folder path, path
+      }
+      
+      # Moved plugins away so they don't get parsed by rdoc/ri.
+      RAILS_PLUGINS.each{ |path|
+        plugin_source = '../../../rails_plugins/'+path
+        plugin_dest   = 'vendor/plugins/'+path
+        # Ensure appropriate folder exists
+        m.directory plugin_dest
+        # Ensure appropriate folder exists
+        m.folder plugin_source, plugin_dest
       }
 
       # Copy every Rails script with exec persmissions.
@@ -107,7 +119,6 @@ EOS
     # Installation skeleton.  Intermediate directories are automatically
     # created so don't sweat their absence here.
     BASEDIRS = %w(
-    app
     app/controllers
     app/helpers
     app/models
@@ -117,8 +128,6 @@ EOS
     config
     config/environments
     config/initializers
-    doc
-    lang
     lang/ui
     lib
     lib/filters
@@ -148,165 +157,165 @@ EOS
     spec/test_dirs/not_indexed
     spec/views
     spec/views/application
-    tmp
     tmp/cache
     tmp/ferret_indexes
     tmp/pids
     tmp/sessions
     tmp/sockets
-    vendor
-    vendor/plugins
-    vendor/plugins/globalite
-    vendor/plugins/globalite/data
-    vendor/plugins/globalite/lang
-    vendor/plugins/globalite/lang/rails
-    vendor/plugins/globalite/lib
-    vendor/plugins/globalite/lib/globalite
-    vendor/plugins/globalite/lib/rails
-    vendor/plugins/globalite/rdoc
-    vendor/plugins/globalite/rdoc/classes
-    vendor/plugins/globalite/rdoc/classes/ActionView
-    vendor/plugins/globalite/rdoc/classes/ActionView/Helpers
-    vendor/plugins/globalite/rdoc/classes/ActiveRecord
-    vendor/plugins/globalite/rdoc/classes/Globalite
-    vendor/plugins/globalite/rdoc/files
-    vendor/plugins/globalite/rdoc/files/lib
-    vendor/plugins/globalite/rdoc/files/lib/globalite
-    vendor/plugins/globalite/rdoc/files/lib/rails
-    vendor/plugins/globalite/spec
-    vendor/plugins/globalite/spec/helpers
-    vendor/plugins/globalite/spec/lang
-    vendor/plugins/globalite/spec/lang/rails
-    vendor/plugins/globalite/spec/lang/ui
-    vendor/plugins/globalite/tasks
-    vendor/plugins/haml
-    vendor/plugins/rspec
-    vendor/plugins/rspec/autotest
-    vendor/plugins/rspec/bin
-    vendor/plugins/rspec/examples
-    vendor/plugins/rspec/examples/pure
-    vendor/plugins/rspec/examples/stories
-    vendor/plugins/rspec/examples/stories/game-of-life
-    vendor/plugins/rspec/examples/stories/game-of-life/behaviour
-    vendor/plugins/rspec/examples/stories/game-of-life/behaviour/examples
-    vendor/plugins/rspec/examples/stories/game-of-life/behaviour/stories
-    vendor/plugins/rspec/examples/stories/game-of-life/life
-    vendor/plugins/rspec/examples/stories/steps
-    vendor/plugins/rspec/failing_examples
-    vendor/plugins/rspec/lib
-    vendor/plugins/rspec/lib/autotest
-    vendor/plugins/rspec/lib/spec
-    vendor/plugins/rspec/lib/spec/example
-    vendor/plugins/rspec/lib/spec/expectations
-    vendor/plugins/rspec/lib/spec/expectations/differs
-    vendor/plugins/rspec/lib/spec/expectations/extensions
-    vendor/plugins/rspec/lib/spec/extensions
-    vendor/plugins/rspec/lib/spec/interop
-    vendor/plugins/rspec/lib/spec/interop/test
-    vendor/plugins/rspec/lib/spec/interop/test/unit
-    vendor/plugins/rspec/lib/spec/interop/test/unit/ui
-    vendor/plugins/rspec/lib/spec/interop/test/unit/ui/console
-    vendor/plugins/rspec/lib/spec/matchers
-    vendor/plugins/rspec/lib/spec/mocks
-    vendor/plugins/rspec/lib/spec/mocks/extensions
-    vendor/plugins/rspec/lib/spec/rake
-    vendor/plugins/rspec/lib/spec/runner
-    vendor/plugins/rspec/lib/spec/runner/formatter
-    vendor/plugins/rspec/lib/spec/runner/formatter/story
-    vendor/plugins/rspec/lib/spec/story
-    vendor/plugins/rspec/lib/spec/story/extensions
-    vendor/plugins/rspec/lib/spec/story/runner
-    vendor/plugins/rspec/plugins
-    vendor/plugins/rspec/plugins/mock_frameworks
-    vendor/plugins/rspec/pre_commit
-    vendor/plugins/rspec/pre_commit/lib
-    vendor/plugins/rspec/pre_commit/lib/pre_commit
-    vendor/plugins/rspec/pre_commit/spec
-    vendor/plugins/rspec/pre_commit/spec/pre_commit
-    vendor/plugins/rspec/rake_tasks
-    vendor/plugins/rspec/spec
-    vendor/plugins/rspec/spec/autotest
-    vendor/plugins/rspec/spec/spec
-    vendor/plugins/rspec/spec/spec/example
-    vendor/plugins/rspec/spec/spec/expectations
-    vendor/plugins/rspec/spec/spec/expectations/differs
-    vendor/plugins/rspec/spec/spec/expectations/extensions
-    vendor/plugins/rspec/spec/spec/extensions
-    vendor/plugins/rspec/spec/spec/interop
-    vendor/plugins/rspec/spec/spec/interop/test
-    vendor/plugins/rspec/spec/spec/interop/test/unit
-    vendor/plugins/rspec/spec/spec/interop/test/unit/resources
-    vendor/plugins/rspec/spec/spec/matchers
-    vendor/plugins/rspec/spec/spec/mocks
-    vendor/plugins/rspec/spec/spec/package
-    vendor/plugins/rspec/spec/spec/runner
-    vendor/plugins/rspec/spec/spec/runner/formatter
-    vendor/plugins/rspec/spec/spec/runner/formatter/story
-    vendor/plugins/rspec/spec/spec/runner/resources
-    vendor/plugins/rspec/spec/spec/runner/spec_parser
-    vendor/plugins/rspec/spec/spec/story
-    vendor/plugins/rspec/spec/spec/story/extensions
-    vendor/plugins/rspec/spec/spec/story/runner
-    vendor/plugins/rspec/stories
-    vendor/plugins/rspec/stories/example_groups
-    vendor/plugins/rspec/stories/interop
-    vendor/plugins/rspec/stories/pending_stories
-    vendor/plugins/rspec/stories/resources
-    vendor/plugins/rspec/stories/resources/helpers
-    vendor/plugins/rspec/stories/resources/matchers
-    vendor/plugins/rspec/stories/resources/spec
-    vendor/plugins/rspec/stories/resources/steps
-    vendor/plugins/rspec/stories/resources/stories
-    vendor/plugins/rspec/stories/resources/test
-    vendor/plugins/rspec/story_server
-    vendor/plugins/rspec/story_server/prototype
-    vendor/plugins/rspec/story_server/prototype/javascripts
-    vendor/plugins/rspec/story_server/prototype/lib
-    vendor/plugins/rspec/story_server/prototype/stylesheets
-    vendor/plugins/rspec_on_rails
-    vendor/plugins/rspec_on_rails/generators
-    vendor/plugins/rspec_on_rails/generators/helpers
-    vendor/plugins/rspec_on_rails/generators/rspec
-    vendor/plugins/rspec_on_rails/generators/rspec/templates
-    vendor/plugins/rspec_on_rails/generators/rspec/templates/script
-    vendor/plugins/rspec_on_rails/generators/rspec_controller
-    vendor/plugins/rspec_on_rails/generators/rspec_controller/templates
-    vendor/plugins/rspec_on_rails/generators/rspec_model
-    vendor/plugins/rspec_on_rails/generators/rspec_model/templates
-    vendor/plugins/rspec_on_rails/generators/rspec_scaffold
-    vendor/plugins/rspec_on_rails/generators/rspec_scaffold/templates
-    vendor/plugins/rspec_on_rails/lib
-    vendor/plugins/rspec_on_rails/lib/autotest
-    vendor/plugins/rspec_on_rails/lib/spec
-    vendor/plugins/rspec_on_rails/lib/spec/rails
-    vendor/plugins/rspec_on_rails/lib/spec/rails/example
-    vendor/plugins/rspec_on_rails/lib/spec/rails/extensions
-    vendor/plugins/rspec_on_rails/lib/spec/rails/extensions/action_controller
-    vendor/plugins/rspec_on_rails/lib/spec/rails/extensions/action_view
-    vendor/plugins/rspec_on_rails/lib/spec/rails/extensions/active_record
-    vendor/plugins/rspec_on_rails/lib/spec/rails/extensions/spec
-    vendor/plugins/rspec_on_rails/lib/spec/rails/extensions/spec/example
-    vendor/plugins/rspec_on_rails/lib/spec/rails/extensions/spec/matchers
-    vendor/plugins/rspec_on_rails/lib/spec/rails/matchers
-    vendor/plugins/rspec_on_rails/spec
-    vendor/plugins/rspec_on_rails/spec/rails
-    vendor/plugins/rspec_on_rails/spec/rails/autotest
-    vendor/plugins/rspec_on_rails/spec/rails/example
-    vendor/plugins/rspec_on_rails/spec/rails/extensions
-    vendor/plugins/rspec_on_rails/spec/rails/matchers
-    vendor/plugins/rspec_on_rails/spec/rails/mocks
-    vendor/plugins/rspec_on_rails/spec_resources
-    vendor/plugins/rspec_on_rails/spec_resources/controllers
-    vendor/plugins/rspec_on_rails/spec_resources/helpers
-    vendor/plugins/rspec_on_rails/spec_resources/views
-    vendor/plugins/rspec_on_rails/spec_resources/views/controller_spec
-    vendor/plugins/rspec_on_rails/spec_resources/views/render_spec
-    vendor/plugins/rspec_on_rails/spec_resources/views/rjs_spec
-    vendor/plugins/rspec_on_rails/spec_resources/views/tag_spec
-    vendor/plugins/rspec_on_rails/spec_resources/views/view_spec
-    vendor/plugins/rspec_on_rails/spec_resources/views/view_spec/foo
-    vendor/plugins/rspec_on_rails/stories
-    vendor/plugins/rspec_on_rails/stories/steps
-    vendor/plugins/rspec_on_rails/tasks
+    )
+    
+    RAILS_PLUGINS=%w(
+    globalite
+    globalite/data
+    globalite/lang
+    globalite/lang/rails
+    globalite/lib
+    globalite/lib/globalite
+    globalite/lib/rails
+    globalite/rdoc
+    globalite/rdoc/classes
+    globalite/rdoc/classes/ActionView
+    globalite/rdoc/classes/ActionView/Helpers
+    globalite/rdoc/classes/ActiveRecord
+    globalite/rdoc/classes/Globalite
+    globalite/rdoc/files
+    globalite/rdoc/files/lib
+    globalite/rdoc/files/lib/globalite
+    globalite/rdoc/files/lib/rails
+    globalite/spec
+    globalite/spec/helpers
+    globalite/spec/lang
+    globalite/spec/lang/rails
+    globalite/spec/lang/ui
+    globalite/tasks
+    haml
+    rspec
+    rspec/autotest
+    rspec/bin
+    rspec/examples
+    rspec/examples/pure
+    rspec/examples/stories
+    rspec/examples/stories/game-of-life
+    rspec/examples/stories/game-of-life/behaviour
+    rspec/examples/stories/game-of-life/behaviour/examples
+    rspec/examples/stories/game-of-life/behaviour/stories
+    rspec/examples/stories/game-of-life/life
+    rspec/examples/stories/steps
+    rspec/failing_examples
+    rspec/lib
+    rspec/lib/autotest
+    rspec/lib/spec
+    rspec/lib/spec/example
+    rspec/lib/spec/expectations
+    rspec/lib/spec/expectations/differs
+    rspec/lib/spec/expectations/extensions
+    rspec/lib/spec/extensions
+    rspec/lib/spec/interop
+    rspec/lib/spec/interop/test
+    rspec/lib/spec/interop/test/unit
+    rspec/lib/spec/interop/test/unit/ui
+    rspec/lib/spec/interop/test/unit/ui/console
+    rspec/lib/spec/matchers
+    rspec/lib/spec/mocks
+    rspec/lib/spec/mocks/extensions
+    rspec/lib/spec/rake
+    rspec/lib/spec/runner
+    rspec/lib/spec/runner/formatter
+    rspec/lib/spec/runner/formatter/story
+    rspec/lib/spec/story
+    rspec/lib/spec/story/extensions
+    rspec/lib/spec/story/runner
+    rspec/plugins
+    rspec/plugins/mock_frameworks
+    rspec/pre_commit
+    rspec/pre_commit/lib
+    rspec/pre_commit/lib/pre_commit
+    rspec/pre_commit/spec
+    rspec/pre_commit/spec/pre_commit
+    rspec/rake_tasks
+    rspec/spec
+    rspec/spec/autotest
+    rspec/spec/spec
+    rspec/spec/spec/example
+    rspec/spec/spec/expectations
+    rspec/spec/spec/expectations/differs
+    rspec/spec/spec/expectations/extensions
+    rspec/spec/spec/extensions
+    rspec/spec/spec/interop
+    rspec/spec/spec/interop/test
+    rspec/spec/spec/interop/test/unit
+    rspec/spec/spec/interop/test/unit/resources
+    rspec/spec/spec/matchers
+    rspec/spec/spec/mocks
+    rspec/spec/spec/package
+    rspec/spec/spec/runner
+    rspec/spec/spec/runner/formatter
+    rspec/spec/spec/runner/formatter/story
+    rspec/spec/spec/runner/resources
+    rspec/spec/spec/runner/spec_parser
+    rspec/spec/spec/story
+    rspec/spec/spec/story/extensions
+    rspec/spec/spec/story/runner
+    rspec/stories
+    rspec/stories/example_groups
+    rspec/stories/interop
+    rspec/stories/pending_stories
+    rspec/stories/resources
+    rspec/stories/resources/helpers
+    rspec/stories/resources/matchers
+    rspec/stories/resources/spec
+    rspec/stories/resources/steps
+    rspec/stories/resources/stories
+    rspec/stories/resources/test
+    rspec/story_server
+    rspec/story_server/prototype
+    rspec/story_server/prototype/javascripts
+    rspec/story_server/prototype/lib
+    rspec/story_server/prototype/stylesheets
+    rspec_on_rails
+    rspec_on_rails/generators
+    rspec_on_rails/generators/helpers
+    rspec_on_rails/generators/rspec
+    rspec_on_rails/generators/rspec/templates
+    rspec_on_rails/generators/rspec/templates/script
+    rspec_on_rails/generators/rspec_controller
+    rspec_on_rails/generators/rspec_controller/templates
+    rspec_on_rails/generators/rspec_model
+    rspec_on_rails/generators/rspec_model/templates
+    rspec_on_rails/generators/rspec_scaffold
+    rspec_on_rails/generators/rspec_scaffold/templates
+    rspec_on_rails/lib
+    rspec_on_rails/lib/autotest
+    rspec_on_rails/lib/spec
+    rspec_on_rails/lib/spec/rails
+    rspec_on_rails/lib/spec/rails/example
+    rspec_on_rails/lib/spec/rails/extensions
+    rspec_on_rails/lib/spec/rails/extensions/action_controller
+    rspec_on_rails/lib/spec/rails/extensions/action_view
+    rspec_on_rails/lib/spec/rails/extensions/active_record
+    rspec_on_rails/lib/spec/rails/extensions/spec
+    rspec_on_rails/lib/spec/rails/extensions/spec/example
+    rspec_on_rails/lib/spec/rails/extensions/spec/matchers
+    rspec_on_rails/lib/spec/rails/matchers
+    rspec_on_rails/spec
+    rspec_on_rails/spec/rails
+    rspec_on_rails/spec/rails/autotest
+    rspec_on_rails/spec/rails/example
+    rspec_on_rails/spec/rails/extensions
+    rspec_on_rails/spec/rails/matchers
+    rspec_on_rails/spec/rails/mocks
+    rspec_on_rails/spec_resources
+    rspec_on_rails/spec_resources/controllers
+    rspec_on_rails/spec_resources/helpers
+    rspec_on_rails/spec_resources/views
+    rspec_on_rails/spec_resources/views/controller_spec
+    rspec_on_rails/spec_resources/views/render_spec
+    rspec_on_rails/spec_resources/views/rjs_spec
+    rspec_on_rails/spec_resources/views/tag_spec
+    rspec_on_rails/spec_resources/views/view_spec
+    rspec_on_rails/spec_resources/views/view_spec/foo
+    rspec_on_rails/stories
+    rspec_on_rails/stories/steps
+    rspec_on_rails/tasks
 )
 end

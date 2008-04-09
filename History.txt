@@ -2,9 +2,8 @@
 
 * minor enhancements:
   * can now be installed on win32 (doesn't pass every spec though)
-  * 
-  *
-  *
+  * moved rails_plugins away from lib/ so that they don't get parsed by rdoc/ri
+  * shorter and prettier base26_hash id for documents.
 
 == 0.0.99  2008-04-06
 
