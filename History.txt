@@ -2,6 +2,7 @@
 
 * major enhancement:
   * cache à la Google
+  * custom l10n
 
 * minor enhancements:
   * lots of refactoring
