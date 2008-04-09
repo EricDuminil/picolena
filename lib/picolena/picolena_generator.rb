@@ -2,7 +2,7 @@ require 'tempfile'
 require 'fileutils'
 require 'pathname'
 
-class PicolenaGenerator < RubiGen::Base
+class PicolenaGenerator < RubiGen::Base #:nodoc:
   
   DEFAULT_SHEBANG = File.join(Config::CONFIG['bindir'],
                               Config::CONFIG['ruby_install_name'])

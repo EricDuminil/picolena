@@ -1,6 +1,6 @@
-module RubiGen
-  module Commands
-    class Create
+module RubiGen #:nodoc:
+  module Commands #:nodoc:
+    class Create #:nodoc:
       # Launch given Rake task in destination_path
       def rake(task_name)
         logger.rake task_name

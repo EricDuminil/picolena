@@ -3,7 +3,7 @@
 
 RAILS_ROOT = "#{File.dirname(__FILE__)}/.." unless defined?(RAILS_ROOT)
 
-module Rails
+module Rails #:nodoc:
   class << self
     def boot!
       unless booted?
@@ -34,20 +34,20 @@ module Rails
     end
   end
 
-  class Boot
+  class Boot #:nodoc:
     def run
       load_initializer
       Rails::Initializer.run(:set_load_path)
     end
   end
 
-  class VendorBoot < Boot
+  class VendorBoot < Boot #:nodoc:
     def load_initializer
       require "#{RAILS_ROOT}/vendor/rails/railties/lib/initializer"
     end
   end
 
-  class GemBoot < Boot
+  class GemBoot < Boot #:nodoc:
     def load_initializer
       self.class.load_rubygems
       load_rails_gem

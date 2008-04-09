@@ -766,7 +766,6 @@ script/generate
 script/txt2html
 setup.rb
 spec/picolena_spec.rb
-tasks/default.rake
 tasks/deployment.rake
 tasks/environment.rake
 tasks/rdoc.rake
