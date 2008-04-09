@@ -59,7 +59,8 @@ hoe = Hoe.new(GEM_NAME, VERS) do |p|
   # == Optional
   p.changes = p.paragraphs_of("History.txt", 0..1).join("\n\n")
   p.extra_deps = [ ['rails', '>= 2.0.2'],
-                   #Ferret 0.11.6 is not yet available for win32
+                   # Ferret 0.11.6 is not yet available for win32
+                   # FIXME: How to require 0.11.6 for *nix and 0.11.5 for win32?
                    ['ferret', '>= 0.11.5'],
                    ['haml', '>= 1.8.2'],
                    ['rubyzip', '>= 0.9.1'],
