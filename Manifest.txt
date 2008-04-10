@@ -8,8 +8,8 @@ config/files_to_clean
 config/hoe.rb
 config/requirements.rb
 lib/picolena/USAGE
-lib/picolena/config/custom_localization.yml
 lib/picolena/config/indexed_directories.yml
+lib/picolena/config/title_and_names_and_links.yml
 lib/picolena/config/white_list_ip.yml
 lib/picolena/picolena_generator.rb
 lib/picolena/templates/MIT-LICENSE
