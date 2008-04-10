@@ -20,6 +20,10 @@ describe "Host indexing system" do
     "test_dirs/indexed/migrations/000_restreins.rb".base26_hash(5).should == "ricou"
     # it would probably take ages to find a string whose hash == "picolena" :(
     "test_dirs/indexed/1148/plots.odt".base26_hash(8).should == "picolehn"
-    "whatever.pdf".base26_hash.should == "bbuxhynait"
+    "whatever.pdf".base26_hash(10).should == "bbuxhynait"
+  end
+  
+  it "should not use too small a hash for Document#probably_unique_id" do
+    HashLength.should_not < 10
   end
 end

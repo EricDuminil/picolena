@@ -42,10 +42,17 @@ class Document
     dirname.sub(original_dir,alias_dir)
   end
   
+  # Returns an id for this document.
+  # This id will be used in Controllers in order to get tiny urls.
+  # Since it's a base26 hash of the absolute filename, it can only be "probably unique".
+  # For huge amount of indexed documents, it would be wise to increase HashLength in config/custom.rb
   def probably_unique_id
     @probably_unique_id||=complete_path.base26_hash
   end
   
+  # Returns true iff some Filter has been defined to convert it to plain text.
+  #  Document.new("presentation.pdf").supported? => true
+  #  Document.new("presentation.some_weird_extension").supported? => false
   def supported?
     PlainText.supported_extensions.include?(self.ext_as_sym)
   end
