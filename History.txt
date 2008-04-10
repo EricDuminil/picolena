@@ -2,9 +2,9 @@
 
 * major enhancement:
   * cache à la Google
-  * custom l10n
 
 * minor enhancements:
+  * easier configuration. Every picolena specific conf files in config/custom 
   * lots of refactoring
 
 == 0.1.0  2008-04-08
