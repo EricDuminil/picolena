@@ -35,7 +35,7 @@ lib/picolena/templates/config/initializers/001_prepare_and_load_custom_config.rb
 lib/picolena/templates/config/initializers/002_indexed_dirs.rb
 lib/picolena/templates/config/initializers/003_white_list_IPs.rb
 lib/picolena/templates/config/initializers/004_load_filters.rb
-lib/picolena/templates/config/initializers/005_load_custom_localization.rb
+lib/picolena/templates/config/initializers/005_load_custom_title_and_names_and_links.rb
 lib/picolena/templates/config/routes.rb
 lib/picolena/templates/lang/ui/de.yml
 lib/picolena/templates/lang/ui/en.yml
