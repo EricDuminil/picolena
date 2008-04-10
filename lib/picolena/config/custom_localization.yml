@@ -1,9 +1,26 @@
 ## Link to a website, located in the bottom-left corner.
+
 website_name: Picolena v<%= version %>
 website_url:  http://picolena.devjavu.com/
 
 ## Link to a backup search engine, if no document was found for a given query.
+
 backup_search_engine_name: Google?
 backup_search_engine_url: http://www.google.com/search?q=
 #backup_search_engine_name: Yahoo!
 #backup_search_engine_url: http://search.yahoo.com/search?p=
+
+
+## Fields that are not blank will overwrite localization.
+## Leave them as they are if you're happy with the current localization.
+
+# page_title: Picolena Search Engine
+page_title: 
+# help: Help
+help: 
+# help_file: /help/PicolenaHowTo-en.pdf
+help_file: 
+# type_your_query_here: Type your query here
+type_your_query_here:
+# search: Search!
+search: 
