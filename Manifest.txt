@@ -8,6 +8,7 @@ config/files_to_clean
 config/hoe.rb
 config/requirements.rb
 lib/picolena/USAGE
+lib/picolena/config/basic.rb
 lib/picolena/config/indexed_directories.yml
 lib/picolena/config/title_and_names_and_links.yml
 lib/picolena/config/white_list_ip.yml
@@ -31,9 +32,9 @@ lib/picolena/templates/config/environment.rb
 lib/picolena/templates/config/environments/development.rb
 lib/picolena/templates/config/environments/production.rb
 lib/picolena/templates/config/environments/test.rb
-lib/picolena/templates/config/initializers/001_prepare_and_load_custom_config.rb
-lib/picolena/templates/config/initializers/002_indexed_dirs.rb
-lib/picolena/templates/config/initializers/003_white_list_IPs.rb
+lib/picolena/templates/config/initializers/001_load_custom_config.rb
+lib/picolena/templates/config/initializers/002_load_indexed_dirs.rb
+lib/picolena/templates/config/initializers/003_load_white_list_IPs.rb
 lib/picolena/templates/config/initializers/004_load_filters.rb
 lib/picolena/templates/config/initializers/005_load_custom_title_and_names_and_links.rb
 lib/picolena/templates/config/routes.rb

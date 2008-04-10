@@ -7,6 +7,8 @@
   * easier configuration. Every picolena specific conf files in config/custom 
   * lots of refactoring
 
+* bug fixes
+
 == 0.1.0  2008-04-08
 
 * minor enhancements:

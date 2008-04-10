@@ -59,6 +59,7 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
       
       # Picolena configuration files
       m.file '../config/white_list_ip.yml', 'config/custom/white_list_ip.yml'
+      m.file '../config/basic.rb', 'config/custom/picolena.rb'
       m.template '../config/indexed_directories.yml', 'config/custom/indexed_directories.yml', :assigns => {:directories_to_index => @directories_to_index}
       m.template '../config/title_and_names_and_links.yml', 'config/custom/title_and_names_and_links.yml', :assigns => {:version => Picolena::VERSION::STRING}
 

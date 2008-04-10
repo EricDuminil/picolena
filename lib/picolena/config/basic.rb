@@ -1,16 +1,3 @@
-### You should not modify this file if you'd like to customize your search engine.
-### Please modify config/custom/picolena.rb instead.
-### A template config/custom/picolena.rb will be created the first time you launch your web server.
-
-
-custom_config_file = File.join(RAILS_ROOT, 'config/custom/picolena.rb')
-
-File.open(custom_config_file,'w'){|custom|
-  custom.puts <<-DEFAULT_CONF
-### This file has been automatically generated the first time you launched your web server.
-### You should add custom requirements here, they will be loaded everytime you restart the web server.
-
-
 # Specify indexes path.
 # Storage should be sufficient in order to store all indexed data.
 IndexesSavePath=File.join(RAILS_ROOT, 'tmp/ferret_indexes/')
@@ -27,8 +14,10 @@ Globalite.language = :en
 # Specify which locale should be used by Ferret
 Ferret.locale = "en_US.UTF-8"
 
+
 # Results per page
 ResultsPerPage = 10
+
 
 # Length of "probably unique id" 's
 # Those id's are used to characterize every document, thus allowing tiny URLs in Controllers
@@ -40,11 +29,7 @@ ResultsPerPage = 10
 # It would not be wise (and specs won't pass) to specify HashLength smaller than 10.
 HashLength = 10
 
+
 # Specify the default Levenshtein distance when using FuzzyQuery
 # see http://ferret.davebalmain.com/api/classes/Ferret/QueryParser.html for more information.
 Ferret::Search::FuzzyQuery.default_min_similarity=0.6
-DEFAULT_CONF
-} unless File.readable?(custom_config_file)
-
-require 'ferret'
-require custom_config_file
