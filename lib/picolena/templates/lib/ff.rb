@@ -24,7 +24,7 @@ def index_file(index, filename, mime_type=nil)
     :file => File.basename(filename),
     :basename => File.basename(filename, File.extname(filename)).gsub(/_/,' '),
     :filetype => File.extname(filename),
-    :date => File.mtime(filename).strftime("%Y%m%d")
+    :date => File.mtime(filename).strftime("%Y%m%d%H%M")
   }
   
   if mime_type then

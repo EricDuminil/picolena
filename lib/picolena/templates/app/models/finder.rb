@@ -6,7 +6,8 @@ class Finder
   attr_reader :query
   
   def self.index
-    #@@index ||= 
+    # caching index @@index ||=  
+    # causes ferret-0.11.6/lib/ferret/index.rb:768: [BUG] Segmentation fault
     Ferret::Index::Index.new(:path => IndexSavePath, :analyzer=>Analyzer)  
   end
   
@@ -48,10 +49,16 @@ class Finder
     end
   end
   
+  # Returns true if it has been executed.
   def executed?
     @executed
   end
   
+  # To ensure that
+  #  matching_documents
+  #  total_hits
+  #  time_needed
+  # methods are called only after the index has been searched.
   [:matching_documents, :total_hits, :time_needed].each{|attribute_name|
     define_method(attribute_name){
       execute! unless executed?
@@ -59,18 +66,19 @@ class Finder
     }
   }
    
+   # Returns true if index is existing.
    def self.has_index?
      index_filename and File.exists?(index_filename)
    end
    
+   # Returns true if there's at least one document indexed.
    def has_documents?
      Finder.index.size>0
    end
-   
-   def self.up_to_date?
-     IndexedDirectories.keys.all?{|dir| File.mtime(index_filename) > File.mtime(dir)}
-   end
 
+   # Returns matching document for any given query, if only
+   # exactly one document is found.
+   # Raises otherwise.
    def matching_document
      case matching_documents.size
      when 0
@@ -84,7 +92,8 @@ class Finder
    
    private
    
-   def convert_to_english(str)
+   # Convert query keywords to english so they can be parsed by Ferret.
+   def convert_to_english(query)
      to_en={
        /\b#{:AND.l}\b/=>'AND',
        /\b#{:OR.l}\b/=>'OR',
@@ -94,7 +103,7 @@ class Finder
        /#{:date.l}:/ => 'date:',
        /\b#{:LIKE.l}\s+(\S+)/=>'\1~'
      }
-     to_en.inject(str){|mem,non_english_to_english_keyword|
+     to_en.inject(query){|mem,non_english_to_english_keyword|
        mem.gsub(*non_english_to_english_keyword)
      }
    end

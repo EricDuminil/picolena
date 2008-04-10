@@ -75,13 +75,7 @@ describe "Basic Finder" do
     @finder=Finder.new("some query")
     lambda {@finder.execute!}.should change(@finder, :executed?).from(false).to(true)
   end
-  
-  it "should know if index is up to date" do
-    Finder.has_index?.should be_true
-    Finder.should respond_to(:up_to_date?)
-    Finder.should be_up_to_date
-  end
-  
+    
   it "should not warn anything if index is up to date"
   
   it "should warn if index is not up to date"
