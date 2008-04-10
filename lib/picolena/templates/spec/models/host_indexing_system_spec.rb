@@ -7,12 +7,12 @@ describe "Host indexing system" do
     end
   end
   
-  it "should know which IP addresses are allowed (config/white_list_ip.yml)" do
-    File.should be_readable('config/white_list_ip.yml')
+  it "should know which IP addresses are allowed (config/custom/white_list_ip.yml)" do
+    File.should be_readable('config/custom/white_list_ip.yml')
   end
   
-  it "should know which directories are to be indexed (config/indexed_directories.yml)" do
-    File.should be_readable('config/indexed_directories.yml')
+  it "should know which directories are to be indexed (config/custom/indexed_directories.yml)" do
+    File.should be_readable('config/custom/indexed_directories.yml')
   end
   
   it "should be able to calculate base26 hash from strings" do

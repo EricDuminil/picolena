@@ -1,5 +1,5 @@
-#Deny all, Allow only IPs described in config/white_list_ip.yml
-white_list_ip_config_file=['config/white_list_ip.yml', 'config/white_list_ip.yml.template'].find{|f| File.file?(f)}
+#Deny all, Allow only IPs described in config/custom/white_list_ip.yml
+white_list_ip_config_file='config/custom/white_list_ip.yml'
 WhiteListIPs=Regexp.new(
     "^("<<
       YAML.load_file(white_list_ip_config_file)["Allow"].collect{|ip|

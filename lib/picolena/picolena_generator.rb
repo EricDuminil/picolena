@@ -58,9 +58,9 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
       end
       
       # Picolena configuration files
-      m.file '../config/white_list_ip.yml', 'config/white_list_ip.yml'
-      m.template '../config/indexed_directories.yml', 'config/indexed_directories.yml', :assigns => {:directories_to_index => @directories_to_index}
-      m.template '../config/custom_localization.yml', 'lang/ui/custom_localization.yml', :assigns => {:version => Picolena::VERSION::STRING}
+      m.file '../config/white_list_ip.yml', 'config/custom/white_list_ip.yml'
+      m.template '../config/indexed_directories.yml', 'config/custom/indexed_directories.yml', :assigns => {:directories_to_index => @directories_to_index}
+      m.template '../config/custom_localization.yml', 'config/custom/names_and_links.yml', :assigns => {:version => Picolena::VERSION::STRING}
 
       # README, License & Rakefile
       m.file 'MIT-LICENSE', 'LICENSE'
@@ -129,6 +129,7 @@ EOS
     config
     config/environments
     config/initializers
+    config/custom
     lang/ui
     lib
     lib/filters

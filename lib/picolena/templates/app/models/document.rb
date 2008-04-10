@@ -45,7 +45,7 @@ class Document
   # Returns an id for this document.
   # This id will be used in Controllers in order to get tiny urls.
   # Since it's a base26 hash of the absolute filename, it can only be "probably unique".
-  # For huge amount of indexed documents, it would be wise to increase HashLength in config/custom.rb
+  # For huge amount of indexed documents, it would be wise to increase HashLength in config/custom/picolena.rb
   def probably_unique_id
     @probably_unique_id||=complete_path.base26_hash
   end

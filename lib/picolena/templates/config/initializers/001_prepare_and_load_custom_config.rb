@@ -1,9 +1,9 @@
 ### You should not modify this file if you'd like to customize your search engine.
-### Please modify config/custom.rb instead.
-### A template config/custom.rb will be created the first time you launch your web server.
+### Please modify config/custom/picolena.rb instead.
+### A template config/custom/picolena.rb will be created the first time you launch your web server.
 
 
-custom_config_file = File.join(RAILS_ROOT, 'config/custom.rb')
+custom_config_file = File.join(RAILS_ROOT, 'config/custom/picolena.rb')
 
 File.open(custom_config_file,'w'){|custom|
   custom.puts <<-DEFAULT_CONF
