@@ -8,17 +8,18 @@ describe "DocumentsController called from unknown IP" do
   end
   
   it "should deny access" do
-    WhiteListIPs=/Something that won't match/
+    # Displays a warning otherwise
+    Object.send(:remove_const, :WhiteListIPs) && WhiteListIPs=/Something that won't match/
     get 'index'
     response.should be_redirect
     response.should redirect_to(:controller=>'application', :action=>'access_denied')
-    WhiteListIPs=/^0\.0\.0\.0/
+    Object.send(:remove_const, :WhiteListIPs) && WhiteListIPs=/^0\.0\.0\.0/
     get 'index'
     response.should be_success
   end
 
   after(:all) do
-    WhiteListIPs=@backup
+    Object.send(:remove_const, :WhiteListIPs) && WhiteListIPs=@backup
   end
 end
 
