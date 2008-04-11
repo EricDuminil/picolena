@@ -66,6 +66,7 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
       # README, License & Rakefile
       m.file 'MIT-LICENSE', 'LICENSE'
       m.file '../../../README.txt', 'README'
+      m.file '../../../README.txt', 'doc/README_FOR_APP'
       m.file 'Rakefile', 'Rakefile'
      
       unless options[:no_index]
@@ -131,6 +132,7 @@ EOS
     config/environments
     config/initializers
     config/custom
+    doc
     lang/ui
     lib
     lib/filters
