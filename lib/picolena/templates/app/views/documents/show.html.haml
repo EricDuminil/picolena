@@ -2,7 +2,7 @@
   .info_bar
     %p
       -if nothing_found? then
-        %span{:class=>'pagination'}=backup_search_engine(@query)
+        %span{:class=>'pagination'}=link_to_backup_search_engine(@query)
         =:nothing_found_for.l
         %strong=@query
         =show_time_needed(@time_needed)

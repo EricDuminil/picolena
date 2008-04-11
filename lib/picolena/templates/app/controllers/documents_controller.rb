@@ -1,3 +1,11 @@
+# Core controller of Picolena search-engine.
+# DocumentsController
+#  - treats queries
+#  - launches searches
+#  - returns matching documents
+#  - displays document content
+#  - displays cached content.
+
 class DocumentsController < ApplicationController  
   before_filter :check_if_valid_link, :only=> [:download, :content, :cached]
   
@@ -31,19 +39,27 @@ class DocumentsController < ApplicationController
     send_file @document.complete_path
   end
   
+  # Returns the content of the document identified by probably_unique_id, as it is *now*.
   def content
   end
-  
+
+  # Returns the content of the document identified by probably_unique_id, as it was at the time it was indexed.
+  # similar to Google cache.
   def cached
   end
   
   private
   
+  # Returns corresponding document for any given "probably unique id"
+  # Redirects to no_valid_link if:
+  #  there are more than one matching document (hash collision)
+  #  there is no matching document (wrong hash)
   def check_if_valid_link
     @probably_unique_id=params[:id]
     @document=Document.find_by_unique_id(@probably_unique_id) rescue no_valid_link
   end
   
+  # Flashes a warning and redirects to documents_url.
   def no_valid_link
     flash[:warning]="no valid link"
     redirect_to documents_url
