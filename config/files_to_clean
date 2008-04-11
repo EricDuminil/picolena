@@ -8,3 +8,5 @@ lib/picolena/templates/log
 lib/picolena/templates/spec/test_dirs/indexed/others/bäñüßé.txt
 lib/picolena/templates/tmp
 lib/picolena/templates/vendor
+lib/picolena/templates/coverage
+lib/picolena/templates/doc
