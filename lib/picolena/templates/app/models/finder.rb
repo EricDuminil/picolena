@@ -1,6 +1,4 @@
-class Finder
-  #FIXME: Should not use all those class methods to access index.
-  
+class Finder  
   attr_reader :query
   
   def index
@@ -15,7 +13,7 @@ class Finder
     IndexReader.ensure_existence
     @per_page=results_per_page
     @offset=(page.to_i-1)*results_per_page
-    index.validate_that_has_documents
+    index.should_have_documents
   end
   
   def execute!

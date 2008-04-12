@@ -1,5 +1,7 @@
 class IndexReader < Ferret::Index::Index
   def initialize(params={})
+    # TODO: Remove those debug lines!
+    # puts "##################################################################Creating Reader!!!!!"
     # Add needed parameters
     params.merge!(:path => IndexSavePath, :analyzer => Analyzer)
     # Creates the IndexReader
@@ -7,6 +9,8 @@ class IndexReader < Ferret::Index::Index
   end
   
   # Returns the number of times a file is present in the index.
+  # index_reader.doc_freq(field, term) → integer
+  # Return the number of documents in which the term term appears in the field field. 
   def occurences_number(complete_path)
     # complete_path_query = Ferret::Search::TermQuery.new(:complete_path, complete_path)
     search_by_complete_path(complete_path).total_hits
@@ -20,12 +24,13 @@ class IndexReader < Ferret::Index::Index
     search_by_complete_path(complete_path).hits.each{|hit|
       delete(hit.doc)
     }
+    close
   end
   
   
   # Validation methods.
   
-  def validate_that_has_documents
+  def should_have_documents
      raise IndexError, "no document found" unless has_documents?
   end
  

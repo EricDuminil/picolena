@@ -1,7 +1,15 @@
 class IndexWriter < Ferret::Index::IndexWriter
   def initialize(params={})
+    # TODO: Remove those debug lines!
+    # puts "##################################################################Creating Writer!!!!!"
+    
     # Add needed parameters
-    params.merge!(:create_if_missing => true, :path => IndexSavePath, :analyzer => Analyzer)
+    params.merge!(:create_if_missing => true,
+                  :path              => IndexSavePath,
+                  :analyzer          => Analyzer
+                  # huge performance impact?
+                  # :auto_flush        => true
+                  )
     # Creates the IndexWriter
     super(params)
     # Add required fields (content, filetype, probably_unique_id, ...)

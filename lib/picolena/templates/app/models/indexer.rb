@@ -1,5 +1,6 @@
 class Indexer
-  Exclude = /(Thumbs\.db)/
+  Exclude          = /(Thumbs\.db)/
+  MaxThreadsNumber = 5
   
   class << self
     def fields_for(complete_path)
@@ -12,7 +13,7 @@ class Indexer
         :date               => File.mtime(complete_path).strftime("%Y%m%d%H%M%S")
       }      
     end    
-        
+    
     def index_every_directory(update=true)
       log :debug => "Indexing every directory"
       
@@ -20,20 +21,34 @@ class Indexer
       reset! unless update
       
       IndexedDirectories.each{|dir, alias_dir|
-        index_directory(dir)
+        index_directory_with_multithreads(dir)
       }
+      # FIXME: with those 2 lines,
       writer.optimize
       writer.close
+      # launching Indexer.index_every_directory twice in a row
+      # would raise a SEGFAULT:
+      # picolena/lib/picolena/templates/app/models/indexer.rb:27: [BUG] Segmentation fault
+      # ruby 1.8.6 (2007-06-07) [i486-linux]
+      #
+      # Aborted (core dumped)
     end
     
-    def index_directory(dir)
-      log :debug => "Indexing #{dir}"
+    def index_directory_with_multithreads(dir)
+      log :debug => "Indexing #{dir}, #{MaxThreadsNumber} multithreads"
       
-      Dir.glob(File.join(dir,"**/*")){|filename|
-        add_or_update_file(File.expand_path(filename)) if File.file?(filename) && filename !~ Exclude
+      @indexing_list=Dir[File.join(dir,"**/*")].select{|filename|
+        File.file?(filename) && filename !~ Exclude
       }
+      
+      threads=(1..MaxThreadsNumber).collect{
+        Thread.new {
+          launch_indexing_chain(@indexing_list)
+        }
+      }
+      threads.each { |aThread|  aThread.join }
     end
-    
+
     def add_or_update_file(complete_path)
       should_be_added = true
       if @update then
@@ -96,6 +111,12 @@ class Indexer
     end
     
     private
+    
+    def launch_indexing_chain(indexing_list)
+      return if indexing_list.empty?
+      add_or_update_file(indexing_list.shift)
+      launch_indexing_chain(indexing_list)
+    end
     
     def log(hash)
       hash.each{|level,message|
