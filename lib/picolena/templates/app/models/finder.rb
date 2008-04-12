@@ -1,4 +1,4 @@
-require 'ff'
+#require 'ff'
 
 class Finder
   #FIXME: Should not use all those class methods to access index.
@@ -117,7 +117,8 @@ class Finder
    end
    
    def self.force_index_creation
-     create_index(IndexedDirectories.keys)
+     #create_index(IndexedDirectories.keys)
+     Indexer.index_every_directory
    end
    
    def self.delete_index

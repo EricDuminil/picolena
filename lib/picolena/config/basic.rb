@@ -33,3 +33,4 @@ HashLength = 10
 # Specify the default Levenshtein distance when using FuzzyQuery
 # see http://ferret.davebalmain.com/api/classes/Ferret/QueryParser.html for more information.
 Ferret::Search::FuzzyQuery.default_min_similarity=0.6
+Analyzer=Ferret::Analysis::StandardAnalyzer.new

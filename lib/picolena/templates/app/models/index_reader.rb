@@ -1,0 +1,3 @@
+class IndexReader
+  
+end

@@ -1,3 +1,9 @@
+== 0.1.2  2008-04-
+
+* major enhancement:
+  * complete Indexer & Index rewrite.
+
+
 == 0.1.1  2008-04-
 
 * major enhancement:

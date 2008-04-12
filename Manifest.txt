@@ -21,6 +21,9 @@ lib/picolena/templates/app/helpers/application_helper.rb
 lib/picolena/templates/app/helpers/documents_helper.rb
 lib/picolena/templates/app/models/document.rb
 lib/picolena/templates/app/models/finder.rb
+lib/picolena/templates/app/models/index_reader.rb
+lib/picolena/templates/app/models/index_writer.rb
+lib/picolena/templates/app/models/indexer.rb
 lib/picolena/templates/app/views/documents/_document.html.haml
 lib/picolena/templates/app/views/documents/cached.html.haml
 lib/picolena/templates/app/views/documents/content.html.haml
@@ -116,6 +119,9 @@ lib/picolena/templates/spec/models/filters_spec.rb
 lib/picolena/templates/spec/models/finder_spec.rb
 lib/picolena/templates/spec/models/host_indexing_system_spec.rb
 lib/picolena/templates/spec/models/index_directories_spec.rb
+lib/picolena/templates/spec/models/index_reader_spec.rb
+lib/picolena/templates/spec/models/index_writer_spec.rb
+lib/picolena/templates/spec/models/indexer_spec.rb
 lib/picolena/templates/spec/rcov.opts
 lib/picolena/templates/spec/spec.opts
 lib/picolena/templates/spec/spec_helper.rb

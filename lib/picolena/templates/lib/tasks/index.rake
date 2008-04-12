@@ -3,7 +3,7 @@ namespace :index do
   desc 'Clear indexes'
   task :clear => :environment do
     require 'fileutils'
-    Dir.glob(File.join(IndexSavePath,'/**/*')).each{|f| FileUtils.rm(f) if File.file?(f)}
+    Dir.glob(File.join(IndexesSavePath,'/**/*')).each{|f| FileUtils.rm(f) if File.file?(f)}
   end
   
   desc 'Create index'
