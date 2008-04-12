@@ -76,6 +76,11 @@ class Document
     Finder.index[index_id][:date].sub(/(\d{4})(\d{2})(\d{2})/,'\1-\2-\3')
   end
   
+  def mtime
+    get_index_id! unless index_id
+    Finder.index[index_id][:date].to_i
+  end
+  
   private
   
   def get_index_id!
@@ -84,6 +89,10 @@ class Document
   
   def self.find_by_unique_id(some_id)
     Finder.new("probably_unique_id:"<<some_id).matching_document
+  end
+  
+  def self.find_by_complete_path(complete_path)
+    Finder.new('complete_path:"'<<complete_path<<'"').matching_document
   end
   
   def in_indexed_directory?

@@ -1,5 +1,3 @@
-#require 'ff'
-
 class Finder
   #FIXME: Should not use all those class methods to access index.
   
@@ -76,7 +74,7 @@ class Finder
      Finder.index.size>0
    end
 
-   # Returns matching document for any given query, if only
+   # Returns matching document for any given query only if
    # exactly one document is found.
    # Raises otherwise.
    def matching_document
@@ -117,9 +115,8 @@ class Finder
    end
    
    def self.force_index_creation
-     #create_index(IndexedDirectories.keys)
-     Indexer.reset!
-     Indexer.index_every_directory
+     #Index every directory, without updating.
+     Indexer.index_every_directory(false)
    end
    
    def self.delete_index
