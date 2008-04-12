@@ -22,6 +22,17 @@ class String
   end
 end
 
+class Fixnum
+  def threads(&block)
+    tds=(1..self).collect{
+      Thread.new {
+        block.call
+      }
+    }
+    tds.each{|aThread| aThread.join}
+  end
+end
+
 class File
   def self.ext_as_sym(filename)
     File.extname(filename).sub(/^\./,'').downcase.to_sym rescue :no_extension

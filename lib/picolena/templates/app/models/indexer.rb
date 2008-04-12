@@ -41,12 +41,7 @@ class Indexer
         File.file?(filename) && filename !~ Exclude
       }
       
-      threads=(1..MaxThreadsNumber).collect{
-        Thread.new {
-          launch_indexing_chain(@indexing_list)
-        }
-      }
-      threads.each { |aThread|  aThread.join }
+      MaxThreadsNumber.threads{launch_indexing_chain(@indexing_list)}
     end
 
     def add_or_update_file(complete_path)
