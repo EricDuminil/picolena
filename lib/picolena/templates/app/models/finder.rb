@@ -10,8 +10,7 @@ class Finder
   end
   
   def initialize(raw_query,page=1,results_per_page=ResultsPerPage)
-    query_parser = Ferret::QueryParser.new(:fields => [:content, :file, :basename, :filetype, :date], :or_default => false, :analyzer=>Analyzer)
-    @query = query_parser.parse(convert_to_english(raw_query))
+    @query = Query.extract_from(raw_query)
     @raw_query= raw_query
     Finder.ensure_that_index_exists_on_disk
     @per_page=results_per_page
@@ -22,19 +21,18 @@ class Finder
   def execute!
     @matching_documents=[]
     start=Time.now
-    begin
-      top_docs=Finder.index.search(query, :limit => @per_page, :offset=>@offset)
-      top_docs.hits.each{|hit|
-        index_id,score=hit.doc,hit.score
-        begin
-          found_doc=Document.new(Finder.index[index_id][:complete_path])
-          found_doc.matching_content=Finder.index.highlight(query, index_id,
-                                                     :field => :content, :excerpt_length => 80,
-                                                     :pre_tag => "<<", :post_tag => ">>"
-          ) unless @raw_query=~/^\*+\.\w*$/
-          found_doc.score=score
-          found_doc.index_id=index_id
-          @matching_documents<<found_doc
+    top_docs=Finder.index.search(query, :limit => @per_page, :offset=>@offset)
+    top_docs.hits.each{|hit|
+      index_id,score=hit.doc,hit.score
+      begin
+        found_doc=Document.new(Finder.index[index_id][:complete_path])
+        found_doc.matching_content=Finder.index.highlight(query, index_id,
+                                                          :field => :content, :excerpt_length => 80,
+                                                          :pre_tag => "<<", :post_tag => ">>"
+        ) unless @raw_query=~/^\*+\.\w*$/
+        found_doc.score=score
+        found_doc.index_id=index_id
+        @matching_documents<<found_doc
         rescue Errno::ENOENT
           #"File has been moved/deleted!"
         end
@@ -42,9 +40,6 @@ class Finder
       @executed=true
       @time_needed=Time.now-start
       @total_hits=top_docs.total_hits
-    ensure
-      #index.close
-    end
   end
   
   # Returns true if it has been executed.
@@ -89,22 +84,6 @@ class Finder
    end
    
    private
-   
-   # Convert query keywords to english so they can be parsed by Ferret.
-   def convert_to_english(query)
-     to_en={
-       /\b#{:AND.l}\b/=>'AND',
-       /\b#{:OR.l}\b/=>'OR',
-       /\b#{:NOT.l}\b/=>'NOT',
-       /(#{:filetype.l}):/=>'filetype:',
-       /#{:content.l}:/ => 'content:',
-       /#{:date.l}:/ => 'date:',
-       /\b#{:LIKE.l}\s+(\S+)/=>'\1~'
-     }
-     to_en.inject(query){|mem,non_english_to_english_keyword|
-       mem.gsub(*non_english_to_english_keyword)
-     }
-   end
    
    def self.index_filename
      Dir.glob(File.join(IndexSavePath,'*.cfs')).first

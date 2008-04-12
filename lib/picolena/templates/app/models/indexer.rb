@@ -47,7 +47,7 @@ class Indexer
           d=Document.find_by_complete_path(complete_path)
           if File.mtime(complete_path).strftime("%Y%m%d%H%M%S").to_i > d.mtime then
             log :debug => "\thas been modified"
-            delete(complete_path)
+            delete_file(complete_path)
           else
             should_be_added = false
             log :debug => "\thas not been modified. leaving it"
