@@ -118,6 +118,7 @@ class Finder
    
    def self.force_index_creation
      #create_index(IndexedDirectories.keys)
+     Indexer.reset!
      Indexer.index_every_directory
    end
    
