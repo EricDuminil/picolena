@@ -12,14 +12,6 @@ class IndexReader < Ferret::Index::Index
     search_by_complete_path(complete_path).total_hits
   end
   
-  def document(complete_path)
-    search_by_complete_path(path)
-  end
-  
-  def cached_mtime(complete_path)
-    
-  end
-
   def search_by_complete_path(complete_path)
     search('complete_path:"'<<complete_path<<'"')  
   end
@@ -28,5 +20,32 @@ class IndexReader < Ferret::Index::Index
     search_by_complete_path(complete_path).hits.each{|hit|
       delete(hit.doc)
     }
+  end
+  
+  
+  # Validation methods.
+  
+  def validate_that_has_documents
+     raise IndexError, "no document found" unless has_documents?
+  end
+ 
+  # Returns true if there's at least one document indexed.
+  def has_documents?
+   size>0
+  end
+ 
+ class<<self
+
+   def ensure_existence
+     Indexer.index_every_directory(update=false) unless exists? or RAILS_ENV=="production"
+   end
+ 
+  def exists?
+     filename and File.exists?(filename)
+  end
+ 
+  def filename
+    Dir.glob(File.join(IndexSavePath,'*.cfs')).first
+  end
   end
 end

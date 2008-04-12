@@ -10,14 +10,14 @@ describe "Finder without index on disk" do
   end
   
   before(:each) do
-    Finder.delete_index
+    IndexWriter.remove
   end
   
   it "should create index" do
     IndexedDirectories.replace({'spec/test_dirs/indexed/just_one_doc'=>'//justonedoc/'})
-    lambda {@finder_with_new_index=Finder.new("test moi")}.should change(Finder, :has_index?).from(false).to(true)
+    lambda {@finder_with_new_index=Finder.new("test moi")}.should change(IndexReader, :exists?).from(false).to(true)
     File.exists?(File.join(@new_index_path,'_0.cfs')).should be_true
-    Finder.index.size.should >0
+    IndexReader.new.size.should >0
   end
   
   it "should raise if index is still empty after trying to create it" do
@@ -44,7 +44,7 @@ fields={
 
 describe "Basic Finder" do  
   before(:all) do
-    Finder.force_index_creation
+    Indexer.index_every_directory(update=false)
   end
   
   it "should accept one parameter as query, and 2 optionals for paginating" do
@@ -82,7 +82,7 @@ describe "Basic Finder" do
   
   fields.each_pair do |description,field_name|
     it "should index #{description} as :#{field_name}" do
-      Finder.index.field_infos[field_name].should be_an_instance_of(Ferret::Index::FieldInfo)
+      IndexReader.new.field_infos[field_name].should be_an_instance_of(Ferret::Index::FieldInfo)
     end
   end
   

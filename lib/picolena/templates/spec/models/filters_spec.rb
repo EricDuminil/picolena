@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "Filters" do
   before(:all) do
-    Finder.ensure_that_index_exists_on_disk
+    IndexReader.ensure_existence
   end  
   
   PlainText.filters.each{|filter|

@@ -21,7 +21,7 @@ describe Finder do
     File.utime(0, once_upon_a_time, 'spec/test_dirs/indexed/basic/basic.pdf')
     File.utime(0, a_bit_later, 'spec/test_dirs/indexed/yet_another_dir/office2003-word-template.dot')
     File.utime(0, nineties, 'spec/test_dirs/indexed/others/placeholder.txt')
-    Finder.force_index_creation
+    Indexer.index_every_directory(update=false)
   end
   
   it "should find documents according to their basename when specified with basename:query" do
@@ -47,9 +47,10 @@ describe Finder do
   end
   
   it "should give a boost to basename, filename and filetype in index" do
-    Finder.index.field_infos[:basename].boost.should > 1.0
-    Finder.index.field_infos[:file].boost.should > 1.0
-    Finder.index.field_infos[:filetype].boost.should > 1.0
+    index=IndexReader.new
+    index.field_infos[:basename].boost.should > 1.0
+    index.field_infos[:file].boost.should > 1.0
+    index.field_infos[:filetype].boost.should > 1.0
   end
   
   it "should also index unreadable files with known mimetypes" do

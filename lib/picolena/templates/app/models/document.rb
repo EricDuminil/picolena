@@ -66,19 +66,19 @@ class Document
   # Returns content as it was at the time it was indexed.
   def cached
     get_index_id! unless index_id
-    Finder.index[index_id][:content]
+    IndexReader.new[index_id][:content]
   end
   
   # Returns the last modification date before the document got indexed.
   # Useful to know how old a document is, and to which version the cache corresponds.
   def date
     get_index_id! unless index_id
-    Finder.index[index_id][:date].sub(/(\d{4})(\d{2})(\d{2})/,'\1-\2-\3')
+    IndexReader.new[index_id][:date].sub(/(\d{4})(\d{2})(\d{2})/,'\1-\2-\3')
   end
   
   def mtime
     get_index_id! unless index_id
-    Finder.index[index_id][:date].to_i
+    IndexReader.new[index_id][:date].to_i
   end
   
   private

@@ -2,7 +2,7 @@ desc 'Ferret index maintenance tasks'
 namespace :index do  
   desc 'Clear indexes'
   task :clear => :environment do
-    Dir.glob(File.join(IndexesSavePath,'/**/*')).each{|f| FileUtils.rm(f) if File.file?(f)}
+    IndexWriter.remove
   end
   
   desc 'Create index'

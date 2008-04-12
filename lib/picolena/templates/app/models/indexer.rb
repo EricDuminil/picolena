@@ -11,8 +11,8 @@ class Indexer
         :filetype           => File.extname(complete_path),
         :date               => File.mtime(complete_path).strftime("%Y%m%d%H%M%S")
       }      
-    end
-    
+    end    
+        
     def index_every_directory(update=true)
       log :debug => "Indexing every directory"
       
@@ -99,7 +99,7 @@ class Indexer
     
     def log(hash)
       hash.each{|level,message|
-        #puts "#{level} -> #{message}"
+        puts "#{level} -> #{message}"
         IndexerLogger.send(level,message)
       }
     end  

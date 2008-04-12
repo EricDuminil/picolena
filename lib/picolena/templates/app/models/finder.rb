@@ -3,30 +3,30 @@ class Finder
   
   attr_reader :query
   
-  def self.index
+  def index
     # caching index @@index ||=  
     # causes ferret-0.11.6/lib/ferret/index.rb:768: [BUG] Segmentation fault
-    Ferret::Index::Index.new(:path => IndexSavePath, :analyzer=>Analyzer)  
+    IndexReader.new
   end
   
   def initialize(raw_query,page=1,results_per_page=ResultsPerPage)
     @query = Query.extract_from(raw_query)
     @raw_query= raw_query
-    Finder.ensure_that_index_exists_on_disk
+    IndexReader.ensure_existence
     @per_page=results_per_page
     @offset=(page.to_i-1)*results_per_page
-    validate_that_index_has_documents
+    index.validate_that_has_documents
   end
   
   def execute!
     @matching_documents=[]
     start=Time.now
-    top_docs=Finder.index.search(query, :limit => @per_page, :offset=>@offset)
+    top_docs=index.search(query, :limit => @per_page, :offset=>@offset)
     top_docs.hits.each{|hit|
       index_id,score=hit.doc,hit.score
       begin
-        found_doc=Document.new(Finder.index[index_id][:complete_path])
-        found_doc.matching_content=Finder.index.highlight(query, index_id,
+        found_doc=Document.new(index[index_id][:complete_path])
+        found_doc.matching_content=index.highlight(query, index_id,
                                                           :field => :content, :excerpt_length => 80,
                                                           :pre_tag => "<<", :post_tag => ">>"
         ) unless @raw_query=~/^\*+\.\w*$/
@@ -59,16 +59,6 @@ class Finder
     }
   }
    
-   # Returns true if index is existing.
-   def self.has_index?
-     index_filename and File.exists?(index_filename)
-   end
-   
-   # Returns true if there's at least one document indexed.
-   def has_documents?
-     Finder.index.size>0
-   end
-
    # Returns matching document for any given query only if
    # exactly one document is found.
    # Raises otherwise.
@@ -82,27 +72,4 @@ class Finder
        raise IndexError, "More than one document found"
      end
    end
-   
-   private
-   
-   def self.index_filename
-     Dir.glob(File.join(IndexSavePath,'*.cfs')).first
-   end
-
-   def self.ensure_that_index_exists_on_disk
-     force_index_creation unless has_index? or RAILS_ENV=="production"
-   end
-   
-   def self.force_index_creation
-     #Index every directory, without updating.
-     Indexer.index_every_directory(false)
-   end
-   
-   def self.delete_index
-     FileUtils.rm(Dir.glob(File.join(IndexSavePath,'*.cfs'))) if has_index?
-   end
-   
-   def validate_that_index_has_documents
-     raise IndexError, "no document found" unless has_documents?
-   end 
 end
