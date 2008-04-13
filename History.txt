@@ -2,6 +2,7 @@
 
 * major enhancement:
   * complete Indexer & Index rewrite.
+  * multi-threaded Indexer
 
 
 == 0.1.1  2008-04-
