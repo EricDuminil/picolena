@@ -38,13 +38,19 @@ class Indexer
     end
     
     def index_directory_with_multithreads(dir)
-      log :debug => "Indexing #{dir}, #{MaxThreadsNumber} multithreads"
+      log :debug => "Indexing #{dir}, #{MaxThreadsNumber} threads"
       
-      @indexing_list=Dir[File.join(dir,"**/*")].select{|filename|
+      indexing_list=Dir[File.join(dir,"**/*")].select{|filename|
         File.file?(filename) && filename !~ Exclude
       }
       
-      MaxThreadsNumber.threads{launch_indexing_chain(@indexing_list)}
+      # Cutting indexing_list in slices to avoid treating too big a list.
+      # Migth raise a "stack level too deep" otherwise.
+      indexing_list.each_slice(100*MaxThreadsNumber){|indexing_list_chunk|
+        log :debug => "NEW CHUNK!!!!!!!!!!"
+        @indexing_list_chunk=indexing_list_chunk
+        MaxThreadsNumber.threads{launch_indexing_chain(@indexing_list_chunk)}
+      }
     end
 
     def add_or_update_file(complete_path)
