@@ -34,7 +34,7 @@ class Indexer
       # ruby 1.8.6 (2007-06-07) [i486-linux]
       #
       # Aborted (core dumped)
-      log :debug => "Indexing done in #{Time.now-s} s."
+      log :debug => "Indexing done in #{Time.now-start} s."
     end
     
     def index_directory_with_multithreads(dir)
