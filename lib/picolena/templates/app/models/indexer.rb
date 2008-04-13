@@ -16,7 +16,9 @@ class Indexer
     
     def index_every_directory(update=true)
       log :debug => "Indexing every directory"
-      
+
+
+      start=Time.now
       @update = update
       reset! unless update
       
@@ -32,6 +34,7 @@ class Indexer
       # ruby 1.8.6 (2007-06-07) [i486-linux]
       #
       # Aborted (core dumped)
+      log :debug => "Indexing done in #{Time.now-s} s."
     end
     
     def index_directory_with_multithreads(dir)
