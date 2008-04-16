@@ -1,6 +1,8 @@
 class Indexer
-  Exclude          = /(Thumbs\.db)/
-  MaxThreadsNumber = 5
+  # This regexp defines which files should *not* be indexed.
+  @@exclude          = /(Thumbs\.db)/
+  # Number of threads that will be used during indexing process
+  @@max_threads_number = 5
   
   class << self
     def fields_for(complete_path)
@@ -34,22 +36,25 @@ class Indexer
       # ruby 1.8.6 (2007-06-07) [i486-linux]
       #
       # Aborted (core dumped)
+      #
+      # But without those 2 lines, specs don't pass anymore.
+      #
       log :debug => "Indexing done in #{Time.now-start} s."
     end
     
     def index_directory_with_multithreads(dir)
-      log :debug => "Indexing #{dir}, #{MaxThreadsNumber} threads"
+      log :debug => "Indexing #{dir}, #{@@max_threads_number} threads"
       
       indexing_list=Dir[File.join(dir,"**/*")].select{|filename|
-        File.file?(filename) && filename !~ Exclude
+        File.file?(filename) && filename !~ @@exclude
       }
       
       # Cutting indexing_list in slices to avoid treating too big a list.
       # Migth raise a "stack level too deep" otherwise.
-      indexing_list.each_slice(100*MaxThreadsNumber){|indexing_list_chunk|
+      indexing_list.each_slice(100*@@max_threads_number){|indexing_list_chunk|
         log :debug => "NEW CHUNK!!!!!!!!!!"
         @indexing_list_chunk=indexing_list_chunk
-        MaxThreadsNumber.threads{launch_indexing_chain(@indexing_list_chunk)}
+        @@max_threads_number.threads{launch_indexing_chain(@indexing_list_chunk)}
       }
     end
 
