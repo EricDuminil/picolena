@@ -22,14 +22,22 @@ class String
   end
 end
 
-class Fixnum
-  def threads(&block)
-    tds=(1..self).collect{
-      Thread.new {
-        block.call
+module Enumerable
+  def each_with_thread(&block)
+    tds=self.collect{|elem|
+      Thread.new(elem) {|elem|
+        block.call(elem)
       }
     }
     tds.each{|aThread| aThread.join}
+  end
+end
+
+class Array
+  def in_transposed_chunks(n)
+    s=self.size
+    i=n-s%n
+    (self+[nil]*i).enum_slice(n).to_a.transpose.collect{|e| e.compact}
   end
 end
 

@@ -2,7 +2,7 @@ class Indexer
   # This regexp defines which files should *not* be indexed.
   @@exclude          = /(Thumbs\.db)/
   # Number of threads that will be used during indexing process
-  @@max_threads_number = 5
+  @@max_threads_number = 8
   
   class << self
     def fields_for(complete_path)
@@ -18,8 +18,8 @@ class Indexer
     
     def index_every_directory(update=true)
       log :debug => "Indexing every directory"
-
-
+      
+      
       start=Time.now
       @update = update
       reset! unless update
@@ -43,7 +43,17 @@ class Indexer
     end
     
     def index_directory_with_multithreads(dir)
-      log :debug => "Indexing #{dir}, #{@@max_threads_number} threads"
+      # FIXME: Don't know why, but if more than one thread is created while update the index,
+      # indexer raises:
+      #
+      # current thread not owner
+      # /usr/lib/ruby/1.8/monitor.rb:278:in `mon_check_owner'
+      # /home/www/picolena/lib/picolena/templates/lib/core_exts.rb:32:in `join'
+      # ...
+      #
+      # So Index creation is multithreaded, Index update is monothreaded.
+      threads_number = @update ? 1 : @@max_threads_number
+      log :debug => "Indexing #{dir}, #{threads_number} thread(s)"
       
       indexing_list=Dir[File.join(dir,"**/*")].select{|filename|
         File.file?(filename) && filename !~ @@exclude
@@ -51,13 +61,15 @@ class Indexer
       
       # Cutting indexing_list in slices to avoid treating too big a list.
       # Migth raise a "stack level too deep" otherwise.
-      indexing_list.each_slice(100*@@max_threads_number){|indexing_list_chunk|
-        log :debug => "NEW CHUNK!!!!!!!!!!"
-        @indexing_list_chunk=indexing_list_chunk
-        @@max_threads_number.threads{launch_indexing_chain(@indexing_list_chunk)}
+      indexing_list_chunks=indexing_list.in_transposed_chunks(threads_number)
+      
+      indexing_list_chunks.each_with_thread{|chunk|
+        chunk.each{|filename|
+          add_or_update_file(filename)
+        }
       }
     end
-
+    
     def add_or_update_file(complete_path)
       should_be_added = true
       if @update then
@@ -120,12 +132,6 @@ class Indexer
     end
     
     private
-    
-    def launch_indexing_chain(indexing_list)
-      return if indexing_list.empty?
-      add_or_update_file(indexing_list.shift)
-      launch_indexing_chain(indexing_list)
-    end
     
     def log(hash)
       hash.each{|level,message|
