@@ -59,8 +59,6 @@ class Indexer
         File.file?(filename) && filename !~ @@exclude
       }
       
-      # Cutting indexing_list in slices to avoid treating too big a list.
-      # Migth raise a "stack level too deep" otherwise.
       indexing_list_chunks=indexing_list.in_transposed_chunks(threads_number)
       
       indexing_list_chunks.each_with_thread{|chunk|
