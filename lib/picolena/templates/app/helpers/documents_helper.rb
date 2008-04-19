@@ -30,7 +30,7 @@ module DocumentsHelper
     content_tag(:small,'('<<number_with_precision(dt,3)<<'s)')
   end
   
-  # When possible, highlights content of the document that match the query.
+  # When possible, highlights content of the document that matches the query.
   def highlight_matching_content(document)
     content_tag(:ul,document.matching_content.collect{|sentence|
       content_tag(:li,h(sentence).gsub(/&lt;&lt;(.*?)&gt;&gt;/,'<strong>\1</strong>').gsub(/\v|\f/,''))
