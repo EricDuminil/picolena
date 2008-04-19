@@ -2,7 +2,7 @@
 
 require 'zip/zip'
 Filter.new {
-  from :odp
+  every :odp
   as 'application/vnd.oasis.opendocument.presentation'
   aka "Open Document Format for presentation"
   with {|source|

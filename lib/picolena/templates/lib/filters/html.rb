@@ -1,5 +1,5 @@
 Filter.new {
-  from :html, :htm
+  every :html, :htm
   as "text/html"
   aka "HyperText Markup Language document"
   with {|source|

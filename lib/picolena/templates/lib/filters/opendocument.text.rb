@@ -2,7 +2,7 @@
 
 require 'zip/zip'
 Filter.new {
-  from :odt
+  every :odt
   as 'application/vnd.oasis.opendocument.text'
   aka "Open Document Format for text"
   with {|source|

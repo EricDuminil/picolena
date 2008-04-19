@@ -1,7 +1,7 @@
 # Defines Filters with DSL
 # For example, to convert "Microsoft Office Word document" to plain text
 #   Filter.new {
-#      from :doc, :dot
+#      every :doc, :dot
 #      as "application/msword"
 #      aka "Microsoft Office Word document"
 #      with "antiword SOURCE > DESTINATION 2>/dev/null" => :on_linux, "some other command" => :on_windows
@@ -18,7 +18,7 @@ module FilterDSL
       MimeType.add(self.exts,self.mime_name)
     end
     
-    def from(*exts)
+    def every(*exts)
       @exts=exts
     end
     

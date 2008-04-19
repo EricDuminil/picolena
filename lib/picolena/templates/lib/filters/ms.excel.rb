@@ -1,7 +1,7 @@
 #Excel 97-2003
 
 Filter.new {
-  from :xls
+  every :xls
   as "application/excel"
   aka "Microsoft Office Excel document"
   with "xls2csv SOURCE 2>/dev/null | grep -i [a-z] | sed -e 's/\"//g' -e 's/,*$//' -e 's/,/ /g'" => :on_linux, "some other command" => :on_windows
@@ -12,7 +12,7 @@ Filter.new {
 
 require 'zip/zip'
 Filter.new {
-  from :xlsx
+  every :xlsx
   as 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   aka "Microsoft Office 2007 Excel spreadsheet"
   with {|source|

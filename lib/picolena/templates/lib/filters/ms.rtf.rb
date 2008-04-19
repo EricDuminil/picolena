@@ -5,7 +5,7 @@
 #   http://www.gnu.org/software/unrtf/unrtf.html
 
 Filter.new {
-  from :rtf
+  every :rtf
   as "application/rtf"
   aka "Microsoft Rich Text Format"
   with "unrtf  SOURCE -t text" => :on_linux, "some other command" => :on_windows

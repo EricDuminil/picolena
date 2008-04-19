@@ -2,7 +2,7 @@
 
 require 'zip/zip'
 Filter.new {
-  from :ods
+  every :ods
   as 'application/vnd.oasis.opendocument.spreadsheet'
   aka "Open Document Format for spreadsheet"
   with {|source|

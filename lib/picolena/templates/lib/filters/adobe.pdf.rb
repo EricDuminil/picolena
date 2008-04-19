@@ -5,7 +5,7 @@
 #   Home page: http://www.foolabs.com/xpdf/
 
 Filter.new {
-  from :pdf
+  every :pdf
   as "application/pdf"
   aka "Adobe Portable Document Format"
   with "pdftotext -enc UTF-8 SOURCE -" => :on_linux, "some other command" => :on_windows

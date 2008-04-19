@@ -1,7 +1,7 @@
 #Word 97-2003
 
 Filter.new {
-  from :doc, :dot
+  every :doc, :dot
   as "application/msword"
   aka "Microsoft Office Word document"
   with "antiword SOURCE" => :on_linux, "some other command" => :on_windows
@@ -13,7 +13,7 @@ Filter.new {
 
 require 'zip/zip'
 Filter.new {
-  from :docx, :dotx
+  every :docx, :dotx
   as 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   aka "Microsoft Office 2007 Word document"
   with {|source|

@@ -1,7 +1,7 @@
 #Powerpoint 97-2003
 
 Filter.new {
-  from :ppt, :pps
+  every :ppt, :pps
   as "application/powerpoint"
   aka "Microsoft Office Powerpoint document"
   with "catppt SOURCE" => :on_linux, "some other command" => :on_windows
@@ -14,7 +14,7 @@ Filter.new {
 
 require 'zip/zip'
 Filter.new {
-  from :pptx
+  every :pptx
   as 'application/vnd.openxmlformats-officedocument.presentationml.presentation' #could that mime BE any longer?
   aka "Microsoft Office 2007 Powerpoint document"
   with {|source|
