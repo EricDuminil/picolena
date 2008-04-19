@@ -1,27 +1,31 @@
 require 'filter_DSL'
 
-module PlainText
+class Filter
   @@filters=[]
   
   #returns every defined filter
-  def self.filters
+  def self.all
     @@filters
+  end
+
+  def self.each(&block)
+    all.each(&block)
   end
   
   #returns every required dependency for every defined filter
-  def self.filter_dependencies
-    @@dependencies||=filters.collect{|filter| filter.dependencies}.flatten.compact.uniq.sort
+  def self.dependencies
+    @@dependencies||=all.collect{|filter| filter.dependencies}.flatten.compact.uniq.sort
   end
   
   #returns every supported file extensions
   def self.supported_extensions
-    @@supported_exts||=filters.collect{|filter| filter.exts}.flatten.compact.uniq
+    @@supported_exts||=all.collect{|filter| filter.exts}.flatten.compact.uniq
   end
 
   #finds which filter should be used for a given file, according to its extension
   def self.find_filter_for(filename)
     ext=File.ext_as_sym(filename)
-    filter=filters.find{|filter| filter.exts.include?(ext)} || raise(ArgumentError, "no convertor for #{filename}")
+    filter=all.find{|filter| filter.exts.include?(ext)} || raise(ArgumentError, "no convertor for #{filename}")
     filter.source=filename
     filter
   end
@@ -32,7 +36,6 @@ module PlainText
   end
   
   
-  class Filter
     attr_accessor :source
     
     #parses command in order to know which programs are needed.
@@ -71,5 +74,4 @@ module PlainText
         command.call(source)
       end
     end    
-  end
 end

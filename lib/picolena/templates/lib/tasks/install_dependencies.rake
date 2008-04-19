@@ -29,7 +29,7 @@ namespace :install_dependencies do
   desc 'Install required .deb packages'
   task :deb_packages do
     root_privileges_required!
-    #TODO: Should load this list from defined PlainText.filters
+    #TODO: Should load this list from defined Filters
     packages=%w{antiword poppler-utils odt2txt html2text catdoc unrtf}.join(" ")
     puts "Installing "<<packages
     system("apt-get install "<<packages)

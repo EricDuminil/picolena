@@ -5,7 +5,7 @@ describe "Filters" do
     IndexReader.ensure_existence
   end  
   
-  PlainText.filters.each{|filter|
+  Filter.each{|filter|
     filter.exts.each{|ext|
       should_extract= "should be able to extract content from #{filter.description} (.#{ext})"
       content_and_file_examples_for_this_ext=filter.content_and_file_examples.select{|content,file| File.ext_as_sym(file)==ext}

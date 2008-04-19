@@ -1,27 +1,21 @@
 #Module used to define Filters with DSL
 #For example, to convert "Microsoft Office Word document" to plain text
-#   PlainText.extract {
+#   Filter.new {
 #      from :doc, :dot
 #      as "application/msword"
 #      aka "Microsoft Office Word document"
 #      with "antiword SOURCE > DESTINATION 2>/dev/null" => :on_linux, "some other command" => :on_windows
 #      which_should_for_example_extract 'district heating', :from => 'Types of malfunction in DH substations.doc'
 #   }
-module PlainText  
-  #defines a new Filter with DSL
-  def self.extract(&block)
-    filter = Filter.new
-    filter.instance_eval(&block)
-    @@filters<<filter
-    MimeType.add(filter.exts,filter.mime_name)
-  end
-  
-  #defined by DSL described in PlainText
-  class Filter
+require 'app/models/filter.rb'
+class Filter
     attr_reader :exts, :mime_name, :description, :command, :content_and_file_examples
     
-    def initialize
-      @content_and_file_examples=[]   
+    def initialize(&block)
+      @content_and_file_examples=[]
+      self.instance_eval(&block)
+      @@filters<<self
+      MimeType.add(self.exts,self.mime_name)
     end
     
     def from(*exts)
@@ -73,5 +67,4 @@ module PlainText
         end
       @command<<' 2>/dev/null' if (@command.is_a?(String) && platform==:on_linux && !@command.include?('|'))
     end
-  end
 end

@@ -54,12 +54,12 @@ class Document
   #  Document.new("presentation.pdf").supported? => true
   #  Document.new("presentation.some_weird_extension").supported? => false
   def supported?
-    PlainText.supported_extensions.include?(self.ext_as_sym)
+    Filter.supported_extensions.include?(self.ext_as_sym)
   end
   
   # Retrieves content as it is *now*.
   def content
-    PlainText.extract_content_from(complete_path)
+    Filter.extract_content_from(complete_path)
   end
   
   # Cache à la Google.

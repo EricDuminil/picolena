@@ -5,6 +5,7 @@
 #   Home page: http://www.foolabs.com/xpdf/
 
 Filter.new {
+  puts self.inspect
   from :pdf
   as "application/pdf"
   aka "Adobe Portable Document Format"
