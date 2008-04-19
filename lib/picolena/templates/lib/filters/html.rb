@@ -1,4 +1,4 @@
-PlainText.extract {
+Filter.new {
   from :html, :htm
   as "text/html"
   aka "HyperText Markup Language document"

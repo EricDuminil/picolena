@@ -1,6 +1,6 @@
 #Excel 97-2003
 
-PlainText.extract {
+Filter.new {
   from :xls
   as "application/excel"
   aka "Microsoft Office Excel document"
@@ -11,7 +11,7 @@ PlainText.extract {
 #Excel 2007
 
 require 'zip/zip'
-PlainText.extract {
+Filter.new {
   from :xlsx
   as 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   aka "Microsoft Office 2007 Excel spreadsheet"

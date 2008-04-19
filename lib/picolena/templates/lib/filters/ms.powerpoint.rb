@@ -1,6 +1,6 @@
 #Powerpoint 97-2003
 
-PlainText.extract {
+Filter.new {
   from :ppt, :pps
   as "application/powerpoint"
   aka "Microsoft Office Powerpoint document"
@@ -13,7 +13,7 @@ PlainText.extract {
 #Powerpoint 2007
 
 require 'zip/zip'
-PlainText.extract {
+Filter.new {
   from :pptx
   as 'application/vnd.openxmlformats-officedocument.presentationml.presentation' #could that mime BE any longer?
   aka "Microsoft Office 2007 Powerpoint document"

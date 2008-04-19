@@ -1,4 +1,4 @@
-PlainText.extract {
+Filter.new {
   from :txt, :text, :tex, :for, :cpp, :c, :rb, :ins, :vee, :java, :no_extension
   as "application/plain"
   aka "plain text file"

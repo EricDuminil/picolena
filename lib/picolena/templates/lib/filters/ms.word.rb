@@ -1,6 +1,6 @@
 #Word 97-2003
 
-PlainText.extract {
+Filter.new {
   from :doc, :dot
   as "application/msword"
   aka "Microsoft Office Word document"
@@ -12,7 +12,7 @@ PlainText.extract {
 #Word 2007
 
 require 'zip/zip'
-PlainText.extract {
+Filter.new {
   from :docx, :dotx
   as 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   aka "Microsoft Office 2007 Word document"

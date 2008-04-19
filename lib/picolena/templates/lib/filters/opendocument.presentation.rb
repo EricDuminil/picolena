@@ -1,7 +1,7 @@
 # Open Document Presentation to text conversion
 
 require 'zip/zip'
-PlainText.extract {
+Filter.new {
   from :odp
   as 'application/vnd.oasis.opendocument.presentation'
   aka "Open Document Format for presentation"

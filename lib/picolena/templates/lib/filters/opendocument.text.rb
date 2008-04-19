@@ -1,7 +1,7 @@
 # Open Document to text conversion
 
 require 'zip/zip'
-PlainText.extract {
+Filter.new {
   from :odt
   as 'application/vnd.oasis.opendocument.text'
   aka "Open Document Format for text"
