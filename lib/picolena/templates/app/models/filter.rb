@@ -1,11 +1,16 @@
 require 'filter_DSL'
 
 class Filter
+  include FilterDSL
   @@filters=[]
   
   #returns every defined filter
   def self.all
     @@filters
+  end
+
+  def self.add(filter)
+    @@filters<<filter
   end
 
   def self.each(&block)

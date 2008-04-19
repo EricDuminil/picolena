@@ -8,15 +8,13 @@
 #      which_should_for_example_extract 'district heating', :from => 'Types of malfunction in DH substations.doc'
 #   }
 
-#FIXME: Find a cleaner way
-require 'app/models/filter.rb'
-class Filter
+module FilterDSL
     attr_reader :exts, :mime_name, :description, :command, :content_and_file_examples
     
     def initialize(&block)
       @content_and_file_examples=[]
       self.instance_eval(&block)
-      @@filters<<self
+      Filter.add(self)
       MimeType.add(self.exts,self.mime_name)
     end
     
