@@ -21,6 +21,7 @@ lib/picolena/templates/app/controllers/documents_controller.rb
 lib/picolena/templates/app/helpers/application_helper.rb
 lib/picolena/templates/app/helpers/documents_helper.rb
 lib/picolena/templates/app/models/document.rb
+lib/picolena/templates/app/models/filter.rb
 lib/picolena/templates/app/models/finder.rb
 lib/picolena/templates/app/models/index_reader.rb
 lib/picolena/templates/app/models/index_writer.rb
@@ -49,7 +50,6 @@ lib/picolena/templates/lang/ui/en.yml
 lib/picolena/templates/lang/ui/es.yml
 lib/picolena/templates/lang/ui/fr.yml
 lib/picolena/templates/lib/core_exts.rb
-lib/picolena/templates/lib/filter.rb
 lib/picolena/templates/lib/filter_DSL.rb
 lib/picolena/templates/lib/filters/adobe.pdf.rb
 lib/picolena/templates/lib/filters/html.rb
