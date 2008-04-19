@@ -38,7 +38,7 @@ class Document
   #   "http://www.mycompany.com/wiki/organigram.odp"
   def alias_path
     original_dir=indexed_directory
-    alias_dir=IndexedDirectories[original_dir]
+    alias_dir=Picolena::IndexedDirectories[original_dir]
     dirname.sub(original_dir,alias_dir)
   end
   
@@ -100,7 +100,7 @@ class Document
   end
   
   def indexed_directory
-    IndexedDirectories.keys.find{|indexed_dir|
+    Picolena::IndexedDirectories.keys.find{|indexed_dir|
       dirname.starts_with?(indexed_dir)
     }    
   end

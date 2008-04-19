@@ -1,3 +1,4 @@
+module Picolena
 #Loading directories to be indexed
 indexed_dir_config_file='config/custom/indexed_directories.yml'
 IndexedDirectories={}
@@ -6,3 +7,4 @@ YAML.load_file(indexed_dir_config_file)[RAILS_ENV].each_pair{|abs_or_rel_path, a
 }
 
 IndexSavePath=File.join(IndexesSavePath,ENV["RAILS_ENV"] || "development")
+end

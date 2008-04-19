@@ -1,3 +1,4 @@
+module Picolena
 # Specify indexes path.
 # Storage should be sufficient in order to store all indexed data.
 IndexesSavePath=File.join(RAILS_ROOT, 'tmp/ferret_indexes/')
@@ -34,3 +35,4 @@ HashLength = 10
 # see http://ferret.davebalmain.com/api/classes/Ferret/QueryParser.html for more information.
 Ferret::Search::FuzzyQuery.default_min_similarity=0.6
 Analyzer=Ferret::Analysis::StandardAnalyzer.new
+end

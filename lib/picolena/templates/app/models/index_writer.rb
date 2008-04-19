@@ -5,8 +5,8 @@ class IndexWriter < Ferret::Index::IndexWriter
     
     # Add needed parameters
     params.merge!(:create_if_missing => true,
-                  :path              => IndexSavePath,
-                  :analyzer          => Analyzer
+                  :path              => Picolena::IndexSavePath,
+                  :analyzer          => Picolena::Analyzer
                   # huge performance impact?
                   # :auto_flush        => true
                   )
@@ -17,7 +17,7 @@ class IndexWriter < Ferret::Index::IndexWriter
   end
   
   def self.remove
-    Dir.glob(File.join(IndexSavePath,'*')).each{|f| FileUtils.rm(f) if File.file?(f)}
+    Dir.glob(File.join(Picolena::IndexSavePath,'*')).each{|f| FileUtils.rm(f) if File.file?(f)}
   end
   
   private

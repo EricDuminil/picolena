@@ -7,7 +7,7 @@ class Finder
     IndexReader.new
   end
   
-  def initialize(raw_query,page=1,results_per_page=ResultsPerPage)
+  def initialize(raw_query,page=1,results_per_page=Picolena::ResultsPerPage)
     @query = Query.extract_from(raw_query)
     @raw_query= raw_query
     IndexReader.ensure_existence

@@ -3,7 +3,7 @@ class IndexReader < Ferret::Index::Index
     # TODO: Remove those debug lines!
     # puts "##################################################################Creating Reader!!!!!"
     # Add needed parameters
-    params.merge!(:path => IndexSavePath, :analyzer => Analyzer)
+    params.merge!(:path => Picolena::IndexSavePath, :analyzer => Picolena::Analyzer)
     # Creates the IndexReader
     super(params)
   end
@@ -50,7 +50,7 @@ class IndexReader < Ferret::Index::Index
   end
  
   def filename
-    Dir.glob(File.join(IndexSavePath,'*.cfs')).first
+    Dir.glob(File.join(Picolena::IndexSavePath,'*.cfs')).first
   end
   end
 end

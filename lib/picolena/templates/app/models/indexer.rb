@@ -24,7 +24,7 @@ class Indexer
       @update = update
       reset! unless update
       
-      IndexedDirectories.each{|dir, alias_dir|
+      Picolena::IndexedDirectories.each{|dir, alias_dir|
         index_directory_with_multithreads(dir)
       }
       # FIXME: with those 2 lines,

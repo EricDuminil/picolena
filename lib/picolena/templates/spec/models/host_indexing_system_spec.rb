@@ -24,6 +24,6 @@ describe "Host indexing system" do
   end
   
   it "should not use too small a hash for Document#probably_unique_id" do
-    HashLength.should_not < 10
+    Picolena::HashLength.should_not < 10
   end
 end
