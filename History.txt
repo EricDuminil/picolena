@@ -1,7 +1,8 @@
 == 0.1.2  2008-04-
 
 * major enhancement:
-  * complete Indexer & Index rewrite.
+  * complete Indexer & Index rewrite
+  * new DSL syntax
   * multi-threaded Indexer
 
 
