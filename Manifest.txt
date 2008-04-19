@@ -9,6 +9,7 @@ config/hoe.rb
 config/requirements.rb
 lib/picolena/USAGE
 lib/picolena/config/basic.rb
+lib/picolena/config/icons_and_filetypes.yml
 lib/picolena/config/indexed_directories.yml
 lib/picolena/config/title_and_names_and_links.yml
 lib/picolena/config/white_list_ip.yml
@@ -41,6 +42,7 @@ lib/picolena/templates/config/initializers/002_load_indexed_dirs.rb
 lib/picolena/templates/config/initializers/003_load_white_list_IPs.rb
 lib/picolena/templates/config/initializers/004_load_filters.rb
 lib/picolena/templates/config/initializers/005_load_custom_title_and_names_and_links.rb
+lib/picolena/templates/config/initializers/006_load_icons.rb
 lib/picolena/templates/config/routes.rb
 lib/picolena/templates/lang/ui/de.yml
 lib/picolena/templates/lang/ui/en.yml

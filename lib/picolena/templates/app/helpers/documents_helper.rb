@@ -43,28 +43,9 @@ module DocumentsHelper
   end
   
   # Returns the location (if avaible) of the filetype icon.
-  # TODO: Move this hash to a .yml config file.
   def icon_for(filetype)    
-    pic_for_exts={
-      :xls=>%w{xls xlsx ods},
-      :doc=>%w{doc odt rtf dot docx dotx},
-      :pdf=>%w{pdf},
-      :txt=>%w{txt text tex bib log ini no_extension},
-      :ogg=>%w{mp3 ogg wma wav wmv tee},
-      :html=>%w{html htm},
-      :ppt=>%w{ppt pps pptx odp},
-      :package=>%w{gz rar zip bak},
-      :picture=>%w{psd jpg png gif eps bmp ico},
-      :cad=>%w{dwg dxf},
-      :exe=>%w{exe dll},
-      :video=>%w{avi wmv mpg mpeg},
-      :code=>%w{for cpp c rb java},
-      :insel=>%w{ins vee}
-    }
-    pic=pic_for_exts.find{|pic, extensions|
-      extensions.any? { |ext| filetype.sub(/\./,'').downcase==ext}
-    }
-    image_tag("icons/#{pic.first}.png") if pic
+    icon_symbol=FiletypeToIconSymbol[filetype.downcase.sub(/^\./,'')]
+    image_tag("icons/#{icon_symbol}.png") if icon_symbol
   end
   
   # Returns a link to a backup search engine that could maybe find more results for the same query.

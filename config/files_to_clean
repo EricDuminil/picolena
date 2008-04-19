@@ -4,6 +4,7 @@ lib/picolena/templates/config/custom/picolena.rb
 lib/picolena/templates/config/custom/indexed_directories.yml
 lib/picolena/templates/config/custom/white_list_ip.yml
 lib/picolena/templates/config/custom/title_and_names_and_links.yml
+lib/picolena/templates/config/custom/icons_and_filetypes.yml
 lib/picolena/templates/log
 lib/picolena/templates/spec/test_dirs/indexed/others/bäñüßé.txt
 lib/picolena/templates/tmp
