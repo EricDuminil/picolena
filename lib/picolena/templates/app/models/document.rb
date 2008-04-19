@@ -1,7 +1,8 @@
 # Document class retrieves information from filesystem and the index for any given document.
 class Document
   attr_reader :complete_path
-  attr_accessor :user, :score, :matching_content, :index_id
+  attr_writer :index_id
+  attr_accessor :user, :score, :matching_content
   
   def initialize(path)
     #To ensure @complete_path is an absolute direction.
@@ -9,8 +10,6 @@ class Document
     validate_existence_of_file
     validate_in_indexed_directory
   end
-  
-  alias_method :to_param, :id
   
   #Delegating properties to File::method_name(complete_path)
   [:dirname, :basename, :extname, :size?, :file?, :read, :ext_as_sym].each{|method_name|
@@ -65,26 +64,31 @@ class Document
   # Cache à la Google.
   # Returns content as it was at the time it was indexed.
   def cached
-    get_index_id! unless index_id
     IndexReader.new[index_id][:content]
   end
-  
+ 
+  # FIXME: Not just date anymore.
   # Returns the last modification date before the document got indexed.
   # Useful to know how old a document is, and to which version the cache corresponds.
   def date
-    get_index_id! unless index_id
-    IndexReader.new[index_id][:date].sub(/(\d{4})(\d{2})(\d{2})/,'\1-\2-\3')
+    from_index[:date].sub(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,'\1-\2-\3 \4:\5:\6')
   end
   
   def mtime
-    get_index_id! unless index_id
-    IndexReader.new[index_id][:date].to_i
+    from_index[:date].to_i
+  end
+
+  # Returns the id with which the document is indexed.
+  def index_id
+    @index_id ||= Document.find_by_complete_path(complete_path).index_id
   end
   
   private
-  
-  def get_index_id!
-    @index_id = Document.find_by_unique_id(probably_unique_id).index_id
+
+  # Retrieves the document from the index.
+  # Useful to get meta-info about it.
+  def from_index
+    IndexReader.new[index_id]
   end
   
   def self.find_by_unique_id(some_id)
