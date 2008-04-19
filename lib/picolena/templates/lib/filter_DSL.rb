@@ -1,5 +1,5 @@
-#Module used to define Filters with DSL
-#For example, to convert "Microsoft Office Word document" to plain text
+# Defines Filters with DSL
+# For example, to convert "Microsoft Office Word document" to plain text
 #   Filter.new {
 #      from :doc, :dot
 #      as "application/msword"
@@ -7,6 +7,8 @@
 #      with "antiword SOURCE > DESTINATION 2>/dev/null" => :on_linux, "some other command" => :on_windows
 #      which_should_for_example_extract 'district heating', :from => 'Types of malfunction in DH substations.doc'
 #   }
+
+#FIXME: Find a cleaner way
 require 'app/models/filter.rb'
 class Filter
     attr_reader :exts, :mime_name, :description, :command, :content_and_file_examples
