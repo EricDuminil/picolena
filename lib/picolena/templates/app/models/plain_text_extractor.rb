@@ -32,9 +32,9 @@ class PlainTextExtractor
     # Raises if the file is unsupported. 
     def find_by_filename(filename)
       ext=File.ext_as_sym(filename)
-      extractor=all.find{|extractor| extractor.exts.include?(ext)} || raise(ArgumentError, "no convertor for #{filename}")
-      extractor.source=filename
-      extractor
+      found_extractor=all.find{|extractor| extractor.exts.include?(ext)} || raise(ArgumentError, "no convertor for #{filename}")
+      found_extractor.source=filename
+      found_extractor
     end
     
     # Launches extractor on given file and outputs plain text result
