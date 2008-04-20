@@ -17,8 +17,27 @@ end
 
 class String
   # Creates a "probably unique" id with the desired length, composed only of lowercase letters.
-  def base26_hash(length=HashLength)
+  def base26_hash(length=Picolena::HashLength)
     Digest::MD5.hexdigest(self).to_i(16).to_s(26).tr('0-9a-p', 'a-z')[-length,length]
+  end
+end
+
+module Enumerable
+  def each_with_thread(&block)
+    tds=self.collect{|elem|
+      Thread.new(elem) {|elem|
+        block.call(elem)
+      }
+    }
+    tds.each{|aThread| aThread.join}
+  end
+end
+
+class Array
+  def in_transposed_chunks(n)
+    s=self.size
+    i=n-s%n
+    (self+[nil]*i).enum_slice(n).to_a.transpose.collect{|e| e.compact}
   end
 end
 

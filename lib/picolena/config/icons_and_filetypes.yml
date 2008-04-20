@@ -1,0 +1,69 @@
+video:
+  avi
+  wmv
+  mpg
+  mpeg
+ogg:
+  mp3
+  ogg
+  wma
+  wav
+  wmv
+  tee
+txt:
+  txt
+  text
+  tex
+  bib
+  log
+  ini
+  no_extension
+doc:
+  doc
+  odt
+  rtf
+  dot
+  docx
+  dotx
+insel:
+  ins
+  vee
+ppt:
+  ppt
+  pps
+  pptx
+  odp
+pdf:
+  pdf
+package:
+  gz
+  rar
+  zip
+  bak
+code:
+  for
+  cpp
+  c
+  rb
+  java
+html:
+  html
+  htm
+xls:
+  xls
+  xlsx
+  ods
+picture:
+  psd
+  jpg
+  png
+  gif
+  eps
+  bmp
+  ico
+cad:
+  dwg
+  dxf
+exe:
+  exe
+  dll

@@ -4,22 +4,22 @@ describe "DocumentsController called from unknown IP" do
   controller_name "documents"
   
   before(:all) do
-    @backup=WhiteListIPs
+    @backup=Picolena::WhiteListIPs
   end
   
   it "should deny access" do
     # Displays a warning otherwise
-    Object.send(:remove_const, :WhiteListIPs) && WhiteListIPs=/Something that won't match/
+    Picolena.send(:remove_const, :WhiteListIPs) && Picolena::WhiteListIPs=/Something that won't match/
     get 'index'
     response.should be_redirect
     response.should redirect_to(:controller=>'application', :action=>'access_denied')
-    Object.send(:remove_const, :WhiteListIPs) && WhiteListIPs=/^0\.0\.0\.0/
+    Picolena.send(:remove_const, :WhiteListIPs) && Picolena::WhiteListIPs=/^0\.0\.0\.0/
     get 'index'
     response.should be_success
   end
 
   after(:all) do
-    Object.send(:remove_const, :WhiteListIPs) && WhiteListIPs=@backup
+    Picolena.send(:remove_const, :WhiteListIPs) && Picolena::WhiteListIPs=@backup
   end
 end
 

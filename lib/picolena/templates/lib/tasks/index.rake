@@ -2,19 +2,17 @@ desc 'Ferret index maintenance tasks'
 namespace :index do  
   desc 'Clear indexes'
   task :clear => :environment do
-    require 'fileutils'
-    Dir.glob(File.join(IndexSavePath,'/**/*')).each{|f| FileUtils.rm(f) if File.file?(f)}
+    IndexWriter.remove
   end
   
   desc 'Create index'
   task :create => :environment do
-    require 'ff'
-    create_index(IndexedDirectories.keys)
+    Indexer.index_every_directory(update=false)
   end
 
   desc 'Update index'
-  task :update do
-    puts "Implement me!"
+  task :update => :environment do
+    Indexer.index_every_directory(update=true)
   end
   
   # Search index with query "some query" :

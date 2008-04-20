@@ -3,13 +3,13 @@ module DocumentsHelper
   def nothing_found?
     @matching_documents.nil? or @matching_documents.entries.empty?
   end
-
+  
   # Very basic pagination.
   # Provides liks to Next, Prev and FirstPage when needed.
   def should_paginate(page,query)
-      [(link_to("&larr;&larr;", :action => :show, :id => query, :page => 1) if page.number>2),
-      (link_to("&larr;", :action => :show, :id => query, :page => page.prev.number) if page.prev?),
-      (link_to("&rarr;", :action => :show, :id => query, :page => page.next.number) if page.next?)].compact.join(" | ")
+    [(link_to("&larr;&larr;", :action => :show, :id => query, :page => 1) if page.number>2),
+     (link_to("&larr;", :action => :show, :id => query, :page => page.prev.number) if page.prev?),
+     (link_to("&rarr;", :action => :show, :id => query, :page => page.next.number) if page.next?)].compact.join(" | ")
   end
   
   # Returns a localized sentence like "Results 1-10 of 12 for Zimbabwe (0.472s)" or
@@ -30,7 +30,7 @@ module DocumentsHelper
     content_tag(:small,'('<<number_with_precision(dt,3)<<'s)')
   end
   
-  # When possible, highlights content of the document that match the query.
+  # When possible, highlights content of the document that matches the query.
   def highlight_matching_content(document)
     content_tag(:ul,document.matching_content.collect{|sentence|
       content_tag(:li,h(sentence).gsub(/&lt;&lt;(.*?)&gt;&gt;/,'<strong>\1</strong>').gsub(/\v|\f/,''))
@@ -43,28 +43,9 @@ module DocumentsHelper
   end
   
   # Returns the location (if avaible) of the filetype icon.
-  # TODO: Move this hash to a .yml config file.
   def icon_for(filetype)    
-    pic_for_exts={
-      :xls=>%w{xls xlsx ods},
-      :doc=>%w{doc odt rtf dot docx dotx},
-      :pdf=>%w{pdf},
-      :txt=>%w{txt text tex bib log ini no_extension},
-      :ogg=>%w{mp3 ogg wma wav wmv tee},
-      :html=>%w{html htm},
-      :ppt=>%w{ppt pps pptx odp},
-      :package=>%w{gz rar zip bak},
-      :picture=>%w{psd jpg png gif eps bmp ico},
-      :cad=>%w{dwg dxf},
-      :exe=>%w{exe dll},
-      :video=>%w{avi wmv mpg mpeg},
-      :code=>%w{for cpp c rb java},
-      :insel=>%w{ins vee}
-    }
-    pic=pic_for_exts.find{|pic, extensions|
-      extensions.any? { |ext| filetype.sub(/\./,'').downcase==ext}
-    }
-    image_tag("icons/#{pic.first}.png") if pic
+    icon_symbol=FiletypeToIconSymbol[filetype.downcase.sub(/^\./,'')]
+    image_tag("icons/#{icon_symbol}.png") if icon_symbol
   end
   
   # Returns a link to a backup search engine that could maybe find more results for the same query.

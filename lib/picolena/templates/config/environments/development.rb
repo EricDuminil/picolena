@@ -18,4 +18,4 @@ config.action_view.cache_template_extensions         = false
 config.action_mailer.raise_delivery_errors = false
 
 
-IndexLogger.level = Logger::DEBUG
+IndexerLogger.level = Logger::DEBUG

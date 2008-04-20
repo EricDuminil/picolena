@@ -23,7 +23,7 @@ class ApplicationController < ActionController::Base
   # Tries to match remote IP address with the white list defined in config/custom/white_list_ip.yml
   # Redirects to :access_denied if the remote IP is not white listed.
   def should_only_be_available_for_white_list_IPs
-    unless request.remote_ip =~ WhiteListIPs
+    unless request.remote_ip =~ Picolena::WhiteListIPs
       redirect_to :controller => 'application', :action=>'access_denied'
       return false
     end

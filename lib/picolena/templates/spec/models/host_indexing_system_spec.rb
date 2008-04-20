@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "Host indexing system" do
- PlainText.filter_dependencies.each do |dependency|
+ PlainTextExtractor.dependencies.each do |dependency|
     it "should have #{dependency} installed" do
        IO.popen("which #{dependency}"){|i| i.read.should_not be_empty}
     end
@@ -24,6 +24,6 @@ describe "Host indexing system" do
   end
   
   it "should not use too small a hash for Document#probably_unique_id" do
-    HashLength.should_not < 10
+    Picolena::HashLength.should_not < 10
   end
 end
