@@ -1,3 +1,7 @@
+== 0.1.4  2008-04-
+
+
+
 == 0.1.3  2008-04-20
 
 * 1 bug fix:
@@ -5,7 +9,7 @@
 
 == 0.1.2  2008-04-20
 
-* major enhancement:
+* 3 major enhancements:
   * complete Indexer & Index rewrite
   * new DSL syntax
   * multi-threaded Indexer
@@ -13,7 +17,7 @@
 
 == 0.1.1  2008-04-12
 
-* major enhancement:
+* 1 major enhancement:
   * cache à la Google
 
 * minor enhancements:
@@ -24,14 +28,14 @@
 
 == 0.1.0  2008-04-08
 
-* minor enhancements:
+* 3 minor enhancements:
   * can now be installed on win32 (doesn't pass every spec though)
   * moved rails_plugins away from lib/ so that they don't get parsed by rdoc/ri
   * shorter and prettier base26_hash id for documents.
 
 == 0.0.99  2008-04-06
 
-* minor enhancements:
+* 2 minor enhancements:
   * more complete specs
   * mtime is now indexed and available in queries as "date:20080406"
 
