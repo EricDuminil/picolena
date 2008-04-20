@@ -66,7 +66,7 @@ class Document
   def cached
     IndexReader.new[index_id][:content]
   end
- 
+  
   # FIXME: Not just date anymore.
   # Returns the last modification date before the document got indexed.
   # Useful to know how old a document is, and to which version the cache corresponds.
@@ -77,14 +77,14 @@ class Document
   def mtime
     from_index[:date].to_i
   end
-
+  
   # Returns the id with which the document is indexed.
   def index_id
     @index_id ||= Document.find_by_complete_path(complete_path).index_id
   end
   
   private
-
+  
   # Retrieves the document from the index.
   # Useful to get meta-info about it.
   def from_index

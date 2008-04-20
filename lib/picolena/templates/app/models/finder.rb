@@ -25,8 +25,8 @@ class Finder
       begin
         found_doc=Document.new(index[index_id][:complete_path])
         found_doc.matching_content=index.highlight(query, index_id,
-                                                          :field => :content, :excerpt_length => 80,
-                                                          :pre_tag => "<<", :post_tag => ">>"
+                                                   :field => :content, :excerpt_length => 80,
+                                                   :pre_tag => "<<", :post_tag => ">>"
         ) unless @raw_query=~/^\*+\.\w*$/
         found_doc.score=score
         found_doc.index_id=index_id

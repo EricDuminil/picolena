@@ -3,13 +3,13 @@ module DocumentsHelper
   def nothing_found?
     @matching_documents.nil? or @matching_documents.entries.empty?
   end
-
+  
   # Very basic pagination.
   # Provides liks to Next, Prev and FirstPage when needed.
   def should_paginate(page,query)
-      [(link_to("&larr;&larr;", :action => :show, :id => query, :page => 1) if page.number>2),
-      (link_to("&larr;", :action => :show, :id => query, :page => page.prev.number) if page.prev?),
-      (link_to("&rarr;", :action => :show, :id => query, :page => page.next.number) if page.next?)].compact.join(" | ")
+    [(link_to("&larr;&larr;", :action => :show, :id => query, :page => 1) if page.number>2),
+     (link_to("&larr;", :action => :show, :id => query, :page => page.prev.number) if page.prev?),
+     (link_to("&rarr;", :action => :show, :id => query, :page => page.next.number) if page.next?)].compact.join(" | ")
   end
   
   # Returns a localized sentence like "Results 1-10 of 12 for Zimbabwe (0.472s)" or
