@@ -1,4 +1,4 @@
-== 0.1.2  2008-04-
+== 0.1.2  2008-04-20
 
 * major enhancement:
   * complete Indexer & Index rewrite
@@ -6,7 +6,7 @@
   * multi-threaded Indexer
 
 
-== 0.1.1  2008-04-
+== 0.1.1  2008-04-12
 
 * major enhancement:
   * cache à la Google
