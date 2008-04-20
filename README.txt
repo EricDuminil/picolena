@@ -14,7 +14,7 @@ Picolena is a lightweight ferret-powered documents search engine written in Ruby
 
 Picolena has many advantages:
 
-   * it can index .pdf, .doc, .docx, .odt, .xls, .ods, .ppt, .pptx, .odp, .rtf, .html and plain text files will full text search, and offers a very easy way to add new filters to index other filetype.
+   * it can index .pdf, .doc, .docx, .odt, .xls, .ods, .ppt, .pptx, .odp, .rtf, .html and plain text files will full text search, and offers a very easy way to add new extractors to index other filetype.
    * it is free as in free beer and as in free speech
    * thanks to Ferret, it is very fast
    * it keeps your data private. By default, only the computer on which it is installed can get access to the search engine. Other IP addresses can then be added to a white list.

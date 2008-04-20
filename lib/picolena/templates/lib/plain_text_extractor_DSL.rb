@@ -1,6 +1,6 @@
-# Defines Filters with DSL
+# Defines plain text extractors with DSL
 # For example, to convert "Microsoft Office Word document" to plain text
-#  Filter.new {
+#  PlainTextExtractor.new {
 #    every :doc, :dot
 #    as "application/msword"
 #    aka "Microsoft Office Word document"
@@ -9,13 +9,13 @@
 #    or_extract 'Basic Word template for Picolena specs', :from => 'office2003-word-template.dot'
 #  }
 
-module FilterDSL
+module PlainTextExtractorDSL
   attr_reader :exts, :mime_name, :description, :command, :content_and_file_examples
   
   def initialize(&block)
     @content_and_file_examples=[]
     self.instance_eval(&block)
-    Filter.add(self)
+    PlainTextExtractor.add(self)
     MimeType.add(self.exts,self.mime_name)
   end
   
@@ -35,12 +35,12 @@ module FilterDSL
     @dependencies=dependencies
   end
   
-  #used by rspec to test filters:
+  #used by rspec to test extractors:
   #  which_should_for_example_extract 'in a pdf file', :from => 'basic.pdf'
   #  or_extract 'some other stuff inside another pdf file', :from => 'yet_another.pdf'
   #
   #this spec will pass if 'basic.pdf' and 'yet_another.pdf' are included in an indexed directory, if every dependency is installed,
-  #and if plain text output from the filter applied to 'basic.pdf' and 'yet_another.pdf' respectively include 'in a pdf file' and 'some other stuff inside another pdf file' 
+  #and if plain text output from the extractor applied to 'basic.pdf' and 'yet_another.pdf' respectively include 'in a pdf file' and 'some other stuff inside another pdf file' 
   def which_should_for_example_extract(content, file)
     @content_and_file_examples << [content,file[:from]]
   end
@@ -65,7 +65,7 @@ module FilterDSL
       #dup must be used, otherwise @command gets frozen. No idea why though....
       command_as_hash_or_string.invert[platform].dup
     else
-      block || raise("No command defined for this filter: #{description}")
+      block || raise("No command defined for this extractor: #{description}")
     end
     @command<<' 2>/dev/null' if (@command.is_a?(String) && platform==:on_linux && !@command.include?('|'))
   end

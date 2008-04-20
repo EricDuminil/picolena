@@ -4,7 +4,7 @@
 #   Installation: Ubuntu  xpdf-utils package
 #   Home page: http://www.foolabs.com/xpdf/
 
-Filter.new {
+PlainTextExtractor.new {
   every :pdf
   as "application/pdf"
   aka "Adobe Portable Document Format"

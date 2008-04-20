@@ -1,6 +1,6 @@
 require 'core_exts'
-require 'filter_DSL'
+require 'plain_text_extractor_DSL'
 
-Dir.glob(File.join(RAILS_ROOT,'lib/filters/*.rb')).each{|filter|
-  require filter
+Dir.glob(File.join(RAILS_ROOT,'lib/plain_text_extractors/*.rb')).each{|extractor|
+  require extractor
 }

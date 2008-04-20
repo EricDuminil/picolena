@@ -49,22 +49,22 @@ class Document
     @probably_unique_id||=complete_path.base26_hash
   end
   
-  # Returns true iff some Filter has been defined to convert it to plain text.
+  # Returns true iff some PlainTextExtractor has been defined to convert it to plain text.
   #  Document.new("presentation.pdf").supported? => true
   #  Document.new("presentation.some_weird_extension").supported? => false
   def supported?
-    Filter.supported_extensions.include?(self.ext_as_sym)
+    PlainTextExtractor.supported_extensions.include?(self.ext_as_sym)
   end
   
   # Retrieves content as it is *now*.
   def content
-    Filter.extract_content_from(complete_path)
+    PlainTextExtractor.extract_content_from(complete_path)
   end
   
   # Cache à la Google.
   # Returns content as it was at the time it was indexed.
   def cached
-    IndexReader.new[index_id][:content]
+    from_index[:content]
   end
   
   # FIXME: Not just date anymore.

@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "Host indexing system" do
- Filter.dependencies.each do |dependency|
+ PlainTextExtractor.dependencies.each do |dependency|
     it "should have #{dependency} installed" do
        IO.popen("which #{dependency}"){|i| i.read.should_not be_empty}
     end

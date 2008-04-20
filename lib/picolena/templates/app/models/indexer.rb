@@ -99,7 +99,7 @@ class Indexer
       fields = fields_for(complete_path)
       
       begin 
-        text = Filter.extract_content_from(complete_path)
+        text = PlainTextExtractor.extract_content_from(complete_path)
         raise "\tempty document #{complete_path}" if text.strip.empty?
         fields[:content] = text
       rescue => e

@@ -1,14 +1,14 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe "Filters" do
+describe "PlainTextExtractors" do
   before(:all) do
     IndexReader.ensure_existence
   end  
   
-  Filter.each{|filter|
-    filter.exts.each{|ext|
-      should_extract= "should be able to extract content from #{filter.description} (.#{ext})"
-      content_and_file_examples_for_this_ext=filter.content_and_file_examples.select{|content,file| File.ext_as_sym(file)==ext}
+  PlainTextExtractor.each{|extractor|
+    extractor.exts.each{|ext|
+      should_extract= "should be able to extract content from #{extractor.description} (.#{ext})"
+      content_and_file_examples_for_this_ext=extractor.content_and_file_examples.select{|content,file| File.ext_as_sym(file)==ext}
       unless content_and_file_examples_for_this_ext.empty? then
         it should_extract do
           content_and_file_examples_for_this_ext.each{|content_example,file_example|
@@ -21,7 +21,7 @@ describe "Filters" do
         end
       else
         ## It means that the spec for this extension file is "Not yet implemented"!
-        ## add this line to the corresponding filter in lib/filters:
+        ## add this line to the corresponding extractor in lib/extractors:
         # which_should_for_example_extract 'some content', :from => 'a file you could add in spec/test_dirs/indexed/'
         it should_extract
       end

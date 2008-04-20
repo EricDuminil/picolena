@@ -1,4 +1,4 @@
-Filter.new {
+PlainTextExtractor.new {
   every :html, :htm
   as "text/html"
   aka "HyperText Markup Language document"

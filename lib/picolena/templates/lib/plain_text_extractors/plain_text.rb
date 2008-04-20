@@ -1,4 +1,4 @@
-Filter.new {
+PlainTextExtractor.new {
   every :txt, :text, :tex, :for, :cpp, :c, :rb, :ins, :vee, :java, :no_extension
   as "application/plain"
   aka "plain text file"
@@ -14,7 +14,7 @@ Filter.new {
   # for dependencies spec
   which_requires 'iconv'
   
-  # to check if filter is working with basic plain text files
+  # to check if the extractor is working with basic plain text files
   which_should_for_example_extract 'Hello world!', :from => 'hello.rb'
   or_extract 'text inside!', :from => 'crossed.txt'
   or_extract 'txt inside!', :from => 'crossed.text'

@@ -4,7 +4,7 @@
 #   Installation: Ubuntu unrtf package
 #   http://www.gnu.org/software/unrtf/unrtf.html
 
-Filter.new {
+PlainTextExtractor.new {
   every :rtf
   as "application/rtf"
   aka "Microsoft Rich Text Format"

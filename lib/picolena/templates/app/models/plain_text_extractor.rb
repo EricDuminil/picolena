@@ -1,44 +1,44 @@
-require 'filter_DSL'
+require 'plain_text_extractor_DSL'
 
-class Filter
-  include FilterDSL
-  @@filters=[]
+class PlainTextExtractor
+  include PlainTextExtractorDSL
+  @@extractors=[]
   class<<self 
-    # Returns every defined filter
+    # Returns every defined extractor
     def all
-      @@filters
+      @@extractors
     end
     
-    # Add a filter to the filters list
-    def add(filter)
-      @@filters<<filter
+    # Add an extractor to the extractors list
+    def add(extractor)
+      @@extractors<<extractor
     end
     
-    # Calls block for each filter
+    # Calls block for each extractor
     def each(&block)
       all.each(&block)
     end
     
-    # Returns every required dependency for every defined filter
+    # Returns every required dependency for every defined extractor
     def dependencies
-      @@dependencies||=all.collect{|filter| filter.dependencies}.flatten.compact.uniq.sort
+      @@dependencies||=all.collect{|extractor| extractor.dependencies}.flatten.compact.uniq.sort
     end
     
     # Returns every supported file extensions
     def supported_extensions
-      @@supported_exts||=all.collect{|filter| filter.exts}.flatten.compact.uniq
+      @@supported_exts||=all.collect{|extractor| extractor.exts}.flatten.compact.uniq
     end
     
-    # Finds which filter should be used for a given file, according to its extension
+    # Finds which extractor should be used for a given file, according to its extension
     # Raises if the file is unsupported. 
     def find_by_filename(filename)
       ext=File.ext_as_sym(filename)
-      filter=all.find{|filter| filter.exts.include?(ext)} || raise(ArgumentError, "no convertor for #{filename}")
-      filter.source=filename
-      filter
+      extractor=all.find{|extractor| extractor.exts.include?(ext)} || raise(ArgumentError, "no convertor for #{filename}")
+      extractor.source=filename
+      extractor
     end
     
-    # Launches filter on given file and outputs plain text result
+    # Launches extractor on given file and outputs plain text result
     def extract_content_from(source)
       find_by_filename(source).extract_content
     end

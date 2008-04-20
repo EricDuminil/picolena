@@ -1,7 +1,7 @@
 # Open Document Spreadsheet to text conversion
 
 require 'zip/zip'
-Filter.new {
+PlainTextExtractor.new {
   every :ods
   as 'application/vnd.oasis.opendocument.spreadsheet'
   aka "Open Document Format for spreadsheet"
