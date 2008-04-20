@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
   
   # Returns 403 status in case of an unknown remote IP address
   def access_denied
-    render :text=>request.inspect, :status => 403
+    render :text=>"Access denied", :status => 403
   end
   
   # Redirects to documents_url in case route hasn't been recognised

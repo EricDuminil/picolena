@@ -1,8 +1,5 @@
 class IndexWriter < Ferret::Index::IndexWriter
-  def initialize(params={})
-    # TODO: Remove those debug lines!
-    # puts "##################################################################Creating Writer!!!!!"
-    
+  def initialize(params={})    
     # Add needed parameters
     params.merge!(:create_if_missing => true,
                   :path              => Picolena::IndexSavePath,

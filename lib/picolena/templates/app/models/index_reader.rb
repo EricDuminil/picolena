@@ -1,7 +1,5 @@
 class IndexReader < Ferret::Index::Index
   def initialize(params={})
-    # TODO: Remove those debug lines!
-    # puts "##################################################################Creating Reader!!!!!"
     # Add needed parameters
     params.merge!(:path => Picolena::IndexSavePath, :analyzer => Picolena::Analyzer)
     # Creates the IndexReader
