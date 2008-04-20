@@ -99,9 +99,11 @@ class Indexer
       fields = fields_for(complete_path)
       
       begin 
-        text = PlainTextExtractor.extract_content_from(complete_path)
+        text, lang = PlainTextExtractor.extract_content_and_language_from(complete_path)
         raise "\tempty document #{complete_path}" if text.strip.empty?
         fields[:content] = text
+        log :debug => "language found: #{lang}" if lang
+        fields[:lang] = lang
       rescue => e
         log :debug => "\tindexing without content: #{e.message}"
       end
@@ -133,7 +135,6 @@ class Indexer
     
     def log(hash)
       hash.each{|level,message|
-        puts "#{level} -> #{message}"
         IndexerLogger.send(level,message)
       }
     end  

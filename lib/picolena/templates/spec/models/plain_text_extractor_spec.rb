@@ -27,4 +27,16 @@ describe "PlainTextExtractors" do
       end
     }
   }
+  
+  it "should guess language when enough content is available" do
+    Document.new("spec/test_dirs/indexed/lang/goethe").lang.should == "de"
+    Document.new("spec/test_dirs/indexed/lang/shakespeare").lang.should == "en"
+    Document.new("spec/test_dirs/indexed/lang/lorca").lang.should == "es"
+    Document.new("spec/test_dirs/indexed/lang/hugo").lang.should == "fr"
+  end
+  
+  it "should not try to guess language when file is too small" do
+    Document.new("spec/test_dirs/indexed/basic/hello.rb").lang.should be_empty
+    Document.new("spec/test_dirs/indexed/README").lang.should be_empty
+  end
 end

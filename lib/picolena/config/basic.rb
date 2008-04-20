@@ -12,6 +12,14 @@ module Picolena
   Globalite.language = :en
   
   
+  # Is more than one language used in indexed documents?
+  # Picolena can try to recognise the language used, and save it in the index.
+  # It is then possible to look for documents according to their language.
+  #
+  # If every document is written in the same language, turning UseLanguageRecognition to false
+  # will speed up the indexing process
+  UseLanguageRecognition = true
+  
   # Specify which locale should be used by Ferret
   Ferret.locale = "en_US.UTF-8"
   

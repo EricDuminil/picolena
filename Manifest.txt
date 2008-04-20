@@ -21,11 +21,11 @@ lib/picolena/templates/app/controllers/documents_controller.rb
 lib/picolena/templates/app/helpers/application_helper.rb
 lib/picolena/templates/app/helpers/documents_helper.rb
 lib/picolena/templates/app/models/document.rb
-lib/picolena/templates/app/models/filter.rb
 lib/picolena/templates/app/models/finder.rb
 lib/picolena/templates/app/models/index_reader.rb
 lib/picolena/templates/app/models/index_writer.rb
 lib/picolena/templates/app/models/indexer.rb
+lib/picolena/templates/app/models/plain_text_extractor.rb
 lib/picolena/templates/app/models/query.rb
 lib/picolena/templates/app/views/documents/_document.html.haml
 lib/picolena/templates/app/views/documents/cached.html.haml
@@ -41,7 +41,7 @@ lib/picolena/templates/config/environments/test.rb
 lib/picolena/templates/config/initializers/001_load_custom_config.rb
 lib/picolena/templates/config/initializers/002_load_indexed_dirs.rb
 lib/picolena/templates/config/initializers/003_load_white_list_IPs.rb
-lib/picolena/templates/config/initializers/004_load_filters.rb
+lib/picolena/templates/config/initializers/004_load_plain_text_extractors.rb
 lib/picolena/templates/config/initializers/005_load_custom_title_and_names_and_links.rb
 lib/picolena/templates/config/initializers/006_load_icons.rb
 lib/picolena/templates/config/routes.rb
@@ -50,17 +50,17 @@ lib/picolena/templates/lang/ui/en.yml
 lib/picolena/templates/lang/ui/es.yml
 lib/picolena/templates/lang/ui/fr.yml
 lib/picolena/templates/lib/core_exts.rb
-lib/picolena/templates/lib/filter_DSL.rb
-lib/picolena/templates/lib/filters/adobe.pdf.rb
-lib/picolena/templates/lib/filters/html.rb
-lib/picolena/templates/lib/filters/ms.excel.rb
-lib/picolena/templates/lib/filters/ms.powerpoint.rb
-lib/picolena/templates/lib/filters/ms.rtf.rb
-lib/picolena/templates/lib/filters/ms.word.rb
-lib/picolena/templates/lib/filters/opendocument.presentation.rb
-lib/picolena/templates/lib/filters/opendocument.spreadsheet.rb
-lib/picolena/templates/lib/filters/opendocument.text.rb
-lib/picolena/templates/lib/filters/plain_text.rb
+lib/picolena/templates/lib/plain_text_extractor_DSL.rb
+lib/picolena/templates/lib/plain_text_extractors/adobe.pdf.rb
+lib/picolena/templates/lib/plain_text_extractors/html.rb
+lib/picolena/templates/lib/plain_text_extractors/ms.excel.rb
+lib/picolena/templates/lib/plain_text_extractors/ms.powerpoint.rb
+lib/picolena/templates/lib/plain_text_extractors/ms.rtf.rb
+lib/picolena/templates/lib/plain_text_extractors/ms.word.rb
+lib/picolena/templates/lib/plain_text_extractors/opendocument.presentation.rb
+lib/picolena/templates/lib/plain_text_extractors/opendocument.spreadsheet.rb
+lib/picolena/templates/lib/plain_text_extractors/opendocument.text.rb
+lib/picolena/templates/lib/plain_text_extractors/plain_text.rb
 lib/picolena/templates/lib/tasks/annotations.rake
 lib/picolena/templates/lib/tasks/index.rake
 lib/picolena/templates/lib/tasks/install_dependencies.rake
@@ -117,13 +117,13 @@ lib/picolena/templates/spec/helpers/application_helper_spec.rb
 lib/picolena/templates/spec/helpers/documents_helper_spec.rb
 lib/picolena/templates/spec/models/basic_finder_spec.rb
 lib/picolena/templates/spec/models/document_spec.rb
-lib/picolena/templates/spec/models/filters_spec.rb
 lib/picolena/templates/spec/models/finder_spec.rb
 lib/picolena/templates/spec/models/host_indexing_system_spec.rb
 lib/picolena/templates/spec/models/index_directories_spec.rb
 lib/picolena/templates/spec/models/index_reader_spec.rb
 lib/picolena/templates/spec/models/index_writer_spec.rb
 lib/picolena/templates/spec/models/indexer_spec.rb
+lib/picolena/templates/spec/models/plain_text_extractor_spec.rb
 lib/picolena/templates/spec/models/query_spec.rb
 lib/picolena/templates/spec/rcov.opts
 lib/picolena/templates/spec/spec.opts
@@ -149,6 +149,10 @@ lib/picolena/templates/spec/test_dirs/indexed/different_encodings/iso-8859-1.txt
 lib/picolena/templates/spec/test_dirs/indexed/different_encodings/iso-8859-15.txt
 lib/picolena/templates/spec/test_dirs/indexed/different_encodings/utf-8.txt
 lib/picolena/templates/spec/test_dirs/indexed/just_one_doc/for_test.txt
+lib/picolena/templates/spec/test_dirs/indexed/lang/goethe
+lib/picolena/templates/spec/test_dirs/indexed/lang/hugo
+lib/picolena/templates/spec/test_dirs/indexed/lang/lorca
+lib/picolena/templates/spec/test_dirs/indexed/lang/shakespeare
 lib/picolena/templates/spec/test_dirs/indexed/literature/Simulation of district heating systems for evaluation of real-time control strategies.pdf
 lib/picolena/templates/spec/test_dirs/indexed/literature/Types of malfunction in DH substations.doc
 lib/picolena/templates/spec/test_dirs/indexed/others/'weird'filename.txt

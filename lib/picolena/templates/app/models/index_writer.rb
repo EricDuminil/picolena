@@ -31,5 +31,6 @@ class IndexWriter < Ferret::Index::IndexWriter
     field_infos.add_field(:filetype,           :store => :no,  :index => :yes, :boost => 1.5)
     field_infos.add_field(:date,               :store => :yes, :index => :yes)
     field_infos.add_field(:probably_unique_id, :store => :no,  :index => :yes)
+    field_infos.add_field(:lang,               :store => :yes,  :index => :yes)
   end 
 end

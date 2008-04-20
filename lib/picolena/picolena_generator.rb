@@ -136,7 +136,7 @@ EOS
     doc
     lang/ui
     lib
-    lib/filters
+    lib/plain_text_extractors
     lib/tasks
     log
     public
@@ -156,6 +156,7 @@ EOS
     spec/test_dirs/indexed/basic
     spec/test_dirs/indexed/different_encodings
     spec/test_dirs/indexed/just_one_doc
+    spec/test_dirs/indexed/lang
     spec/test_dirs/indexed/literature
     spec/test_dirs/indexed/others
     spec/test_dirs/indexed/others/nested

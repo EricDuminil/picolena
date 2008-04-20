@@ -78,6 +78,11 @@ class Document
     from_index[:date].to_i
   end
   
+  # Returns language.
+  def lang
+    from_index[:lang]
+  end
+  
   # Returns the id with which the document is indexed.
   def index_id
     @index_id ||= Document.find_by_complete_path(complete_path).index_id

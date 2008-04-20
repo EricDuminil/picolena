@@ -41,6 +41,10 @@ class PlainTextExtractor
     def extract_content_from(source)
       find_by_filename(source).extract_content
     end
+    
+    def extract_content_and_language_from(source)
+      find_by_filename(source).extract_content_and_language
+    end
   end
 
   attr_accessor :source
@@ -89,5 +93,26 @@ class PlainTextExtractor
       # with source file as parameter.
       command.call(source)
     end
-  end    
+  end
+  
+  # Returns plain text content and language of source file,
+  # using mguesser to guess used language.
+  # This method only returns probable language if the content is bigger than 500 chars
+  # and if probability score is higher than 90%.
+  def extract_content_and_language
+    content=extract_content
+    # Language recognition is too unreliable for small files.
+    return [content, nil] unless Picolena::UseLanguageRecognition && content.size > 500
+    language=IO.popen("mguesser -n1",'w+'){|lang_guesser|
+      lang_guesser.write content
+      lang_guesser.close_write
+      output=lang_guesser.read
+      if output=~/^([01]\.\d+)\t(\w+)\t(\w+)/ then
+        score, lang, encoding = $1.to_f, $2, $3
+        # Language recognition isn't reliable if score is too low.
+        lang unless score<0.9
+      end
+    }
+    [content,language]
+  end
 end
