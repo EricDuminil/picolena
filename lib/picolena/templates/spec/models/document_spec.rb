@@ -47,7 +47,7 @@ describe Document do
  
   it "should know its alias_path" do
     @valid_random_doc.should respond_to(:alias_path)
-    @valid_random_doc.alias_path.starts_with?("http://picolena.devjavu.com/browser/trunk/spec/test_dirs/indexed").should be_true
+    @valid_random_doc.alias_path.starts_with?("http://picolena.devjavu.com/browser/trunk/lib/picolena/templates/spec/test_dirs/indexed").should be_true
   end
   
   it "should let finder specify its score" do

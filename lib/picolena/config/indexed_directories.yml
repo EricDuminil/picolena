@@ -5,6 +5,6 @@ development:
   #alias path could be any smb, http, ftp or local directory that is available to the end-user.
   <%= directories_to_index %>
 test:
-  "spec/test_dirs/indexed": "http://picolena.devjavu.com/browser/trunk/spec/test_dirs/indexed"
+  "spec/test_dirs/indexed": "http://picolena.devjavu.com/browser/trunk/lib/picolena/templates/spec/test_dirs/indexed"
 production:
   <%= directories_to_index %>
