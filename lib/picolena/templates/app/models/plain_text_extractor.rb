@@ -2,16 +2,15 @@ require 'plain_text_extractor_DSL'
 
 class PlainTextExtractor
   include PlainTextExtractorDSL
-  @@extractors=[]
   class<<self 
     # Returns every defined extractor
     def all
-      @@extractors
+      Picolena::Extractors
     end
     
     # Add an extractor to the extractors list
     def add(extractor)
-      @@extractors<<extractor
+      all<<extractor
     end
     
     # Calls block for each extractor
