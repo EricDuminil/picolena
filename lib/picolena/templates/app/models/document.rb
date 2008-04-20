@@ -71,7 +71,7 @@ class Document
   # Returns the last modification date before the document got indexed.
   # Useful to know how old a document is, and to which version the cache corresponds.
   def date
-    from_index[:date].sub(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,'\1-\2-\3 \4:\5:\6')
+    from_index[:date].sub(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,'\1-\2-\3 \4:\5:\6')
   end
   
   def mtime
