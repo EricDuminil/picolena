@@ -45,6 +45,10 @@ class PlainTextExtractor
     def extract_content_and_language_from(source)
       find_by_filename(source).extract_content_and_language
     end
+    
+    def language_guesser
+      @@language_guesser||=('mguesser -n1' unless IO.popen("which mguesser"){|i| i.read}.empty?)
+    end
   end
 
   attr_accessor :source
@@ -102,8 +106,8 @@ class PlainTextExtractor
   def extract_content_and_language
     content=extract_content
     # Language recognition is too unreliable for small files.
-    return [content, nil] unless Picolena::UseLanguageRecognition && content.size > 500
-    language=IO.popen("mguesser -n1",'w+'){|lang_guesser|
+    return [content, nil] unless Picolena::UseLanguageRecognition && PlainTextExtractor.language_guesser && content.size > 500
+    language=IO.popen(PlainTextExtractor.language_guesser,'w+'){|lang_guesser|
       lang_guesser.write content
       lang_guesser.close_write
       output=lang_guesser.read

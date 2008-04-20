@@ -7,6 +7,10 @@ describe "Host indexing system" do
     end
   end
   
+  it "should have a language guesser installed" do
+    PlainTextExtractor.language_guesser.should_not be_nil
+  end
+  
   it "should know which IP addresses are allowed (config/custom/white_list_ip.yml)" do
     File.should be_readable('config/custom/white_list_ip.yml')
   end
