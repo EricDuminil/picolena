@@ -34,9 +34,25 @@ module Enumerable
 end
 
 class Array
-  def in_transposed_chunks(n)
-    s=self.size
-    i=n-s%n
+  # Returns a partition of n arrays.
+  # Transposition is used to avoid getting arrays that are too different.
+  #   >> (0..17).to_a.in_transposed_slices(5)
+  #   => [[0, 5, 10, 15], [1, 6, 11, 16], [2, 7, 12, 17], [3, 8, 13], [4, 9, 14]]
+  # while
+  #   >> (0..17).enum_slice(5).to_a
+  #   => [[0, 1, 2, 3, 4], [5, 6, 7, 8, 9], [10, 11, 12, 13, 14], [15, 16, 17]]
+  #
+  # If some folders contain big files and some others contain small ones,
+  # every indexing thread will get some of both!
+  def in_transposed_slices(n)
+    # no need to compute anything if n==1
+    return [self] if n==1
+    # Array#transpose would raise if Array is not a square array of arrays.
+    i=n-self.size%n
+    # Adds nils so that size is a multiple of n,
+    # cuts array in slices of size n,
+    # transposes to get n slices,
+    # and removes added nils.
     (self+[nil]*i).enum_slice(n).to_a.transpose.collect{|e| e.compact}
   end
 end

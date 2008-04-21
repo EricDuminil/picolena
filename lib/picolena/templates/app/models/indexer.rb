@@ -59,7 +59,7 @@ class Indexer
         File.file?(filename) && filename !~ @@exclude
       }
       
-      indexing_list_chunks=indexing_list.in_transposed_chunks(threads_number)
+      indexing_list_chunks=indexing_list.in_transposed_slices(threads_number)
       
       indexing_list_chunks.each_with_thread{|chunk|
         chunk.each{|filename|
