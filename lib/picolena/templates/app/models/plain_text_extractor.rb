@@ -28,13 +28,19 @@ class PlainTextExtractor
       @@supported_exts||=all.collect{|extractor| extractor.exts}.flatten.compact.uniq
     end
     
-    # Finds which extractor should be used for a given file, according to its extension
+    # Finds which extractor should be used for a given file.
     # Raises if the file is unsupported. 
     def find_by_filename(filename)
       ext=File.ext_as_sym(filename)
-      found_extractor=all.find{|extractor| extractor.exts.include?(ext)} || raise(ArgumentError, "no convertor for #{filename}")
-      found_extractor.source=filename
-      found_extractor
+      returning find_by_extension(ext) do |found_extractor|
+        found_extractor.source=filename
+      end
+    end
+    
+    # Finds which extractor should be used for a given file, according to its extension
+    # Raises if the file is unsupported.
+    def find_by_extension(ext)
+      all.find{|extractor| extractor.exts.include?(ext)} || raise(ArgumentError, "no convertor for #{filename}")
     end
     
     # Launches extractor on given file and outputs plain text result
