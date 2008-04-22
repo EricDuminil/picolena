@@ -13,11 +13,6 @@ class PlainTextExtractor
       all<<extractor
     end
     
-    # Calls block for each extractor
-    def each(&block)
-      all.each(&block)
-    end
-    
     # Returns every required dependency for every defined extractor
     def dependencies
       @@dependencies||=all.collect{|extractor| extractor.dependencies}.flatten.compact.uniq.sort

@@ -5,7 +5,7 @@ describe "PlainTextExtractors" do
     IndexReader.ensure_existence
   end  
   
-  PlainTextExtractor.each{|extractor|
+  PlainTextExtractor.all.each{|extractor|
     extractor.exts.each{|ext|
       should_extract= "should be able to extract content from #{extractor.description} (.#{ext})"
       content_and_file_examples_for_this_ext=extractor.content_and_file_examples.select{|content,file| File.ext_as_sym(file)==ext}
