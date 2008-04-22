@@ -48,10 +48,13 @@ class PlainTextExtractor
       find_by_filename(source).extract_content
     end
     
+    # Launches extractor on given file and outputs plain text result and language (if found)
     def extract_content_and_language_from(source)
       find_by_filename(source).extract_content_and_language
     end
     
+    # Returns which language guesser should be used by the system.
+    # Returns nil if none is found.
     def language_guesser
       @@language_guesser||=('mguesser -n1' unless IO.popen("which mguesser"){|i| i.read}.empty?)
     end
@@ -111,8 +114,12 @@ class PlainTextExtractor
   # and if probability score is higher than 90%.
   def extract_content_and_language
     content=extract_content
-    # Language recognition is too unreliable for small files.
-    return [content, nil] unless Picolena::UseLanguageRecognition && PlainTextExtractor.language_guesser && content.size > 500
+    return [content, nil] unless [# Is LanguageRecognition turned on? (cf config/custom/picolena.rb)
+                                  Picolena::UseLanguageRecognition,
+                                  # Is a language guesser already installed?
+                                  PlainTextExtractor.language_guesser,
+                                  # Language recognition is too unreliable for small files.
+                                  content.size > 500].all?
     language=IO.popen(PlainTextExtractor.language_guesser,'w+'){|lang_guesser|
       lang_guesser.write content
       lang_guesser.close_write
