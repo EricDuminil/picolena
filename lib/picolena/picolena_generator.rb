@@ -163,7 +163,6 @@ EOS
     spec/test_dirs/indexed/yet_another_dir
     spec/test_dirs/not_indexed
     spec/views
-    spec/views/application
     tmp/cache
     tmp/ferret_indexes
     tmp/pids
