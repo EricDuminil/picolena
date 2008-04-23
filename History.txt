@@ -1,6 +1,6 @@
-== 0.1.4  2008-04-
-
-
+== 0.1.4  2008-04-23
+* 1 minor enhancement:
+  * minimal MacOS support
 
 == 0.1.3  2008-04-20
 

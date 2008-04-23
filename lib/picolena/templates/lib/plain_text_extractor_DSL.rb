@@ -54,19 +54,37 @@ module PlainTextExtractorDSL
     #TODO: Find a better way to manage platforms, and include OS X, Vista, BSD...
     platform=case RUBY_PLATFORM
     when /linux/
-      :on_linux
+      :linux
     when /win/
-      :on_windows
+      :windows
+    when /darwin/
+      :mac_os
     end
     @command=case command_as_hash_or_string
     when String
       command_as_hash_or_string
     when Hash
-      #dup must be used, otherwise @command gets frozen. No idea why though....
-      command_as_hash_or_string.invert[platform].dup
+      # Allows to write
+      #     with "pdftotext -enc UTF-8 SOURCE -" => :on_linux_and_mac_os,
+      #          "some other command" => :on_windows
+      #
+      # On linux and mac_os platforms, it returns "pdftotext -enc UTF-8 SOURCE -",
+      # on windows, it returns "some other command"
+      #
+      # If commands for linux & mac os were different : 
+      #     with "some command"        => :on_linux,
+      #          "another command"     => :on_mac_os,
+      #          "yet another command" => :on_windows
+      #
+      #TODO: Make it clearer and more robust.
+      #NOTE: What to do when no command is defined for a given platform?
+      command_as_hash_or_string.invert.find{|platforms,command|
+        platforms.to_s.split(/_?and_?/i).collect{|on_platform| on_platform.sub(/on_/,'').to_sym}.include?(platform)
+      }.last.dup
     else
       block || raise("No command defined for this extractor: #{description}")
     end
-    @command<<' 2>/dev/null' if (@command.is_a?(String) && platform==:on_linux && !@command.include?('|'))
+    # TODO, replace it with Open3 or something.
+    @command<<' 2>/dev/null' if (@command.is_a?(String) && platform.to_s=~/(linux|mac_os)/ && !@command.include?('|'))
   end
 end

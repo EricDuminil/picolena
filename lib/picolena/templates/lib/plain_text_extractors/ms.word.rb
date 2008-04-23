@@ -4,7 +4,8 @@ PlainTextExtractor.new {
   every :doc, :dot
   as "application/msword"
   aka "Microsoft Office Word document"
-  with "antiword SOURCE" => :on_linux, "some other command" => :on_windows
+  with "antiword SOURCE" => :on_linux_and_mac_os,
+       "some other command" => :on_windows
   which_should_for_example_extract 'district heating', :from => 'Types of malfunction in DH substations.doc'
   or_extract 'Basic Word template for Picolena specs', :from => 'office2003-word-template.dot'
 }
