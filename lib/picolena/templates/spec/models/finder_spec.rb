@@ -90,6 +90,7 @@ describe Finder do
   end
   
   it "should find documents according to their modification date" do
+    #FIXME: Specs don't pass in /tmp folder. They do pass in any other directory, though. Why???
     Finder.new("date:<1982").matching_documents.should be_empty
     Finder.new("19831209*").matching_document.basename.should == "office2003-word-template"
     Finder.new("date:<1983").matching_document.filename.should == "basic.pdf"
