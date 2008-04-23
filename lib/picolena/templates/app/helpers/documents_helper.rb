@@ -37,6 +37,10 @@ module DocumentsHelper
     }) if document.matching_content
   end
   
+  def language_icon_for(document)
+    (lang=document.lang) && image_tag("flags/#{lang}.png")
+  end
+  
   # Returns icon and filename for any given document.
   def icon_and_filename_for(document)
     [icon_for(document.extname),document.filename].join("&nbsp;")
