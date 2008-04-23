@@ -35,7 +35,7 @@ class PlainTextExtractor
     # Finds which extractor should be used for a given file, according to its extension
     # Raises if the file is unsupported.
     def find_by_extension(ext)
-      all.find{|extractor| extractor.exts.include?(ext)} || raise(ArgumentError, "no convertor for #{filename}")
+      all.find{|extractor| extractor.exts.include?(ext)} || raise(ArgumentError, "no convertor for .#{ext}")
     end
     
     # Launches extractor on given file and outputs plain text result
