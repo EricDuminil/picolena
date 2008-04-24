@@ -38,7 +38,7 @@ module DocumentsHelper
   end
   
   def language_icon_for(document)
-    (lang=document.language) && image_tag("flags/#{lang}.png")
+    (lang=document.language) && link_to(image_tag("flags/#{lang}.png"), document_url('lang:'<<lang))
   end
   
   # Returns icon and filename for any given document.
