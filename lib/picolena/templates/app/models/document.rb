@@ -71,21 +71,33 @@ class Document
   # Returns the last modification date before the document got indexed.
   # Useful to know how old a document is, and to which version the cache corresponds.
   def date
-    from_index[:date].sub(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,'\1-\2-\3 \4:\5:\6')
+    from_index[:modified].sub(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,'\1-\2-\3 \4:\5:\6')
   end
   
   def mtime
-    from_index[:date].to_i
+    from_index[:modified].to_i
   end
   
   # Returns language.
-  def lang
-    from_index[:lang]
+  def language
+    from_index[:language]
   end
   
   # Returns the id with which the document is indexed.
   def index_id
-    @index_id ||= Document.find_by_complete_path(complete_path).index_id
+    @index_id ||= Finder.term_search(:complete_path, complete_path).doc
+  end
+  
+  # Fields that are shared between every document.
+  def self.default_fields_for(complete_path)
+    {
+      :complete_path      => complete_path,
+      :probably_unique_id => complete_path.base26_hash,
+      :filename           => File.basename(complete_path),
+      :basename           => File.basename(complete_path, File.extname(complete_path)).gsub(/_/,' '),
+      :filetype           => File.extname(complete_path),
+      :modified           => File.mtime(complete_path).strftime("%Y%m%d%H%M%S")
+    }             
   end
   
   private
@@ -93,17 +105,14 @@ class Document
   # Retrieves the document from the index.
   # Useful to get meta-info about it.
   def from_index
-    IndexReader.new[index_id]
+    Indexer.index[index_id]
   end
   
   def self.find_by_unique_id(some_id)
-    Finder.new("probably_unique_id:"<<some_id).matching_document
+    doc_id=Finder.term_search(:probably_unique_id, some_id).doc
+    new(Indexer.index[doc_id][:complete_path])
   end
-  
-  def self.find_by_complete_path(complete_path)
-    Finder.new('complete_path:"'<<complete_path<<'"').matching_document
-  end
-  
+ 
   def in_indexed_directory?
     !indexed_directory.nil?
   end

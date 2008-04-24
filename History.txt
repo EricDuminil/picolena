@@ -1,6 +1,13 @@
 == 0.1.5  2008-04-
+
+* 1 major enhancement:
+  * yet another Indexer & Index rewrite
+
 * 1 minor enhancement:
   * flags to indicate found language
+  
+* bug fixes:
+  * No more (or just less?) index lock errors
 
 == 0.1.4  2008-04-23
 * 1 minor enhancement:

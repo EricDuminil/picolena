@@ -109,12 +109,12 @@ class PlainTextExtractor
   # and if probability score is higher than 90%.
   def extract_content_and_language
     content=extract_content
-    return [content, nil] unless [# Is LanguageRecognition turned on? (cf config/custom/picolena.rb)
-                                  Picolena::UseLanguageRecognition,
-                                  # Is a language guesser already installed?
-                                  PlainTextExtractor.language_guesser,
-                                  # Language recognition is too unreliable for small files.
-                                  content.size > 500].all?
+    return {:content => content} unless [# Is LanguageRecognition turned on? (cf config/custom/picolena.rb)
+                                         Picolena::UseLanguageRecognition,
+                                         # Is a language guesser already installed?
+                                         PlainTextExtractor.language_guesser,
+                                         # Language recognition is too unreliable for small files.
+                                         content.size > 500].all?
     language=IO.popen(PlainTextExtractor.language_guesser,'w+'){|lang_guesser|
       lang_guesser.write content
       lang_guesser.close_write
@@ -125,6 +125,6 @@ class PlainTextExtractor
         lang unless score<0.9
       end
     }
-    [content,language]
+    {:content => content, :language => language}
   end
 end

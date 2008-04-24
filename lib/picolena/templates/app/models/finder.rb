@@ -2,18 +2,16 @@ class Finder
   attr_reader :query
   
   def index
-    # caching index @@index ||=  
-    # causes ferret-0.11.6/lib/ferret/index.rb:768: [BUG] Segmentation fault
-    IndexReader.new
+    @@index ||= Indexer.index
   end
   
   def initialize(raw_query,page=1,results_per_page=Picolena::ResultsPerPage)
     @query = Query.extract_from(raw_query)
     @raw_query= raw_query
-    IndexReader.ensure_existence
+    Indexer.ensure_index_existence
     @per_page=results_per_page
     @offset=(page.to_i-1)*results_per_page
-    index.should_have_documents
+    index_should_have_documents
   end
   
   def execute!
@@ -31,9 +29,9 @@ class Finder
         found_doc.score=score
         found_doc.index_id=index_id
         @matching_documents<<found_doc
-        rescue Errno::ENOENT
-          #"File has been moved/deleted!"
-        end
+      rescue Errno::ENOENT
+        #"File has been moved/deleted!"
+      end
       }
       @executed=true
       @time_needed=Time.now-start
@@ -60,14 +58,36 @@ class Finder
    # Returns matching document for any given query only if
    # exactly one document is found.
    # Raises otherwise.
-   def matching_document
-     case matching_documents.size
-     when 0
-       raise IndexError, "No document found"
-     when 1
-       matching_documents.first
-     else
-       raise IndexError, "More than one document found"
-     end
-   end
+  def matching_document
+    case matching_documents.size
+    when 0
+      raise IndexError, "No document found"
+    when 1
+      matching_documents.first
+    else
+      raise IndexError, "More than one document found"
+    end
+  end
+  
+  class<<self  
+    def searcher
+      @@searcher ||= Ferret::Search::Searcher.new(Picolena::IndexSavePath)
+    end
+    
+    def term_search(field,term)
+      query = Ferret::Search::TermQuery.new(field,term)
+      searcher.search(query).hits.first
+    end
+
+    def reload!
+      @@searcher = nil
+      @@index    = nil
+    end
+  end
+  
+  private
+  
+  def index_should_have_documents
+    raise IndexError, "no document found" unless index.size > 0
+  end
 end

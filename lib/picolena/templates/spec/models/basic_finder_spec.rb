@@ -10,14 +10,14 @@ describe "Finder without index on disk" do
   end
   
   before(:each) do
-    IndexWriter.remove
+    Indexer.clear!
   end
   
   it "should create index" do
     Picolena::IndexedDirectories.replace({'spec/test_dirs/indexed/just_one_doc'=>'//justonedoc/'})
-    lambda {@finder_with_new_index=Finder.new("test moi")}.should change(IndexReader, :exists?).from(false).to(true)
+    lambda {@finder_with_new_index=Finder.new("test moi")}.should change(Indexer, :index_exists?).from(false).to(true)
     File.exists?(File.join(@new_index_path,'_0.cfs')).should be_true
-    IndexReader.new.size.should >0
+    Indexer.index.size.should >0
   end
   
   it "should raise if index is still empty after trying to create it" do
@@ -35,16 +35,19 @@ end
 
 fields={
   # description => key
-  :content=>:content,
-  :basename=>:basename,
-  :filename=>:file,
-  :extension => :filetype,
-  :modification_time=>:date
+  :content            => :content,
+  :complete_path      => :complete_path,
+  :basename           => :basename,
+  :filename           => :filename,
+  :extension          => :filetype,
+  :modification_time  => :modified,
+  :probably_unique_id => :probably_unique_id,
+  :language           => :language
 }
 
 describe "Basic Finder" do  
   before(:all) do
-    Indexer.index_every_directory(update=false)
+    Indexer.index_every_directory(remove_first=true)
   end
   
   it "should accept one parameter as query, and 2 optionals for paginating" do
@@ -82,7 +85,7 @@ describe "Basic Finder" do
   
   fields.each_pair do |description,field_name|
     it "should index #{description} as :#{field_name}" do
-      IndexReader.new.field_infos[field_name].should be_an_instance_of(Ferret::Index::FieldInfo)
+      Indexer.index.field_infos[field_name].should be_an_instance_of(Ferret::Index::FieldInfo)
     end
   end
   

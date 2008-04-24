@@ -13,9 +13,11 @@ class Query
        /\b#{:AND.l}\b/=>'AND',
        /\b#{:OR.l}\b/=>'OR',
        /\b#{:NOT.l}\b/=>'NOT',
+       /(#{:filename.l}):/=>'filename:',
        /(#{:filetype.l}):/=>'filetype:',
        /#{:content.l}:/ => 'content:',
-       /#{:date.l}:/ => 'date:',
+       /(#{:modified.l}):/ => 'modified:',
+       /(#{:language.l}):/ => 'language:',
        /\b#{:LIKE.l}\s+(\S+)/=>'\1~'
       }
       to_en.inject(raw_query){|mem,non_english_to_english_keyword|
@@ -25,7 +27,7 @@ class Query
     
     # Instantiates a QueryParser once, and keeps it in cache.
     def parser
-      @@parser ||= Ferret::QueryParser.new(:fields => [:content, :file, :basename, :filetype, :date], :or_default => false, :analyzer=>Picolena::Analyzer)
+      @@parser ||= Ferret::QueryParser.new(:fields => [:content, :filename, :basename, :filetype, :modified], :or_default => false, :analyzer=>Picolena::Analyzer)
     end
   end
 end

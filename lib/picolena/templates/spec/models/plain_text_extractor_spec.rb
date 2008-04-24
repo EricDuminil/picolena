@@ -2,7 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 describe "PlainTextExtractors" do
   before(:all) do
-    IndexReader.ensure_existence
+    Indexer.ensure_index_existence
   end  
   
   PlainTextExtractor.all.each{|extractor|
@@ -29,14 +29,14 @@ describe "PlainTextExtractors" do
   }
   
   it "should guess language when enough content is available" do
-    Document.new("spec/test_dirs/indexed/lang/goethe").lang.should == "de"
-    Document.new("spec/test_dirs/indexed/lang/shakespeare").lang.should == "en"
-    Document.new("spec/test_dirs/indexed/lang/lorca").lang.should == "es"
-    Document.new("spec/test_dirs/indexed/lang/hugo").lang.should == "fr"
+    Document.new("spec/test_dirs/indexed/lang/goethe").language.should == "de"
+    Document.new("spec/test_dirs/indexed/lang/shakespeare").language.should == "en"
+    Document.new("spec/test_dirs/indexed/lang/lorca").language.should == "es"
+    Document.new("spec/test_dirs/indexed/lang/hugo").language.should == "fr"
   end
   
   it "should not try to guess language when file is too small" do
-    Document.new("spec/test_dirs/indexed/basic/hello.rb").lang.should be_empty
-    Document.new("spec/test_dirs/indexed/README").lang.should be_empty
+    Document.new("spec/test_dirs/indexed/basic/hello.rb").language.should be_nil
+    Document.new("spec/test_dirs/indexed/README").language.should be_nil
   end
 end

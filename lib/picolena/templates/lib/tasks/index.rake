@@ -2,17 +2,17 @@ desc 'Ferret index maintenance tasks'
 namespace :index do  
   desc 'Clear indexes'
   task :clear => :environment do
-    IndexWriter.remove
+    Indexer.clear! :all
   end
   
   desc 'Create index'
   task :create => :environment do
-    Indexer.index_every_directory(update=false)
+    Indexer.index_every_directory(remove_first=true)
   end
 
   desc 'Update index'
   task :update => :environment do
-    Indexer.index_every_directory(update=true)
+    Indexer.index_every_directory
   end
   
   # Search index with query "some query" :

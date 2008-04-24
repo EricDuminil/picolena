@@ -19,6 +19,8 @@ NOT: NOT
 LIKE: LIKE
 
 ## Fields
+filename: filename|file
 filetype: filetype|ext
 content: content
-date: year|date
+modified: year|date|modified
+language: lang|language

@@ -5,54 +5,22 @@ class Indexer
   @@max_threads_number = 8
   
   class << self
-    def fields_for(complete_path)
-      {
-        :complete_path      => complete_path,
-        :probably_unique_id => complete_path.base26_hash,
-        :file               => File.basename(complete_path),
-        :basename           => File.basename(complete_path, File.extname(complete_path)).gsub(/_/,' '),
-        :filetype           => File.extname(complete_path),
-        :date               => File.mtime(complete_path).strftime("%Y%m%d%H%M%S")
-      }      
-    end    
-    
-    def index_every_directory(update=true)
+    def index_every_directory(remove_first=false)
+      clear! if remove_first
+      # Forces Finder.searcher and Finder.index to be reloaded, by removing them from the cache.
+      Finder.reload!
       log :debug => "Indexing every directory"
-      
-      
       start=Time.now
-      @update = update
-      reset! unless update
-      
       Picolena::IndexedDirectories.each{|dir, alias_dir|
         index_directory_with_multithreads(dir)
       }
-      # FIXME: with those 2 lines,
+      log :debug => "Now optimizing index"
       writer.optimize
-      writer.close
-      # launching Indexer.index_every_directory twice in a row
-      # would raise a SEGFAULT:
-      # picolena/lib/picolena/templates/app/models/indexer.rb:27: [BUG] Segmentation fault
-      # ruby 1.8.6 (2007-06-07) [i486-linux]
-      #
-      # Aborted (core dumped)
-      #
-      # But without those 2 lines, specs don't pass anymore.
-      #
       log :debug => "Indexing done in #{Time.now-start} s."
     end
     
     def index_directory_with_multithreads(dir)
-      # FIXME: Don't know why, but if more than one thread is created while update the index,
-      # indexer raises:
-      #
-      # current thread not owner
-      # /usr/lib/ruby/1.8/monitor.rb:278:in `mon_check_owner'
-      # /home/www/picolena/lib/picolena/templates/lib/core_exts.rb:32:in `join'
-      # ...
-      #
-      # So Index creation is multithreaded, Index update is monothreaded.
-      threads_number = @update ? 1 : @@max_threads_number
+      threads_number = @@max_threads_number
       log :debug => "Indexing #{dir}, #{threads_number} thread(s)"
       
       indexing_list=Dir[File.join(dir,"**/*")].select{|filename|
@@ -61,82 +29,94 @@ class Indexer
       
       indexing_list_chunks=indexing_list.in_transposed_slices(threads_number)
       
+      # It initializes an IndexWriter before launching multithreaded
+      # indexing. Otherwise, two threads could try to instantiate
+      # an IndexWriter at the same time, and get a
+      #  Ferret::Store::Lock::LockError
+      writer
+      
       indexing_list_chunks.each_with_thread{|chunk|
         chunk.each{|filename|
-          add_or_update_file(filename)
+          add_file(filename)
         }
       }
     end
     
-    def add_or_update_file(complete_path)
-      should_be_added = true
-      if @update then
-        log :debug =>  "What to do with #{complete_path} ?"
-        occurences = reader.occurences_number(complete_path) 
-        log :debug =>  "\tappears #{occurences} times in the index"
-        case occurences
-          when 0
-          #Nothing to do here, the file will be added.
-          when 1
-          d=Document.find_by_complete_path(complete_path)
-          if File.mtime(complete_path).strftime("%Y%m%d%H%M%S").to_i > d.mtime then
-            log :debug => "\thas been modified"
-            delete_file(complete_path)
-          else
-            should_be_added = false
-            log :debug => "\thas not been modified. leaving it"
-          end
-        else
-          delete_file(complete_path)
-        end
-      end
-      add_file(complete_path) if should_be_added
-    end
-    
     def add_file(complete_path)
-      log :debug => "Adding #{complete_path}"
-      mime_type=File.mime(complete_path)
-      fields = fields_for(complete_path)
-      
-      begin 
-        text, lang = PlainTextExtractor.extract_content_and_language_from(complete_path)
-        raise "\tempty document #{complete_path}" if text.strip.empty?
-        fields[:content] = text
-        log :debug => "language found: #{lang}" if lang
-        fields[:lang] = lang
+      default_fields = Document.default_fields_for(complete_path)
+      begin
+        document = PlainTextExtractor.extract_content_and_language_from(complete_path)
+        raise "empty document #{complete_path}" if document[:content].strip.empty?
+        document.merge! default_fields
+        log :debug => ["Added : #{complete_path}",document[:language] ? " (#{document[:language]})" : ""].join
       rescue => e
         log :debug => "\tindexing without content: #{e.message}"
+        document = default_fields
       end
-      
-      writer << fields
+      writer << document
     end
     
+    # Ensures writer is closed, and removes every index file for RAILS_ENV.
+    def clear!(all=false)
+      close
+      to_remove=all ? Picolena::IndexesSavePath : Picolena::IndexSavePath
+      Dir.glob(File.join(to_remove,'**/*')).each{|f| FileUtils.rm(f) if File.file?(f)}
+    end
+    
+    # Closes the writer and
+    # ensures that a new IndexWriter is instantiated next time writer is called.
+    def close
+      @@writer.close rescue nil
+      # Ferret will SEGFAULT otherwise.
+      @@writer = nil
+    end
+    
+    # Only one IndexWriter should be instantiated.
+    # If one already exists, returns it.
+    # Creates it otherwise.
     def writer
-      @@writer ||= IndexWriter.new
+      @@writer ||= Ferret::Index::IndexWriter.new(default_index_params)
     end
     
-    def reader
-      @@reader ||= IndexReader.new
+    def index
+      Ferret::Index::Index.new(default_index_params)  
     end
     
-    def reset!
-      log :debug => "Resetting Index"
-      @@writer=nil
-      @@reader=nil
-      IndexWriter.remove
-    end
-    
-    def delete_file(complete_path)
-      log :debug => "\tRemoving from index"
-      reader.delete_by_complete_path(complete_path)
+    def ensure_index_existence
+      index_every_directory(:remove_first) unless index_exists? or RAILS_ENV=="production"
     end
     
     private
     
+    def index_exists?
+      index_filename and File.exists?(index_filename)
+    end
+    
+    def index_filename
+      Dir.glob(File.join(Picolena::IndexSavePath,'*.cfs')).first
+    end
+
     def log(hash)
       hash.each{|level,message|
         IndexerLogger.send(level,message)
       }
-    end  
+    end
+    
+    def default_index_params
+      {:path => Picolena::IndexSavePath, :analyzer => Picolena::Analyzer, :field_infos => default_field_infos}
+    end
+    
+    def default_field_infos
+      returning Ferret::Index::FieldInfos.new do |field_infos|
+        field_infos.add_field(:complete_path,      :store => :yes, :index => :untokenized)
+        field_infos.add_field(:content,            :store => :yes, :index => :yes)
+        field_infos.add_field(:basename,           :store => :no,  :index => :yes, :boost => 1.5)
+        field_infos.add_field(:filename,           :store => :no,  :index => :yes, :boost => 1.5)
+        field_infos.add_field(:filetype,           :store => :no,  :index => :yes, :boost => 1.5)
+        field_infos.add_field(:modified,           :store => :yes, :index => :untokenized)
+        field_infos.add_field(:probably_unique_id, :store => :no,  :index => :yes)
+        field_infos.add_field(:language,           :store => :yes, :index => :yes)
+      end
+    end
   end
 end

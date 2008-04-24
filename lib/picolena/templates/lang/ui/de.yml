@@ -19,6 +19,8 @@ NOT: NICHT
 LIKE: WIE
 
 ## Fields
+filename: filename|file|datei
 filetype: erweiterung|ext
 content: inhalt
-date: jahr|zeit
+modified: jahr|zeit|geändert
+language: lang|sprache

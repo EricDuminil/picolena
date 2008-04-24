@@ -19,6 +19,8 @@ NOT: "NO"
 LIKE: COMO
 
 ## Fields
+filename: filename|file|archivo
 filetype: extensión|ext
 content: contenido
-date: fecha|año|anho
+modified: fecha|año|anho|modificado
+language: lang|idioma

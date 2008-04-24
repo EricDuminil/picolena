@@ -21,7 +21,7 @@ describe Finder do
     File.utime(0, once_upon_a_time, 'spec/test_dirs/indexed/basic/basic.pdf')
     File.utime(0, a_bit_later, 'spec/test_dirs/indexed/yet_another_dir/office2003-word-template.dot')
     File.utime(0, nineties, 'spec/test_dirs/indexed/others/placeholder.txt')
-    Indexer.index_every_directory(update=false)
+    Indexer.index_every_directory(remove_first=true)
   end
   
   it "should find documents according to their basename when specified with basename:query" do
@@ -30,8 +30,8 @@ describe Finder do
     matching_documents_filename.should include("crossed.text")
   end
   
-  it "should find documents according to their filename when specified with file:query" do
-    Finder.new("file:crossed.text").matching_documents.collect{|d| d.content}.should include("txt inside!")
+  it "should find documents according to their filename when specified with file:query or filename:query" do
+    Finder.new("filename:crossed.text").matching_documents.collect{|d| d.content}.should include("txt inside!")
     Finder.new("file:crossed.txt").matching_documents.collect{|d| d.content}.should include("text inside!")
   end
   
@@ -47,9 +47,9 @@ describe Finder do
   end
   
   it "should give a boost to basename, filename and filetype in index" do
-    index=IndexReader.new
+    index=Indexer.index
     index.field_infos[:basename].boost.should > 1.0
-    index.field_infos[:file].boost.should > 1.0
+    index.field_infos[:filename].boost.should > 1.0
     index.field_infos[:filetype].boost.should > 1.0
   end
   
