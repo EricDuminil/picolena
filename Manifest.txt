@@ -89,6 +89,7 @@ lib/picolena/templates/public/images/flags/pl.png
 lib/picolena/templates/public/images/flags/pt-br.png
 lib/picolena/templates/public/images/flags/pt-pt.png
 lib/picolena/templates/public/images/flags/readme.txt
+lib/picolena/templates/public/images/flags/sv.png
 lib/picolena/templates/public/images/icons/cad.png
 lib/picolena/templates/public/images/icons/code.png
 lib/picolena/templates/public/images/icons/doc.png
