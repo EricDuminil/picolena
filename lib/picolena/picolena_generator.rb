@@ -143,6 +143,7 @@ EOS
     public/help
     public/images
     public/images/icons
+    public/images/flags
     public/javascripts
     public/stylesheets
     spec
