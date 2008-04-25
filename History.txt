@@ -1,5 +1,8 @@
 == 0.1.6  2008-04-
 
+* 1 minor enhancement:
+  * replaced index key by Document#probably_unique_id
+
 * bug fixes:
   * Added forgotten public/images/flags to generator file.
 
