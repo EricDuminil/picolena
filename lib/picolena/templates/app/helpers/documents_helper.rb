@@ -38,17 +38,18 @@ module DocumentsHelper
   end
 
   def language_icon_for(document)
-    (lang=document.language) && link_to(image_tag("flags/#{lang}.png"), document_url('lang:'<<lang))
+    lang=document.language
+    link_to(image_tag("flags/#{lang}.png"), document_url('lang:'<<lang)) unless lang.blank?
   end
 
   # Returns icon and filename for any given document.
   def icon_and_filename_for(document)
-    [icon_for(document.extname),document.filename].join("&nbsp;")
+    [icon_for(document.ext_as_sym),document.filename].join("&nbsp;")
   end
 
   # Returns the location (if avaible) of the filetype icon.
-  def icon_for(filetype)
-    icon_symbol=FiletypeToIconSymbol[filetype.downcase.sub(/^\./,'')]
+  def icon_for(ext)
+    icon_symbol=Picolena::FiletypeToIconSymbol[ext]
     image_tag("icons/#{icon_symbol}.png") if icon_symbol
   end
 

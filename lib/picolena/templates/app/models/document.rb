@@ -11,7 +11,7 @@ class Document
   end
 
   #Delegating properties to File::method_name(complete_path)
-  [:dirname, :basename, :extname, :size?, :file?, :read, :ext_as_sym].each{|method_name|
+  [:dirname, :basename, :extname, :ext_as_sym, :size?, :file?, :read, :ext_as_sym].each{|method_name|
     define_method(method_name){File.send(method_name,complete_path)}
   }
   alias_method :size, :size?
