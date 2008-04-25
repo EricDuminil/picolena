@@ -1,4 +1,4 @@
-== 0.1.6  2008-04-
+== 0.1.6  2008-04-25
 
 * 1 minor enhancement:
   * replaced index key by Document#probably_unique_id
