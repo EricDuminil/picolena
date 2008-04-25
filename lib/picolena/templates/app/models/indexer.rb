@@ -3,9 +3,12 @@ class Indexer
   @@exclude          = /(Thumbs\.db)/
   # Number of threads that will be used during indexing process
   @@max_threads_number = 8
+  
+  cattr_reader :do_not_disturb_while_indexing
 
   class << self
     def index_every_directory(remove_first=false)
+      @@do_not_disturb_while_indexing=true
       clear! if remove_first
       # Forces Finder.searcher and Finder.index to be reloaded, by removing them from the cache.
       Finder.reload!
@@ -16,6 +19,7 @@ class Indexer
       }
       log :debug => "Now optimizing index"
       index.optimize
+      @@do_not_disturb_while_indexing=false
       log :debug => "Indexing done in #{Time.now-start} s."
     end
 
@@ -27,13 +31,9 @@ class Indexer
       }
 
       indexing_list_chunks=indexing_list.in_transposed_slices(@@max_threads_number)
-
-      # It initializes the Index before launching multithreaded
-      # indexing. Otherwise, two threads could try to instantiate
-      # an IndexWriter at the same time, and get a
-      #  Ferret::Store::Lock::LockError
-      index
-
+      
+      prepare_multi_threads_environment
+      
       indexing_list_chunks.each_with_thread{|chunk|
         chunk.each{|filename|
           add_file(filename)
@@ -122,6 +122,22 @@ class Indexer
         field_infos.add_field(:probably_unique_id, :store => :no,  :index => :untokenized)
         field_infos.add_field(:language,           :store => :yes, :index => :yes)
       end
+    end
+    
+    def prepare_multi_threads_environment
+      # It initializes the Index before launching multithreaded
+      # indexing. Otherwise, two threads could try to instantiate
+      # an IndexWriter at the same time, and get a
+      #  Ferret::Store::Lock::LockError
+      index
+      # NOTE: is it really necessary?
+      # ActiveSupport sometime raises
+      #  Expected Object is NOT missing constant
+      # without.
+      Document
+      Finder
+      Query
+      PlainTextExtractor
     end
   end
 end
