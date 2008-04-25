@@ -27,7 +27,6 @@ class Finder
                                                    :pre_tag => "<<", :post_tag => ">>"
         ) unless @raw_query=~/^\*+\.\w*$/
         found_doc.score=score
-        found_doc.index_id=index_id
         @matching_documents<<found_doc
       rescue Errno::ENOENT
         #"File has been moved/deleted!"
