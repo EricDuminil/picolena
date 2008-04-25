@@ -9,39 +9,39 @@ describe "After loading languages, Globalite" do
   it 'should have loaded en-US spec localization' do
     Globalite.locales.should include(:"en-US")
   end
-  
+
   it 'should have some default translations' do
     :error_message_exclusion.l.should_not be(nil)
     Globalite.localize(:welcome_friend).should_not be(nil)
   end
-  
+
   it 'should have loaded the Rails localizations' do
     [:"es-*", :"fr-FR", :"pt-PT", :"en-US", :"it-*", :"es-ES", :"pt-BR", :"en-UK"].each { |locale| Globalite.locales.should include(locale) }
     [:UK, :US, :ES, :FR, :BR, :PT].each { |country| Globalite.countries.should include(country) }
     [:en, :es, :fr, :it, :pt].each { |language| Globalite.languages.should include(language) }
   end
-  
+
   it 'should have both the UI and the RAILS translations even if a country isn t selected' do
     Globalite.language = :fr
      :welcome_friend.l.should_not == "__localization_missing__"
      :date_helper_one_month.l.should_not == "__localization_missing__"
   end
-  
+
   it 'should have a list of unique languages' do
     Globalite.languages.should be_an_instance_of(Array)
     Globalite.languages.should == Globalite.languages.uniq
   end
-  
+
   it 'should have a list of unique countries' do
     Globalite.countries.should be_an_instance_of(Array)
     Globalite.countries.should == Globalite.countries.uniq
   end
-  
+
   it 'should have a list of unique locales' do
     Globalite.locales.should be_an_instance_of(Array)
     Globalite.locales.should == Globalite.locales.uniq
   end
-  
+
   it "should have at least some English localization" do
     Globalite.languages.should include(:en)
   end
@@ -52,7 +52,7 @@ describe "After loading languages, Globalite" do
     Globalite.current_country = :FR
     Globalite.current_country.should == (:FR)
   end
-  
+
   it "should be able to switch between existing languages" do
     Globalite.language = :fr
     Globalite.locale.should == (:'fr-FR')
@@ -60,7 +60,7 @@ describe "After loading languages, Globalite" do
     Globalite.localize(:welcome_friend).should_not == string
     Globalite.localize(:welcome_friend).should == "Bienvenue l'ami!"
     Globalite.localize(:welcome_friend).should_not == "__localization_missing__"
-    
+
     Globalite.language = :es
     Globalite.localize(:welcome_friend).should_not == string
     Globalite.localize(:welcome_friend).should_not == "__localization_missing__"
@@ -68,7 +68,7 @@ describe "After loading languages, Globalite" do
     Globalite.current_language = nil
     Globalite.localize(:welcome_friend).should_not == string
     Globalite.localize(:welcome_friend).should_not == "__localization_missing__"
-    
+
     Globalite.current_language = :en
     Globalite.current_country = :US
     Globalite.locales.should include(:"en-US")
@@ -99,10 +99,10 @@ describe "After loading languages, Globalite" do
     Globalite.language = :fr
     Globalite.locale.should == "fr-*".to_sym
     Globalite.countries.include?(:XY).should be(false)
-    
+
     Globalite.country = :XY
     Globalite.current_locale.should == "fr-*".to_sym
-  end  
+  end
 
   it "should let you assign a valid locale" do
     Globalite.current_locale = :"fr-*"
@@ -112,7 +112,7 @@ describe "After loading languages, Globalite" do
   it "should auto assign a language if you try to set a country defined in an available locale" do
     Globalite.current_locale = :"fr-*"
     Globalite.current_country = :US
-    Globalite.current_locale.should == "en-US".to_sym    
+    Globalite.current_locale.should == "en-US".to_sym
   end
 
   it "should auto assign a wild card if a country isn't assigned" do
@@ -120,10 +120,10 @@ describe "After loading languages, Globalite" do
     Globalite.current_locale.should == "fr-*".to_sym
   end
 
-  it "should find translations for a locale without country even though there's no generic translation for the language" do  
+  it "should find translations for a locale without country even though there's no generic translation for the language" do
     Globalite.current_locale = :"fr-*"
     Globalite.current_language = :en
-    Globalite.current_language.should == :en 
+    Globalite.current_language.should == :en
     Globalite.localizations.should_not be {}
   end
 
@@ -152,14 +152,14 @@ describe "After loading languages, Globalite" do
     Globalite.add_reserved_key key
     Globalite.reserved_keys.size.should == 2
   end
-  
+
   it "shouldn't be able to set a unsupported locale" do
     Locale.set_code :"te-st"
     Locale.code.should == :"en-*"
     Locale.set_code 'test'
     Locale.code.should == :"en-*"
   end
-   
+
 end
 
 describe "When a non-existent language is set" do
@@ -195,11 +195,11 @@ describe "a localization key (in general)" do
     Globalite.language = :fr
     Globalite.language = :en
     Globalite.locale.should == :'en-*'
-    
+
     :welcome_friend.localize.should == "Welcome mate!"
     :error_message_exclusion.l.should == "is reserved"
   end
-  
+
   it "should return an optional string if the localization is missing" do
     :unknown_key.l("this is my replacement string").should == "this is my replacement string"
   end
@@ -217,33 +217,33 @@ describe "a localization key (in general)" do
     :welcome_user.l_with_args({:user => :user.l}).should == "Cher utilisateur, Bienvenue!"
     :many_args_test.l_with_args({:name => 'Matt', :what => 'déchire', :other => 'Serieusement'}).should == 'Serieusement, Matt vraiment déchire comme une bete ;)'
   end
-  
+
   it "should handle localizated pluralization properly" do
     Globalite.current_language = :fr
     :simple_pluralization.l.should == "2 erreurs"
   end
-  
+
   it "should handle custom pluralization properly" do
     Globalite.current_language = :fr
     :pluralization_test.l.should == "Heidi a vu trois 3 chevaux dans le parc"
   end
-  
+
   it "should handle pluralization with passed arguments" do
     Globalite.current_language = :fr
     :pluralization_with_passed_args.l_with_args({:count => 2}).should == "Heidi a vu trois 2 chevaux dans le parc"
   end
-  
+
 end
 
 describe "an alternative location with localization files" do
   before(:all) do
     Globalite.add_localization_source(File.dirname(__FILE__) + '/lang/rails')
   end
-  
+
   it "could be added to the localization source path" do
     Globalite.load_localization!.should include("/spec/lang/rails/zz.yml")
   end
-  
+
   it "should have been loaded properly" do
     Globalite.languages.should include(:zz)
     Globalite.locales.should include(:"zz-*")

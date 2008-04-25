@@ -6,7 +6,7 @@ Object.extend(Object.extend(InPlaceEditor.Local.prototype, Ajax.InPlaceEditor.pr
   onComplete: function() {},
   handleFormSubmission: function(e) {
     var value = $F(this._controls.editor);
-    RSpec.addStockStep(value);    
+    RSpec.addStockStep(value);
     this.element.innerHTML = value;
     this.leaveEditMode();
     if (e) Event.stop(e);
@@ -15,17 +15,17 @@ Object.extend(Object.extend(InPlaceEditor.Local.prototype, Ajax.InPlaceEditor.pr
 
 var RSpec = {
   stockSteps: function() {
-    return $('stock_steps').childElements().map(function(li){ 
+    return $('stock_steps').childElements().map(function(li){
       return li.innerHTML;
     }).sort();
   },
-  
+
   addStockStep: function(stockStep) {
     if(!this.stockSteps().include(stockStep)) {
       $('stock_steps').appendChild(Builder.node('li', {}, stockStep));
     }
   },
-  
+
   makeParamEditors: function() {
     $$('span.param').each(function(span) {
       span.removeClassName('param');
@@ -33,13 +33,13 @@ var RSpec = {
       new InPlaceEditor.Local(span, null, {});
     });
   },
-  
+
   setId: function(e) {
     if(!this.currentId) this.currentId = 0;
     this.currentId++;
     e.id = "id_" + this.currentId;
   },
-  
+
   applyUi: function() {
     this.setUpTogglers();
     this.makeParamEditors();
@@ -51,24 +51,24 @@ var RSpec = {
       var addStepLink = document.createElement("a");
       addStepLink.href = "#";
       addStepLink.appendChild(document.createTextNode('Add step'));
-      footer.appendChild(addStepLink);      
+      footer.appendChild(addStepLink);
       ul.parentNode.appendChild(footer);
 
       Sortable.create(ul, {
         scroll: window
       });
 
-/*    Disable for now - it messes with the autocomplete's visibility (zIndex galore)  
+/*    Disable for now - it messes with the autocomplete's visibility (zIndex galore)
       Droppables.add(footer, {
         hoverclass: 'wastebin',
         onDrop: function(li, droppable, evt) {
           li.remove();
         }
       });
-*/      
+*/
       Event.observe(addStepLink, 'click', function() {
         var form = Builder.node('form', {});
-        
+
         var li = Builder.node('li', {className: 'new'});
         var input = Builder.node('input', {}, 'New step here');
         var autoComplete = Builder.node('div', {className: 'auto_complete'}, '');
@@ -93,7 +93,7 @@ var RSpec = {
       });
     })
   },
-  
+
   setUpTogglers: function() {
     $$('dt').each(function(dt) {
       var dd = dt.parentNode.getElementsByTagName('dd')[0];
@@ -114,11 +114,11 @@ var StoryDom = {
       }
     }).compact().join("");
   },
-  
+
   stepText: function(s) {
     return s.gsub(/<span[^>]*>([^<]*)<\/span>/, "#{1}");
   },
-  
+
   scenario: function(dl) {
     var scenario = '  Scenario: ' + dl.getElementsByTagName('dt')[0].innerHTML + '\n';
     scenario += $A(dl.getElementsByTagName('li')).map(function(li){
@@ -126,7 +126,7 @@ var StoryDom = {
     }).join("\n") + "\n";
     return scenario;
   },
-  
+
   story: function() {
     var dl = $$('dl.story')[0];
     var story = 'Story: ' + dl.getElementsByTagName('dt')[0].innerHTML + '\n\n';
@@ -136,7 +136,7 @@ var StoryDom = {
     }).join("\n");
     return story;
   },
-  
+
   save: function() {
     new Ajax.Request('stories', {
       postBody: this.story()

@@ -10,7 +10,7 @@ Story "transactions should rollback", %{
       Person.create!(:name => "Foo")
     end
   end
-  
+
   Scenario "add another person" do
     GivenScenario "add one Person"
     Then "there should be one person" do

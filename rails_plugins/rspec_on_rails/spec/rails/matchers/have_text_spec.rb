@@ -1,21 +1,21 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "have_text" do
-  
+
   describe "where target is a Regexp" do
     it 'should should match submitted text using a regexp' do
       string = 'foo'
       string.should have_text(/fo*/)
     end
   end
-  
+
   describe "where target is a String" do
     it 'should match submitted text using a string' do
       string = 'foo'
       string.should have_text('foo')
     end
   end
-  
+
 end
 
 describe "have_text",
@@ -51,7 +51,7 @@ describe "have_text",
           response.should have_text("this is the text for this action")
         }.should fail_with(/expected \"this is the text for this action\", got .*/)
       end
-      
+
       it "should pass using should_not with incorrect text" do
         post 'text_action'
         response.should_not have_text("the accordian guy")

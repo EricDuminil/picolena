@@ -2,7 +2,7 @@
 
 * bug fixes:
   * Added forgotten public/images/flags to generator file.
-  
+
 == 0.1.5  2008-04-25
 
 * 1 major enhancement:
@@ -10,7 +10,7 @@
 
 * 1 minor enhancement:
   * flags to indicate found language
-  
+
 * bug fixes:
   * No more (or just less?) index lock errors
 
@@ -36,7 +36,7 @@
   * cache à la Google
 
 * minor enhancements:
-  * easier configuration. Every picolena specific conf files in config/custom 
+  * easier configuration. Every picolena specific conf files in config/custom
   * lots of refactoring
 
 * bug fixes

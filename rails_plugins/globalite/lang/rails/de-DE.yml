@@ -44,12 +44,12 @@ date_helper_time_formats: # DON'T  TRANSLATE, RE ORDER
 # added at the end of date if your date system doesn't use a 24 hours system
 date_helper_am: am
 date_helper_pm: pm
-    
+
 # used by ActionView::Helpers::NumberHelper.number_to_currency
 number_helper_unit: "€"
 number_helper_separator: "," #unit separator (between integer part and fraction part)
-number_helper_delimiter: "." #delimiter between each group of thousands. Example: 1.234.567 
-number_helper_order: [ number, unit ] 
+number_helper_delimiter: "." #delimiter between each group of thousands. Example: 1.234.567
+number_helper_order: [ number, unit ]
 #to support for instance French format, the order is different: Unit comes last (ex. "1.234,00 €")
 
 # use by +Array#to_sentence()+
@@ -92,7 +92,7 @@ date_helper_abbr_month_names:
   - Nov
   - Dez
 
-date_helper_day_names: 
+date_helper_day_names:
   - Sonntag
   - Montag
   - Dienstag
@@ -101,13 +101,13 @@ date_helper_day_names:
   - Freitag
   - Samstag
 
-date_helper_abbr_day_names: 
+date_helper_abbr_day_names:
   - So
   - Mo
   - Di
   - Mi
   - Do
-  - Fr 
+  - Fr
   - Sa
 
 countries_list:

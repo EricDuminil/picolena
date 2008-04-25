@@ -8,9 +8,9 @@ end
 
 describe "A view example_group", :type => :view do
   it_should_behave_like "A shared view example_group"
-  
+
   before(:each) do
     render "view_spec/implicit_helper"
   end
 end
-  
+

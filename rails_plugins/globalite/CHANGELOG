@@ -6,7 +6,7 @@ REVISON 70 - Sept 2 2007
    # used by ActionView::Helpers::ActiveRecordHelper.error_messages_for
    active_record_helper_error_description: 'There were problems with the following fields:'
    active_record_helper_header_message: 'X errors prohibited this object from being saved' # 2 arguments you can use :error_count and :failed_object
-   translation example: 
+   translation example:
    active_record_helper_header_message: #{pluralize({error_count}, 'error')} prohibited this {failed_object} from being saved
 
 REVISON 56 - August 05 2007

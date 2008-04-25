@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html 
+<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -25,7 +25,7 @@
       return false;
 
     elemStyle = elem.style;
-    
+
     if ( elemStyle.display != "block" ) {
       elemStyle.display = "block"
     } else {
@@ -34,10 +34,10 @@
 
     return true;
   }
-  
+
   // Make codeblocks hidden by default
   document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
-  
+
   // ]]>
   </script>
 
@@ -102,7 +102,7 @@
 
 
 
-      
+
 
 
     <!-- if method_list -->
@@ -115,7 +115,7 @@
         <div class="method-heading">
           <span class="method-name">l</span><span class="method-args">(format='default')</span>
         </div>
-      
+
         <div class="method-description">
           <p>
 Alias for <a href="Date.html#M000009">localize</a>
@@ -131,7 +131,7 @@ Alias for <a href="Date.html#M000009">localize</a>
           <span class="method-name">localize</span><span class="method-args">(format='default')</span>
           </a>
         </div>
-      
+
         <div class="method-description">
           <p>
 Acts the same as strftime, but returns a localized version of the formatted
@@ -150,7 +150,7 @@ date string.
 43:       <span class="ruby-identifier">cc</span> = <span class="ruby-identifier">c</span>.<span class="ruby-identifier">sub</span>(<span class="ruby-regexp re">/^%[EO]?(.)$/o</span>, <span class="ruby-value str">'%\\1'</span>)
 44:       <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">cc</span>
 45:       <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'%A'</span>; <span class="ruby-identifier">o</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">:date_helper_day_names</span>.<span class="ruby-identifier">l</span>[<span class="ruby-identifier">wday</span>]
-46:       <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'%a'</span>; <span class="ruby-identifier">o</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">:date_helper_abbr_day_names</span>.<span class="ruby-identifier">l</span>[<span class="ruby-identifier">wday</span>] 
+46:       <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'%a'</span>; <span class="ruby-identifier">o</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">:date_helper_abbr_day_names</span>.<span class="ruby-identifier">l</span>[<span class="ruby-identifier">wday</span>]
 47:       <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'%B'</span>; <span class="ruby-identifier">o</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">:date_helper_month_names</span>.<span class="ruby-identifier">l</span>[<span class="ruby-identifier">mon</span>]
 48:       <span class="ruby-keyword kw">when</span> <span class="ruby-value str">'%b'</span>; <span class="ruby-identifier">o</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">:date_helper_abbr_month_names</span>.<span class="ruby-identifier">l</span>[<span class="ruby-identifier">mon</span>]
 49:         <span class="ruby-comment cmt">#when '%c'; o &lt;&lt; :date_helper_time_formats.l[:default] ? :date_helper_date_formats.l[:default] : strftime('%Y-%m-%d')</span>

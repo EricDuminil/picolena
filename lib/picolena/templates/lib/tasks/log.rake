@@ -1,6 +1,6 @@
 desc 'Ferret index maintenance tasks'
 
-namespace :log do  
+namespace :log do
   desc 'Parse log files for queries'
   task :queries do
     show_action_regexp=/Processing DocumentsController#show \(for ([\d\.]+) at ([\d\- :]+)\) \[GET\]/

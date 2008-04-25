@@ -13,7 +13,7 @@ module Spec
         after(:each) do
           teardown_fixtures if self.respond_to?(:teardown_fixtures)
         end
-        
+
         include Spec::Rails::Matchers
 
         @@model_id = 1000

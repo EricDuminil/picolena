@@ -3,7 +3,7 @@ class Indexer
   @@exclude          = /(Thumbs\.db)/
   # Number of threads that will be used during indexing process
   @@max_threads_number = 8
-  
+
   class << self
     def index_every_directory(remove_first=false)
       clear! if remove_first
@@ -18,29 +18,29 @@ class Indexer
       index.optimize
       log :debug => "Indexing done in #{Time.now-start} s."
     end
-    
+
     def index_directory_with_multithreads(dir)
       log :debug => "Indexing #{dir}, #{@@max_threads_number} threads"
-      
+
       indexing_list=Dir[File.join(dir,"**/*")].select{|filename|
         File.file?(filename) && filename !~ @@exclude
       }
-      
+
       indexing_list_chunks=indexing_list.in_transposed_slices(@@max_threads_number)
-      
+
       # It initializes the Index before launching multithreaded
       # indexing. Otherwise, two threads could try to instantiate
       # an IndexWriter at the same time, and get a
       #  Ferret::Store::Lock::LockError
       index
-      
+
       indexing_list_chunks.each_with_thread{|chunk|
         chunk.each{|filename|
           add_file(filename)
         }
       }
     end
-    
+
     def add_file(complete_path)
       default_fields = Document.default_fields_for(complete_path)
       begin
@@ -54,14 +54,14 @@ class Indexer
       end
       index << document
     end
-    
+
     # Ensures index is closed, and removes every index file for RAILS_ENV.
     def clear!(all=false)
       close
       to_remove=all ? Picolena::IndexesSavePath : Picolena::IndexSavePath
       Dir.glob(File.join(to_remove,'**/*')).each{|f| FileUtils.rm(f) if File.file?(f)}
     end
-    
+
     # Closes the index and
     # ensures that a new Index is instantiated next time index is called.
     def close
@@ -69,28 +69,28 @@ class Indexer
       # Ferret will SEGFAULT otherwise.
       @@index = nil
     end
-    
+
     # Only one IndexWriter should be instantiated.
     # If one index already exists, returns it.
     # Creates it otherwise.
     def index
-      @@index ||= Ferret::Index::Index.new(default_index_params)  
+      @@index ||= Ferret::Index::Index.new(default_index_params)
     end
-    
+
     def ensure_index_existence
       index_every_directory(:remove_first) unless index_exists? or RAILS_ENV=="production"
     end
-    
+
     def doc_count
       index.writer.doc_count
     end
-    
+
     private
-    
+
     def index_exists?
       index_filename and File.exists?(index_filename)
     end
-    
+
     def index_filename
       Dir.glob(File.join(Picolena::IndexSavePath,'*.cfs')).first
     end
@@ -100,7 +100,7 @@ class Indexer
         IndexerLogger.send(level,message)
       }
     end
-    
+
     def default_index_params
       {
         :path        => Picolena::IndexSavePath,
@@ -110,7 +110,7 @@ class Indexer
         :key         => :probably_unique_id
         }
     end
-    
+
     def default_field_infos
       returning Ferret::Index::FieldInfos.new do |field_infos|
         field_infos.add_field(:complete_path,      :store => :yes, :index => :untokenized)

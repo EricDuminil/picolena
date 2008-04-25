@@ -1,10 +1,10 @@
-class Finder  
+class Finder
   attr_reader :query
-  
+
   def index
     @@index ||= Indexer.index
   end
-  
+
   def initialize(raw_query,page=1,results_per_page=Picolena::ResultsPerPage)
     @query = Query.extract_from(raw_query)
     @raw_query= raw_query
@@ -13,7 +13,7 @@ class Finder
     @offset=(page.to_i-1)*results_per_page
     index_should_have_documents
   end
-  
+
   def execute!
     @matching_documents=[]
     start=Time.now
@@ -36,12 +36,12 @@ class Finder
       @time_needed=Time.now-start
       @total_hits=top_docs.total_hits
   end
-  
+
   # Returns true if it has been executed.
   def executed?
     @executed
   end
-  
+
   # To ensure that
   #  matching_documents
   #  total_hits
@@ -53,7 +53,7 @@ class Finder
       instance_variable_get("@#{attribute_name}")
     }
   }
-   
+
    # Returns matching document for any given query only if
    # exactly one document is found.
    # Raises otherwise.
@@ -71,9 +71,9 @@ class Finder
   def self.reload!
     @@index = nil
   end
-  
+
   private
-  
+
   def index_should_have_documents
     raise IndexError, "no document found" unless index.size > 0
   end

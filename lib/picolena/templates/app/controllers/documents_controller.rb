@@ -6,17 +6,17 @@
 #  - displays document content
 #  - displays cached content.
 
-class DocumentsController < ApplicationController  
+class DocumentsController < ApplicationController
   before_filter :check_if_valid_link, :only=> [:download, :content, :cached]
-  
+
   # Actually doesn't check anything at all. Just a redirect to show_document(query)
   #
   # FIXME: remove this useless action, and go directly from submit button to GET :action => show
   def check_query
     redirect_to :action=>'show', :id=>params[:query]
   end
-  
-  
+
+
   # Show the matching documents for a given query
   def show
     start=Time.now
@@ -31,14 +31,14 @@ class DocumentsController < ApplicationController
       @total_hits=finder.total_hits
     @time_needed=Time.now-start
   end
-  
-  
+
+
   # Download the file whose probably_unique_id is given.
   # If the checksum is incorrect, redirect to documents_url via no_valid_link
   def download
     send_file @document.complete_path
   end
-  
+
   # Returns the content of the document identified by probably_unique_id, as it is *now*.
   def content
   end
@@ -47,9 +47,9 @@ class DocumentsController < ApplicationController
   # similar to Google cache.
   def cached
   end
-  
+
   private
-  
+
   # Returns corresponding document for any given "probably unique id"
   # Redirects to no_valid_link if:
   #  there are more than one matching document (hash collision)
@@ -58,7 +58,7 @@ class DocumentsController < ApplicationController
     @probably_unique_id=params[:id]
     @document=Document.find_by_unique_id(@probably_unique_id) rescue no_valid_link
   end
-  
+
   # Flashes a warning and redirects to documents_url.
   def no_valid_link
     flash[:warning]="no valid link"

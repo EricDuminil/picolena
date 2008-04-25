@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html 
+<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -25,7 +25,7 @@
       return false;
 
     elemStyle = elem.style;
-    
+
     if ( elemStyle.display != "block" ) {
       elemStyle.display = "block"
     } else {
@@ -34,10 +34,10 @@
 
     return true;
   }
-  
+
   // Make codeblocks hidden by default
   document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
-  
+
   // ]]>
   </script>
 
@@ -118,7 +118,7 @@ href="DateHelper.html#M000042">distance_of_time_in_words</a>
     </div>
 
 
-      
+
 
 
     <!-- if method_list -->
@@ -133,7 +133,7 @@ href="DateHelper.html#M000042">distance_of_time_in_words</a>
           <span class="method-name">date_select</span><span class="method-args">(object_name, method, options = {})</span>
           </a>
         </div>
-      
+
         <div class="method-description">
           <p>
 alias_method :orig_date_select, :<a
@@ -164,7 +164,7 @@ href="DateHelper.html#M000043">date_select</a>
           <span class="method-name">datetime_select</span><span class="method-args">(object_name, method, options = {})</span>
           </a>
         </div>
-      
+
         <div class="method-description">
           <p>
 alias_method :orig_datetime_select, :<a
@@ -195,7 +195,7 @@ href="DateHelper.html#M000044">datetime_select</a>
           <span class="method-name">distance_of_time_in_words</span><span class="method-args">(from_time, to_time = 0, include_seconds = false)</span>
           </a>
         </div>
-      
+
         <div class="method-description">
           <p><a class="source-toggle" href="#"
             onclick="toggleCode('M000042-source');return false;">[Source]</a></p>
@@ -207,7 +207,7 @@ href="DateHelper.html#M000044">datetime_select</a>
 12:         <span class="ruby-identifier">to_time</span> = <span class="ruby-identifier">to_time</span>.<span class="ruby-identifier">to_time</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">to_time</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:to_time</span>)
 13:         <span class="ruby-identifier">distance_in_minutes</span> = (((<span class="ruby-identifier">to_time</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">from_time</span>).<span class="ruby-identifier">abs</span>)<span class="ruby-operator">/</span><span class="ruby-value">60</span>).<span class="ruby-identifier">round</span>
 14:         <span class="ruby-identifier">distance_in_seconds</span> = ((<span class="ruby-identifier">to_time</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">from_time</span>).<span class="ruby-identifier">abs</span>).<span class="ruby-identifier">round</span>
-15: 
+15:
 16:         <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">distance_in_minutes</span>
 17:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">1</span>
 18:           <span class="ruby-keyword kw">return</span> (<span class="ruby-identifier">distance_in_minutes</span><span class="ruby-operator">==</span><span class="ruby-value">0</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">:date_helper_less_than_a_minute</span>.<span class="ruby-identifier">l</span> <span class="ruby-operator">:</span>  <span class="ruby-identifier">:date_helper_one_minute</span>.<span class="ruby-identifier">l</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">include_seconds</span>
@@ -215,19 +215,19 @@ href="DateHelper.html#M000044">datetime_select</a>
 20:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">0</span><span class="ruby-operator">..</span><span class="ruby-value">5</span>        <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">format</span>( <span class="ruby-identifier">:date_helper_less_than_x_seconds</span>.<span class="ruby-identifier">l</span> , <span class="ruby-value">5</span> )
 21:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">6</span><span class="ruby-operator">..</span><span class="ruby-value">10</span>       <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">format</span>( <span class="ruby-identifier">:date_helper_less_than_x_seconds</span>.<span class="ruby-identifier">l</span> , <span class="ruby-value">10</span> )
 22:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">11</span><span class="ruby-operator">..</span><span class="ruby-value">20</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">format</span>( <span class="ruby-identifier">:date_helper_less_than_x_seconds</span>.<span class="ruby-identifier">l</span> , <span class="ruby-value">20</span> )
-23:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">21</span><span class="ruby-operator">..</span><span class="ruby-value">40</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:date_helper_half_a_minute</span>.<span class="ruby-identifier">l</span> 
-24:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">41</span><span class="ruby-operator">..</span><span class="ruby-value">59</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:date_helper_less_than_a_minute</span>.<span class="ruby-identifier">l</span> 
-25:           <span class="ruby-keyword kw">else</span>                  <span class="ruby-identifier">:date_helper_one_minute</span>.<span class="ruby-identifier">l</span> 
+23:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">21</span><span class="ruby-operator">..</span><span class="ruby-value">40</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:date_helper_half_a_minute</span>.<span class="ruby-identifier">l</span>
+24:           <span class="ruby-keyword kw">when</span> <span class="ruby-value">41</span><span class="ruby-operator">..</span><span class="ruby-value">59</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:date_helper_less_than_a_minute</span>.<span class="ruby-identifier">l</span>
+25:           <span class="ruby-keyword kw">else</span>                  <span class="ruby-identifier">:date_helper_one_minute</span>.<span class="ruby-identifier">l</span>
 26:           <span class="ruby-keyword kw">end</span>
-27: 
+27:
 28:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">2</span><span class="ruby-operator">..</span><span class="ruby-value">44</span>           <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">format</span>(<span class="ruby-identifier">:date_helper_x_minutes</span>.<span class="ruby-identifier">l</span>, <span class="ruby-identifier">distance_in_minutes</span>)
-29:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">45</span><span class="ruby-operator">..</span><span class="ruby-value">89</span>          <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:date_helper_one_hour</span>.<span class="ruby-identifier">l</span> 
+29:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">45</span><span class="ruby-operator">..</span><span class="ruby-value">89</span>          <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:date_helper_one_hour</span>.<span class="ruby-identifier">l</span>
 30:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">90</span><span class="ruby-operator">..</span><span class="ruby-value">1439</span>        <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">format</span>( <span class="ruby-identifier">:date_helper_x_hours</span>.<span class="ruby-identifier">l</span> , (<span class="ruby-identifier">distance_in_minutes</span>.<span class="ruby-identifier">to_f</span> <span class="ruby-operator">/</span> <span class="ruby-value">60.0</span>).<span class="ruby-identifier">round</span> )
-31:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">1440</span><span class="ruby-operator">..</span><span class="ruby-value">2879</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:date_helper_one_day</span>.<span class="ruby-identifier">l</span> 
+31:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">1440</span><span class="ruby-operator">..</span><span class="ruby-value">2879</span>      <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:date_helper_one_day</span>.<span class="ruby-identifier">l</span>
 32:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">2880</span><span class="ruby-operator">..</span><span class="ruby-value">43199</span>     <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">format</span>( <span class="ruby-identifier">:date_helper_x_days</span>.<span class="ruby-identifier">l</span> , (<span class="ruby-identifier">distance_in_minutes</span> <span class="ruby-operator">/</span> <span class="ruby-value">1440</span>).<span class="ruby-identifier">round</span> )
-33:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">43200</span><span class="ruby-operator">..</span><span class="ruby-value">86399</span>    <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:date_helper_one_month</span>.<span class="ruby-identifier">l</span> 
+33:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">43200</span><span class="ruby-operator">..</span><span class="ruby-value">86399</span>    <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:date_helper_one_month</span>.<span class="ruby-identifier">l</span>
 34:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">86400</span><span class="ruby-operator">..</span><span class="ruby-value">525959</span>   <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">format</span>( <span class="ruby-identifier">:date_helper_x_months</span>.<span class="ruby-identifier">l</span> , (<span class="ruby-identifier">distance_in_minutes</span> <span class="ruby-operator">/</span> <span class="ruby-value">43200</span>).<span class="ruby-identifier">round</span> )
-35:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">525960</span><span class="ruby-operator">..</span><span class="ruby-value">1051919</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:date_helper_one_year</span>.<span class="ruby-identifier">l</span> 
+35:         <span class="ruby-keyword kw">when</span> <span class="ruby-value">525960</span><span class="ruby-operator">..</span><span class="ruby-value">1051919</span> <span class="ruby-keyword kw">then</span> <span class="ruby-identifier">:date_helper_one_year</span>.<span class="ruby-identifier">l</span>
 36:         <span class="ruby-keyword kw">else</span>                      <span class="ruby-identifier">format</span>( <span class="ruby-identifier">:date_helper_x_years</span>.<span class="ruby-identifier">l</span> , (<span class="ruby-identifier">distance_in_minutes</span> <span class="ruby-operator">/</span> <span class="ruby-value">525960</span>).<span class="ruby-identifier">round</span> )
 37:         <span class="ruby-keyword kw">end</span>
 38:       <span class="ruby-keyword kw">end</span>
@@ -244,7 +244,7 @@ href="DateHelper.html#M000044">datetime_select</a>
           <span class="method-name">select_month</span><span class="method-args">(date, options = {})</span>
           </a>
         </div>
-      
+
         <div class="method-description">
           <p><a class="source-toggle" href="#"
             onclick="toggleCode('M000045-source');return false;">[Source]</a></p>
@@ -269,7 +269,7 @@ href="DateHelper.html#M000044">datetime_select</a>
 109:             <span class="ruby-keyword kw">else</span>
 110:               <span class="ruby-identifier">month_names</span>[<span class="ruby-identifier">month_number</span>]
 111:             <span class="ruby-keyword kw">end</span>
-112: 
+112:
 113:             <span class="ruby-identifier">month_options</span> <span class="ruby-operator">&lt;&lt;</span> ((<span class="ruby-identifier">val</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">month_number</span>) <span class="ruby-operator">?</span>
 114:               <span class="ruby-node">%(&lt;option value=&quot;#{month_number}&quot; selected=&quot;selected&quot;&gt;#{month_name}&lt;/option&gt;\n)</span> <span class="ruby-operator">:</span>
 115:               <span class="ruby-node">%(&lt;option value=&quot;#{month_number}&quot;&gt;#{month_name}&lt;/option&gt;\n)</span>

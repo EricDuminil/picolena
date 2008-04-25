@@ -63,7 +63,7 @@ module Spec
       #   end
       class ControllerExampleGroup < FunctionalExampleGroup
         class << self
-                    
+
           # Use this to instruct RSpec to render views in your controller examples (Integration Mode).
           #
           #   describe ThingController do
@@ -190,16 +190,16 @@ module Spec
               end
             end
           end
-          
+
           private
             def matching_message_expectation_exists(options)
               expect_render_mock_proxy.send(:__mock_proxy).send(:find_matching_expectation, :render, options)
             end
-          
+
             def matching_stub_exists(options)
               expect_render_mock_proxy.send(:__mock_proxy).send(:find_matching_method_stub, :render, options)
             end
-          
+
           public
           if self.respond_to?(:should_receive) && self.respond_to?(:stub!)
             self.send :alias_method, :orig_should_receive, :should_receive

@@ -14,14 +14,14 @@ namespace :install_dependencies do
   # odt2txt package not available on previous versions
   desc 'Install required packages on Ubuntu'
   task :on_ubuntu => :on_debian
-  
+
   desc 'Install required gems and programs on Windows'
   task :on_windows_xp do
     #NOTE: Long way to go before it runs on XP.
     $stderr.puts "Implement me!"
   end
 
-  desc 'Install required gems and packages on Mac Os'  
+  desc 'Install required gems and packages on Mac Os'
   task :on_mac_os do
     $stderr.puts "Implement me!"
   end

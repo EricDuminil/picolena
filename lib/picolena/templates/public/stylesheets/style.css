@@ -96,14 +96,14 @@ h1, h2, h3, h4, h5, h6, p, form {
    border-left-color:#696;
    border-right-color:#363;
    border-bottom-color:#363;}
-   
+
 #mainimg input.btn:hover{
    color:#EE8907;}
 
 #mainimg input.text_field{
     border: 2px solid #88b000;
     background: #fff;
-	margin-right: 5px; 
+	margin-right: 5px;
 }
 
 #contentarea hr {

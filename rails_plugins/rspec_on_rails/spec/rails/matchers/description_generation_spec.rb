@@ -11,7 +11,7 @@ end
 
 describe "Description generation", :type => :controller do
   controller_name :description_generation_spec
-  
+
   after(:each) do
     Spec::Matchers.clear_generated_description
   end

@@ -13,8 +13,8 @@ module Spec
       FULL_VERSION = "#{[MAJOR, MINOR, TINY, RELEASE_CANDIDATE].compact.join('.')} (build #{BUILD_TIME_UTC})"
 
       NAME   = "RSpec"
-      URL    = "http://rspec.rubyforge.org/"  
-    
+      URL    = "http://rspec.rubyforge.org/"
+
       DESCRIPTION = "#{NAME}-#{FULL_VERSION} - BDD for Ruby\n#{URL}"
     end
   end

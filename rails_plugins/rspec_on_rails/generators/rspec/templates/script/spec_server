@@ -23,7 +23,7 @@ module Spec
               active_connections.delete(name)
             end
           end
-        end        
+        end
 
         if ActionController.const_defined?(:Dispatcher)
           dispatcher = ::ActionController::Dispatcher.new($stdout)

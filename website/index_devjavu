@@ -1,7 +1,7 @@
 = Welcome to Picolena! =
 
 
-== Description == 
+== Description ==
 
 ''Picolena'' is a lightweight [http://ferret.davebalmain.com/trac ferret-powered] documents search engine written in [http://www.rubyonrails.org/ Ruby on rails]:
 
@@ -87,7 +87,7 @@ Time to open your browser and [http://localhost:3000 enjoy]!
 
 == Optional configuration ==
 
-=== Allowing access to other computers === 
+=== Allowing access to other computers ===
 
 You can allow access to other computers by adding IP addresses to ''config/white_list_ip.yml'':
 
@@ -110,7 +110,7 @@ Allow:
 
 === Changing interface language ===
 
-=== Updating index periodically === 
+=== Updating index periodically ===
 
 
 

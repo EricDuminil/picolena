@@ -1,11 +1,11 @@
 module ActionView
-  
+
   # Modify DateHelper to use localization keys
   module Helpers
-    
+
     #Modify DateHelper distance_of_time_in_words
     module DateHelper
-      
+
       def distance_of_time_in_words(from_time, to_time = 0, include_seconds = false)
         from_time = from_time.to_time if from_time.respond_to?(:to_time)
         to_time = to_time.to_time if to_time.respond_to?(:to_time)
@@ -19,32 +19,32 @@ module ActionView
           when 0..5        then format( :date_helper_less_than_x_seconds.l , 5 )
           when 6..10       then format( :date_helper_less_than_x_seconds.l , 10 )
           when 11..20      then format( :date_helper_less_than_x_seconds.l , 20 )
-          when 21..40      then :date_helper_half_a_minute.l 
-          when 41..59      then :date_helper_less_than_a_minute.l 
-          else                  :date_helper_one_minute.l 
+          when 21..40      then :date_helper_half_a_minute.l
+          when 41..59      then :date_helper_less_than_a_minute.l
+          else                  :date_helper_one_minute.l
           end
 
         when 2..44           then format(:date_helper_x_minutes.l, distance_in_minutes)
-        when 45..89          then :date_helper_one_hour.l 
+        when 45..89          then :date_helper_one_hour.l
         when 90..1439        then format( :date_helper_x_hours.l , (distance_in_minutes.to_f / 60.0).round )
-        when 1440..2879      then :date_helper_one_day.l 
+        when 1440..2879      then :date_helper_one_day.l
         when 2880..43199     then format( :date_helper_x_days.l , (distance_in_minutes / 1440).round )
-        when 43200..86399    then :date_helper_one_month.l 
+        when 43200..86399    then :date_helper_one_month.l
         when 86400..525959   then format( :date_helper_x_months.l , (distance_in_minutes / 43200).round )
-        when 525960..1051919 then :date_helper_one_year.l 
+        when 525960..1051919 then :date_helper_one_year.l
         else                      format( :date_helper_x_years.l , (distance_in_minutes / 525960).round )
         end
       end
     end
 
     module NumberHelper
-      
+
       # modify number_to_currency to accept :order option
       def number_to_currency(number, options = {})
         # Blend default options with localized currency options
         options.reverse_merge!({:unit => :number_helper_unit.l, :separator => :number_helper_separator.l, :delimiter => :number_helper_delimiter.l, :order => :number_helper_order.l})
         options = options.stringify_keys
-        
+
         precision, unit, separator, delimiter = options.delete("precision") { 2 }, options.delete("unit") { "$" }, options.delete("separator") { "." }, options.delete("delimiter") { "," }
         separator = "" unless precision > 0
 
@@ -69,7 +69,7 @@ module ActionView
     end# module NumberHelper
 
     module DateHelper
-      
+
       # Blend default options with localized :order option and add locale support
       # Example:
       # <% form_for(@page) do |f| %>
@@ -82,7 +82,7 @@ module ActionView
         if options[:locale]
           @original_locale = Locale.code
           Locale.code = options[:locale]
-        end 
+        end
         options.reverse_merge!( :order => :date_helper_order.l )
         @selector = InstanceTag.new(object_name, method, self, nil, options.delete(:object)).to_date_select_tag(options)
         Locale.code = @original_locale if options[:locale]
@@ -135,12 +135,12 @@ module ActionView
         Locale.code = @original_locale if options[:locale]
         return @selector
       end
-      
+
     end #module DateHelper
 
 
     module FormOptionsHelper
-      
+
       def country_options_for_select(selected = nil, priority_countries = nil)
         country_options = ""
 
@@ -157,7 +157,7 @@ module ActionView
 
         return country_options
       end
-      
+
     end #module FormOptionsHelper
 
 		module ActiveRecordHelper

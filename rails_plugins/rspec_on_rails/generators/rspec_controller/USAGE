@@ -8,7 +8,7 @@ Description:
     module, specify the controller name as 'module/controller'.
 
     The generator creates stubs for a controller (and spec), a view (and spec)
-    for each view in the argument list, plus a helper. 
+    for each view in the argument list, plus a helper.
 
 Example:
     ./script/generate rspec_controller dog bark fetch

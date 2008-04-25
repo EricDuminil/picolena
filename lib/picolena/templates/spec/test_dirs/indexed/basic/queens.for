@@ -5,7 +5,7 @@
             LOGICAL POSSIBLE
             X=2
             Y=3
-            CALL NEW(BOARD) 
+            CALL NEW(BOARD)
             DO I=1,1
                 POSSIBLE=.FALSE.
                 X=4

@@ -13,7 +13,7 @@ PlainTextExtractor.new {
   }
   # for dependencies spec
   which_requires 'iconv'
-  
+
   # to check if the extractor is working with basic plain text files
   which_should_for_example_extract 'Hello world!', :from => 'hello.rb'
   or_extract 'text inside!', :from => 'crossed.txt'
@@ -25,7 +25,7 @@ PlainTextExtractor.new {
   or_extract 'This program calculates greatest common divisors', :from=>'gcd.c'
   or_extract 'p 3 square.dat', :from => 'square.ins'
   or_extract 'Do loop (global)', :from => 'xor.vee'
-  
+
   # to check if other charsets are supported
   or_extract 'püöüökäößß AND ßklüöü', :from => 'utf-8.txt'
   or_extract 'Themenliste für Adsorptionskälte', :from => 'iso-8859-1.txt'

@@ -1,14 +1,14 @@
 namespace :globalite do
   namespace :localization do
 
-    # Returns a hash with the missing localizations compared to the original locale 
+    # Returns a hash with the missing localizations compared to the original locale
     def missing_localizations(org_base='en-US')
       @langs = {}
       @missing_localizations = {}
       @l_files = Dir[File.join( RAILS_ROOT, '/lang/ui', '*.yml')]
-      @l_files.each do |file| 
+      @l_files.each do |file|
         if YAML.load_file(file)
-          @langs[File.basename(file, '.*')] = YAML.load_file(file).symbolize_keys  
+          @langs[File.basename(file, '.*')] = YAML.load_file(file).symbolize_keys
         else
           p "error with the following file: #{file}, the file might be empty"
         end
@@ -36,11 +36,11 @@ namespace :globalite do
       @missing_localizations =  missing_localizations(@org_base)
       if @missing_localizations.blank?
         p 'all localization files are up to date'
-      else  
+      else
         @missing_localizations.each_key do |lang|
           p "#{@missing_localizations[lang].length} translations missing in #{lang}" if @missing_localizations[lang].length > 0
-        end  
-      end  
+        end
+      end
     end
 
   end

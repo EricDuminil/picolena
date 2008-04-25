@@ -3,8 +3,8 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe "PlainTextExtractors" do
   before(:all) do
     Indexer.ensure_index_existence
-  end  
-  
+  end
+
   PlainTextExtractor.all.each{|extractor|
     extractor.exts.each{|ext|
       should_extract= "should be able to extract content from #{extractor.description} (.#{ext})"
@@ -27,14 +27,14 @@ describe "PlainTextExtractors" do
       end
     }
   }
-  
+
   it "should guess language when enough content is available" do
     Document.new("spec/test_dirs/indexed/lang/goethe").language.should == "de"
     Document.new("spec/test_dirs/indexed/lang/shakespeare").language.should == "en"
     Document.new("spec/test_dirs/indexed/lang/lorca").language.should == "es"
     Document.new("spec/test_dirs/indexed/lang/hugo").language.should == "fr"
   end if Picolena::UseLanguageRecognition
-  
+
   it "should not try to guess language when file is too small" do
     Document.new("spec/test_dirs/indexed/basic/hello.rb").language.should be_nil
     Document.new("spec/test_dirs/indexed/README").language.should be_nil

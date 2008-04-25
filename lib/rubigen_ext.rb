@@ -8,7 +8,7 @@ module RubiGen #:nodoc:
          system("rake #{task_name}")
         }
       end
-      
+
       # Copy one directory to another in destination_path
       # Can be useful to duplicate index from development to production,
       # instead of indexing twice.

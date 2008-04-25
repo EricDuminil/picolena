@@ -3,7 +3,7 @@
 
 $:.unshift File.join(File.dirname(__FILE__), *%w[.. .. .. .. rspec lib])
 if defined?(ActiveRecord::Base)
-  require 'test_help' 
+  require 'test_help'
 else
   require 'action_controller/test_process'
   require 'action_controller/integration'

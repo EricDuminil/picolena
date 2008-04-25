@@ -1,7 +1,7 @@
-module Globalite 
+module Globalite
 
   module L10n
-    
+
     @@default_language = :en
     attr_reader :default_language
 
@@ -50,7 +50,7 @@ module Globalite
     def country
       @@current_country || default_country
     end
-    alias :current_country :country 
+    alias :current_country :country
 
     def current_locale
       "#{current_language}-#{current_country}".to_sym
@@ -78,12 +78,12 @@ module Globalite
       localize_rails
       @@current_language
     end
-    alias :current_language= :language= 
+    alias :current_language= :language=
 
     # Set the current country code (ISO 3166 country code in uppercase letters)
     # Usage:
     # Globalite.country = 'US' or Globalite.country = :fr
-    # Will store the current country code if supported 
+    # Will store the current country code if supported
     # Will try to automatically find the language for your country
     # If the country isn't unknown to the system, the country will be set as :*
     #
@@ -95,16 +95,16 @@ module Globalite
       if @@locales.include?("#{current_language}-#{country}".to_sym)
         @@current_country = country
       elsif locales.each {|locale| locale =~ /[a-z][a-z]-#{country.to_s}/ }
-        locales.each do |key| 
-          if key.to_s.include?(country.to_s)  
+        locales.each do |key|
+          if key.to_s.include?(country.to_s)
             @new_language = key.to_s.split('-')[0].downcase.to_sym
           end
         end
         if @new_language && @@locales.include?("#{@new_language}-#{country}".to_sym)
-          @@current_language = @new_language 
-          @@current_country = country 
+          @@current_language = @new_language
+          @@current_country = country
         end
-      else  
+      else
         @@current_country = :*
       end
       #Locale.update_session_locale
@@ -128,8 +128,8 @@ module Globalite
     end
 
     # List localizations for the current locale
-    def localizations 
-      @@locales[Locale.code] || {} 
+    def localizations
+      @@locales[Locale.code] || {}
     end
 
     # Return the translation for the key, a string can be passed to replaced a missing translation
@@ -146,26 +146,26 @@ module Globalite
       # Get translations from another country but in the same language if Globalite can't find a translation for my locale
       #
       if localized == error_msg
-        locales.each do |t_locale|  
+        locales.each do |t_locale|
           if t_locale.to_s.include?("#{current_language.to_s}-") && t_locale != Locale.code
             localized =  @@locales[t_locale][key] || error_msg
-          end  
+          end
         end
-      end  
+      end
       localized = interpolate_string(localized.dup, args.dup) if localized.class == String && localized != error_msg
-      
+
       # let's handle pluralization if needed
       # the translation must include pluralize{count, singular string} to be translated
       # the translator can also pass the plural form if needed:
       #    pluralize{3, goose, geese}
       localized = localized.gsub( /pluralize\{(.*)\}/){ |erb| pluralize(Regexp.last_match(1)) } if localized.is_a?(String) && (localized=~ /pluralize\{(.*)\}/)
-      
+
       # Set the locale back to normal
       #
       unless locale.nil?
         Locale.code = @original_locale
       end
-            
+
       return localized
     end
     alias :loc :localize
@@ -185,7 +185,7 @@ module Globalite
     def pluralize(l_string) #count, singular, plural = nil)
       # map the arguments like in the original pluralize method
       count, singular, plural = l_string.split(',').map{ |arg| arg.strip}
-      
+
        "#{count} " + if count == 1 || count == '1'
         singular
       elsif plural
@@ -196,7 +196,7 @@ module Globalite
         singular + "s"
       end
     end
-    
+
     def reset_l10n_data
       @@languages = []
       @@countries = []
@@ -205,7 +205,7 @@ module Globalite
       @@ui_locales = {}
     end
 
-    # Loads ALL the UI localization in memory, I might want to refactor this later on. 
+    # Loads ALL the UI localization in memory, I might want to refactor this later on.
     # (can be hard on the memory if you load 25 languages with 900 entries each)
     def load_localization!
       reset_l10n_data
@@ -226,7 +226,7 @@ module Globalite
             end
             @@languages << lang unless @@languages.include? lang
           else
-            @@languages << lang unless @@languages.include? lang 
+            @@languages << lang unless @@languages.include? lang
             @f_locale = "#{lang}-*".to_sym
             @@locales[@f_locale] = @@locales[@f_locale].merge(YAML.load_file(file).symbolize_keys) if locales.include?(@f_locale)
             @@locales[@f_locale] = YAML.load_file(file).symbolize_keys unless locales.include?(@f_locale)
@@ -235,10 +235,10 @@ module Globalite
       end
       alias :load_translations! :load_localization!
       alias :load_localizations! :load_localization!
-      
+
       # Load the UI localization
       if ui_localization_files
-        ui_localization_files.each do |file| 
+        ui_localization_files.each do |file|
           lang = File.basename(file, '.*')[0,2].downcase.to_sym
           if File.basename(file, '.*')[3,5]
             country = File.basename(file, '.*')[3,5].upcase.to_sym
@@ -251,7 +251,7 @@ module Globalite
           if locales.include?(@file_locale)
             @@locales[@file_locale] = @@locales[@file_locale].merge(YAML.load_file(file).symbolize_keys)
             @@ui_locales[locale_name("#{lang}-#{country}")] = "#{lang}-#{country}".to_sym
-          else  
+          else
             @@locales[@file_locale] = YAML.load_file(file).symbolize_keys
             @@ui_locales[locale_name("#{lang}-#{country}")] = "#{lang}-#{country}".to_sym
           end

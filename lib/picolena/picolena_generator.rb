@@ -3,14 +3,14 @@ require 'fileutils'
 require 'pathname'
 
 class PicolenaGenerator < RubiGen::Base #:nodoc:
-  
+
   DEFAULT_SHEBANG = File.join(Config::CONFIG['bindir'],
                               Config::CONFIG['ruby_install_name'])
-  
+
   default_options :destination => 'picolena'
-  
+
   attr_reader :name
-  
+
   def initialize(runtime_args, runtime_options = {})
     super
     usage if args.empty? and !options[:spec_only]
@@ -20,17 +20,17 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
       abs_dir=Pathname.new(relative_path).realpath.to_s
       "\"#{abs_dir}\" : \"#{abs_dir}\""
     }.join("\n  ")
-    
+
     extract_options
   end
 
   def manifest
     script_options     = { :chmod => 0755, :shebang => options[:shebang] == DEFAULT_SHEBANG ? nil : options[:shebang] }
-    
+
     record do |m|
       #Create base dir
       m.directory ''
-      
+
       # Picolena file structure, without any plugin.
       BASEDIRS.each { |path|
         # Ensure appropriate folder exists
@@ -38,7 +38,7 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
         # Copy every file included in BASEDIRS
         m.folder path, path
       }
-      
+
       # Moved plugins away so they don't get parsed by rdoc/ri.
       RAILS_PLUGINS.each{ |path|
         plugin_source = '../../../rails_plugins/'+path
@@ -56,7 +56,7 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
       %w( about breakpointer console destroy generate performance/benchmarker performance/profiler performance/request process/reaper process/spawner process/inspector runner server plugin spec spec_server).each do |file|
         m.file "script/#{file}", "script/#{file}", script_options
       end
-      
+
       # Picolena configuration files
       m.file '../config/white_list_ip.yml', 'config/custom/white_list_ip.yml'
       m.file '../config/basic.rb', 'config/custom/picolena.rb'
@@ -69,10 +69,10 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
       m.file '../../../README.txt', 'README'
       m.file '../../../README.txt', 'doc/README_FOR_APP'
       m.file 'Rakefile', 'Rakefile'
-     
+
       unless options[:no_index]
         # Indexing documents for development environment
-        m.rake 'index:create' 
+        m.rake 'index:create'
         # Mirroring Ferret development index instead of indexing documents again for production.
         m.mirror 'tmp/ferret_indexes/development', 'tmp/ferret_indexes/production'
       end
@@ -109,10 +109,10 @@ EOS
       opts.on(nil, "--spec-only", "Test picolena framework without installing it."){
         options[:spec_only]=true
         options[:no_index]=true
-        options[:destination]=File.join(Dir::tmpdir,"picolena_test_#{Time.now.to_i}") 
+        options[:destination]=File.join(Dir::tmpdir,"picolena_test_#{Time.now.to_i}")
       }
     end
-    
+
     def extract_options
       # for each option, extract it into a local variable (and create an "attr_reader :author" at the top)
       # Templates can access these value via the attr_reader-generated methods, but not the
@@ -170,7 +170,7 @@ EOS
     tmp/sessions
     tmp/sockets
     )
-    
+
     RAILS_PLUGINS=%w(
     globalite
     globalite/data

@@ -4,10 +4,10 @@ class Query
     def extract_from(raw_query)
       parser.parse(convert_to_english(raw_query))
     end
-    
+
     private
-    
-    # Converts query keywords to english so they can be parsed by Ferret.    
+
+    # Converts query keywords to english so they can be parsed by Ferret.
     def convert_to_english(raw_query)
       to_en={
        /\b#{:AND.l}\b/=>'AND',
@@ -22,9 +22,9 @@ class Query
       }
       to_en.inject(raw_query){|mem,non_english_to_english_keyword|
         mem.gsub(*non_english_to_english_keyword)
-      }      
+      }
     end
-    
+
     # Instantiates a QueryParser once, and keeps it in cache.
     def parser
       @@parser ||= Ferret::QueryParser.new(:fields => [:content, :filename, :basename, :filetype, :modified], :or_default => false, :analyzer=>Picolena::Analyzer)

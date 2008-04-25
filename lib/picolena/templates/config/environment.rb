@@ -12,7 +12,7 @@ IndexerLogger=Logger.new($stdout)
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 
-Rails::Initializer.run do |config|  
+Rails::Initializer.run do |config|
   # We don't need no stinkin' AR!
   # Ferret backs us up.
   config.frameworks -= [ :active_record ]

@@ -9,7 +9,7 @@ Example:
     picolena ~/shared_documents /media/literature
     cd picolena
     ruby script/server
-    
+
     This would create the picolena file structure, index every file
     inside ~/shared_documents and /media/literature, and launch a
     web-server available at http://localhost:3000

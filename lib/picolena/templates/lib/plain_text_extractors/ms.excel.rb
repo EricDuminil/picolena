@@ -21,7 +21,7 @@ PlainTextExtractor.new {
       text_cells=zipfile.read("xl/sharedStrings.xml").split(/</).grep(/^t/).collect{|l|
         l.sub(/^[^>]+>/,'')
       }
-      
+
       sheet_names=zipfile.read("xl/workbook.xml").split(/</).grep(/^sheet /).collect{|l|
         l.scan(/name="([^"]*)"/)
       }

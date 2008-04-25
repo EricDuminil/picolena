@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html 
+<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -25,7 +25,7 @@
       return false;
 
     elemStyle = elem.style;
-    
+
     if ( elemStyle.display != "block" ) {
       elemStyle.display = "block"
     } else {
@@ -34,10 +34,10 @@
 
     return true;
   }
-  
+
   // Make codeblocks hidden by default
   document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
-  
+
   // ]]>
   </script>
 
@@ -108,7 +108,7 @@
     </div>
 
 
-      
+
 
 
     <!-- if method_list -->
@@ -123,7 +123,7 @@
           <span class="method-name">number_to_currency</span><span class="method-args">(number, options = {})</span>
           </a>
         </div>
-      
+
         <div class="method-description">
           <p>
 modify <a href="NumberHelper.html#M000041">number_to_currency</a> to accept
@@ -143,10 +143,10 @@ modify <a href="NumberHelper.html#M000041">number_to_currency</a> to accept
 51:         <span class="ruby-comment cmt">#        end</span>
 52:         <span class="ruby-comment cmt">#        options[:order] ||= [:unit, :number]</span>
 53:         <span class="ruby-identifier">options</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">stringify_keys</span>
-54:         
+54:
 55:         <span class="ruby-identifier">precision</span>, <span class="ruby-identifier">unit</span>, <span class="ruby-identifier">separator</span>, <span class="ruby-identifier">delimiter</span> = <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;precision&quot;</span>) { <span class="ruby-value">2</span> }, <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;unit&quot;</span>) { <span class="ruby-value str">&quot;$&quot;</span> }, <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;separator&quot;</span>) { <span class="ruby-value str">&quot;.&quot;</span> }, <span class="ruby-identifier">options</span>.<span class="ruby-identifier">delete</span>(<span class="ruby-value str">&quot;delimiter&quot;</span>) { <span class="ruby-value str">&quot;,&quot;</span> }
 56:         <span class="ruby-identifier">separator</span> = <span class="ruby-value str">&quot;&quot;</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">precision</span> <span class="ruby-operator">&gt;</span> <span class="ruby-value">0</span>
-57: 
+57:
 58:         <span class="ruby-comment cmt">#add leading space before trailing unit</span>
 59:         <span class="ruby-identifier">unit</span> = <span class="ruby-value str">&quot; &quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">unit</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">options</span>[<span class="ruby-value str">&quot;order&quot;</span>] <span class="ruby-operator">==</span> [<span class="ruby-value str">'number'</span>, <span class="ruby-value str">'unit'</span>]
 60:         <span class="ruby-identifier">output</span> = <span class="ruby-value str">''</span>

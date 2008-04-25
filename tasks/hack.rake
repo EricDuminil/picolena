@@ -6,12 +6,12 @@ task :lets_hack => :clean do
     system("ruby bin/picolena lib/picolena/templates/spec/test_dirs/indexed --no-index --no-spec --destination=lib/picolena/templates")
   }
   puts <<-EXPLAIN
-  
+
   You now have a complete picolena installation in:
     #{File.expand_path(File.join(File.dirname(__FILE__),'../lib/picolena/templates'))}
-  
+
   You can now hack and submit patches!
-  
+
   Once done, you can remove those files by typing:
     rake clean
   EXPLAIN

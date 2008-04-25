@@ -8,7 +8,7 @@
 Picolena is a lightweight ferret-powered documents search engine written in Ruby on rails:
 
    1. Just let Ferret index any directory you want.
-   2. Enter queries on your browser to get corresponding documents in a few milliseconds. 
+   2. Enter queries on your browser to get corresponding documents in a few milliseconds.
 
 == FEATURES:
 
@@ -33,7 +33,7 @@ web-server just like you would with any Rails application.
     picolena ~/shared_documents /media/literature
     cd picolena
     ruby script/server
-    
+
 This would create the picolena file structure, index every file inside ~/shared_documents and /media/literature, and launch a web-server available at http://localhost:3000
 
 == REQUIREMENTS:

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE html 
+<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -25,7 +25,7 @@
       return false;
 
     elemStyle = elem.style;
-    
+
     if ( elemStyle.display != "block" ) {
       elemStyle.display = "block"
     } else {
@@ -34,10 +34,10 @@
 
     return true;
   }
-  
+
   // Make codeblocks hidden by default
   document.writeln( "<style type=\"text/css\">div.method-source-code { display: none }</style>" )
-  
+
   // ]]>
   </script>
 
@@ -95,7 +95,7 @@
 
 
 
-      
+
 
 
     <!-- if method_list -->
@@ -110,7 +110,7 @@
           <span class="method-name">country_options_for_select</span><span class="method-args">(selected = nil, priority_countries = nil)</span>
           </a>
         </div>
-      
+
         <div class="method-description">
           <p><a class="source-toggle" href="#"
             onclick="toggleCode('M000040-source');return false;">[Source]</a></p>
@@ -119,18 +119,18 @@
      <span class="ruby-comment cmt"># File lib/rails/localized_action_view.rb, line 127</span>
 127:       <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">country_options_for_select</span>(<span class="ruby-identifier">selected</span> = <span class="ruby-keyword kw">nil</span>, <span class="ruby-identifier">priority_countries</span> = <span class="ruby-keyword kw">nil</span>)
 128:         <span class="ruby-identifier">country_options</span> = <span class="ruby-value str">&quot;&quot;</span>
-129: 
+129:
 130:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">priority_countries</span>
 131:           <span class="ruby-identifier">country_options</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">options_for_select</span>(<span class="ruby-identifier">priority_countries</span>, <span class="ruby-identifier">selected</span>)
 132:           <span class="ruby-identifier">country_options</span> <span class="ruby-operator">+=</span> <span class="ruby-value str">&quot;&lt;option value=\&quot;\&quot;&gt;-------------&lt;/option&gt;\n&quot;</span>
 133:         <span class="ruby-keyword kw">end</span>
-134: 
+134:
 135:         <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">priority_countries</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">priority_countries</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">selected</span>)
 136:           <span class="ruby-identifier">country_options</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">options_for_select</span>(<span class="ruby-identifier">:countries_list</span>.<span class="ruby-identifier">l</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">priority_countries</span>, <span class="ruby-identifier">selected</span>)
 137:         <span class="ruby-keyword kw">else</span>
 138:           <span class="ruby-identifier">country_options</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">options_for_select</span>(<span class="ruby-identifier">:countries_list</span>.<span class="ruby-identifier">l</span>, <span class="ruby-identifier">selected</span>)
 139:         <span class="ruby-keyword kw">end</span>
-140: 
+140:
 141:         <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">country_options</span>
 142:       <span class="ruby-keyword kw">end</span>
 </pre>
