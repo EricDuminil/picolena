@@ -2,11 +2,11 @@
   .info_bar
     %p
       -if nothing_found? then
-        %span{:class=>'pagination'}=link_to_backup_search_engine(@query)
+        %span{:class=>'pagination'}=link_to_backup_search_engine(h(@query))
         =:nothing_found_for.l
-        %strong=@query
+        %strong=h(@query)
         =show_time_needed(@time_needed)
       -else
         %span{:class=>'pagination'}=should_paginate(@matching_documents, @query)
-        =describe_results(@matching_documents, @total_hits, @time_needed, @query)
+        =describe_results(@matching_documents, @total_hits, @time_needed, h(@query))
 = render :partial =>'document', :collection => @matching_documents
