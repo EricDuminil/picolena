@@ -2,7 +2,7 @@ class Indexer
   # This regexp defines which files should *not* be indexed.
   @@exclude          = /(Thumbs\.db)/
   # Number of threads that will be used during indexing process
-  @@max_threads_number = 8
+  @@threads_number = 8
   
   cattr_reader :do_not_disturb_while_indexing
 
@@ -24,13 +24,13 @@ class Indexer
     end
 
     def index_directory_with_multithreads(dir)
-      log :debug => "Indexing #{dir}, #{@@max_threads_number} threads"
+      log :debug => "Indexing #{dir}, #{@@threads_number} threads"
 
       indexing_list=Dir[File.join(dir,"**/*")].select{|filename|
         File.file?(filename) && filename !~ @@exclude
       }
 
-      indexing_list_chunks=indexing_list.in_transposed_slices(@@max_threads_number)
+      indexing_list_chunks=indexing_list.in_transposed_slices(@@threads_number)
       
       prepare_multi_threads_environment
       
