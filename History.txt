@@ -1,4 +1,7 @@
-== 0.1.5  2008-04-
+== 0.1.6  2008-04-
+
+
+== 0.1.5  2008-04-25
 
 * 1 major enhancement:
   * yet another Indexer & Index rewrite
@@ -24,7 +27,6 @@
   * complete Indexer & Index rewrite
   * new DSL syntax
   * multi-threaded Indexer
-
 
 == 0.1.1  2008-04-12
 
