@@ -68,21 +68,9 @@ class Finder
       raise IndexError, "More than one document found"
     end
   end
-  
-  class<<self  
-    def searcher
-      @@searcher ||= Ferret::Search::Searcher.new(Picolena::IndexSavePath)
-    end
-    
-    def term_search(field,term)
-      query = Ferret::Search::TermQuery.new(field,term)
-      searcher.search(query).hits.first
-    end
 
-    def reload!
-      @@searcher = nil
-      @@index    = nil
-    end
+  def self.reload!
+    @@index = nil
   end
   
   private

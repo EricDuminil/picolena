@@ -108,7 +108,7 @@ class Indexer
         :analyzer    => Picolena::Analyzer,
         :field_infos => default_field_infos,
         # Great way to ensure that no file is indexed twice!
-        :key         => :complete_path
+        :key         => :probably_unique_id
         }
     end
     

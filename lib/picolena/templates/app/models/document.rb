@@ -83,11 +83,6 @@ class Document
     from_index[:language]
   end
   
-  # Returns the id with which the document is indexed.
-  def index_id
-    @index_id ||= Finder.term_search(:complete_path, complete_path).doc
-  end
-  
   # Fields that are shared between every document.
   def self.default_fields_for(complete_path)
     {
@@ -105,12 +100,11 @@ class Document
   # Retrieves the document from the index.
   # Useful to get meta-info about it.
   def from_index
-    Indexer.index[index_id]
+    Indexer.index[probably_unique_id]
   end
   
-  def self.find_by_unique_id(some_id)
-    doc_id=Finder.term_search(:probably_unique_id, some_id).doc
-    new(Indexer.index[doc_id][:complete_path])
+  def self.find_by_unique_id(probably_unique_id)
+    new(Indexer.index[probably_unique_id][:complete_path])
   end
  
   def in_indexed_directory?
