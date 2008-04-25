@@ -20,14 +20,13 @@ class Indexer
     end
     
     def index_directory_with_multithreads(dir)
-      threads_number = @@max_threads_number
-      log :debug => "Indexing #{dir}, #{threads_number} thread(s)"
+      log :debug => "Indexing #{dir}, #{@@max_threads_number} threads"
       
       indexing_list=Dir[File.join(dir,"**/*")].select{|filename|
         File.file?(filename) && filename !~ @@exclude
       }
       
-      indexing_list_chunks=indexing_list.in_transposed_slices(threads_number)
+      indexing_list_chunks=indexing_list.in_transposed_slices(@@max_threads_number)
       
       # It initializes the Index before launching multithreaded
       # indexing. Otherwise, two threads could try to instantiate
@@ -120,7 +119,7 @@ class Indexer
         field_infos.add_field(:filename,           :store => :no,  :index => :yes, :boost => 1.5)
         field_infos.add_field(:filetype,           :store => :no,  :index => :yes, :boost => 1.5)
         field_infos.add_field(:modified,           :store => :yes, :index => :untokenized)
-        field_infos.add_field(:probably_unique_id, :store => :no,  :index => :yes)
+        field_infos.add_field(:probably_unique_id, :store => :no,  :index => :untokenized)
         field_infos.add_field(:language,           :store => :yes, :index => :yes)
       end
     end
