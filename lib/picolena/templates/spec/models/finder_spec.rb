@@ -6,6 +6,17 @@ def revert_changes!(file,content)
   }
 end
 
+
+def matching_document_for(query)
+   # Returns matching document for any given query only if
+   # exactly one document is found.
+   # Specs don't pass otherwise.
+  matching_documents=Finder.new(query).matching_documents
+  matching_documents.size.should == 1
+  matching_documents.first
+end
+
+
 describe Finder do
   before(:all) do
     # SVN doesn't like non-ascii filenames.
@@ -59,11 +70,11 @@ describe Finder do
   end
 
   it "should also index files with unknown mimetypes" do
-    Finder.new("filetype:xyz").matching_document.basename.should == "ghjopdfg"
-    Finder.new("filetype:abc").matching_document.filename.should == "asfg.abc"
-    Finder.new("unreadable.png").matching_document.size.should == 19696
+    matching_document_for("filetype:xyz").basename.should == "ghjopdfg"
+    matching_document_for("filetype:abc").filename.should == "asfg.abc"
+    matching_document_for("unreadable.png").size.should == 19696
     #Support for xls has been added meanwhile. The test is still valid though.
-    Finder.new("table.xls").matching_document.size.should == 8704
+    matching_document_for("table.xls").size.should == 8704
   end
 
   it "should also index files with upper/mixed case extension" do
@@ -80,20 +91,20 @@ describe Finder do
   end
 
   it "should find documents according to their utf8 content" do
-    Finder.new("Éric Mößer ext:pdf").matching_document.basename.should == "utf8"
-    Finder.new("no me hace daño").matching_document.size.should == 30
-    Finder.new("Éric Mößer filetype:pdf").matching_document.filename.should == "utf8.pdf"
+    matching_document_for("Éric Mößer ext:pdf").basename.should == "utf8"
+    matching_document_for("no me hace daño").size.should == 30
+    matching_document_for("Éric Mößer filetype:pdf").filename.should == "utf8.pdf"
   end
 
   it "should find documents according to their utf8 filenames" do
-    Finder.new("bäñüßé").matching_document.content.should == "just to know if files are indexed with utf8 filenames"
+    matching_document_for("bäñüßé").content.should == "just to know if files are indexed with utf8 filenames"
   end
 
   it "should find documents according to their modification date" do
     Finder.new("date:<1982").matching_documents.should be_empty
-    Finder.new("19831209*").matching_document.basename.should == "office2003-word-template"
-    Finder.new("date:<1983").matching_document.filename.should == "basic.pdf"
-    Finder.new("date:>=1989 AND date:<=1992").matching_document.filename.should == "placeholder.txt"
+    matching_document_for("19831209*").basename.should == "office2003-word-template"
+    matching_document_for("date:<1983").filename.should == "basic.pdf"
+    matching_document_for("date:>=1989 AND date:<=1992").filename.should == "placeholder.txt"
   end
 
   it "should not concatenate cells from xls file" do
@@ -124,11 +135,11 @@ describe Finder do
   end
 
   it "should use ? as placeholder" do
-    Finder.new("A?sorption machines").matching_document.matching_content.should include("<<Absorption>> and <<Adsorption>> cooling <<machines>>!!!")
+    matching_document_for("A?sorption machines").matching_content.should include("<<Absorption>> and <<Adsorption>> cooling <<machines>>!!!")
   end
 
   it "should use * as placeholder" do
-    results=Finder.new("A*ption machines").matching_document.matching_content.should include("<<Absorption>> and <<Adsorption>> cooling <<machines>>!!!")
+    results=matching_document_for("A*ption machines").matching_content.should include("<<Absorption>> and <<Adsorption>> cooling <<machines>>!!!")
   end
 
   it "should not index those stupid Thumbs.db files" do

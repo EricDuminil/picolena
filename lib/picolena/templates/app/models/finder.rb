@@ -54,19 +54,7 @@ class Finder
     }
   }
 
-   # Returns matching document for any given query only if
-   # exactly one document is found.
-   # Raises otherwise.
-  def matching_document
-    case matching_documents.size
-    when 0
-      raise IndexError, "No document found"
-    when 1
-      matching_documents.first
-    else
-      raise IndexError, "More than one document found"
-    end
-  end
+
 
   def self.reload!
     @@index = nil
