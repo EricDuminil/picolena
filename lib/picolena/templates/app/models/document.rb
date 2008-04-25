@@ -1,7 +1,7 @@
 # Document class retrieves information from filesystem and the index for any given document.
 class Document
   attr_reader :complete_path
-  attr_accessor :user, :score, :matching_content
+  attr_accessor :score, :matching_content
 
   def initialize(path)
     #To ensure @complete_path is an absolute direction.

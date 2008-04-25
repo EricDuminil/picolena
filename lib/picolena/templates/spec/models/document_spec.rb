@@ -1,7 +1,6 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 basic_pdf_attribute={
-  :size=>9380,
   :dirname=>File.join(RAILS_ROOT, 'spec/test_dirs/indexed/basic'),
   :basename=>'basic',
   :complete_path=>File.join(RAILS_ROOT, '/spec/test_dirs/indexed/basic/basic.pdf'),
@@ -32,13 +31,6 @@ describe Document do
       @basic_pdf.send(attribute).should == expected_value
     end
   }
-
-  it "should know which user it belongs to, if specified" do
-    @valid_random_doc.should respond_to(:user)
-    @valid_random_doc.user.should be_nil
-    @valid_random_doc.user="eric"
-    @valid_random_doc.user.should == "eric"
-  end
 
   it "should know its content" do
     another_doc=Document.new("spec/test_dirs/indexed/basic/plain.txt")

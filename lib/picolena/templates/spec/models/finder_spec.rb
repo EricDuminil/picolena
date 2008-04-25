@@ -72,9 +72,6 @@ describe Finder do
   it "should also index files with unknown mimetypes" do
     matching_document_for("filetype:xyz").basename.should == "ghjopdfg"
     matching_document_for("filetype:abc").filename.should == "asfg.abc"
-    matching_document_for("unreadable.png").size.should == 19696
-    #Support for xls has been added meanwhile. The test is still valid though.
-    matching_document_for("table.xls").size.should == 8704
   end
 
   it "should also index files with upper/mixed case extension" do
@@ -92,7 +89,7 @@ describe Finder do
 
   it "should find documents according to their utf8 content" do
     matching_document_for("Éric Mößer ext:pdf").basename.should == "utf8"
-    matching_document_for("no me hace daño").size.should == 30
+    matching_document_for("no me hace daño").filename.should == "utf8.txt"
     matching_document_for("Éric Mößer filetype:pdf").filename.should == "utf8.pdf"
   end
 
