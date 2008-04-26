@@ -17,21 +17,21 @@ class Finder
   def execute!
     @matching_documents=[]
     start=Time.now
-    @total_hits = index.search_each(query, :limit => @per_page, :offset=>@offset){|index_id, score|
-      begin
-        found_doc=Document.new(index[index_id][:complete_path])
-        found_doc.matching_content=index.highlight(query, index_id,
-                                                   :field => :content, :excerpt_length => 80,
-                                                   :pre_tag => "<<", :post_tag => ">>"
-        ) unless @raw_query=~/^\*+\.\w*$/
-        found_doc.score=score
-        @matching_documents<<found_doc
-      rescue Errno::ENOENT
-        #"File has been moved/deleted!"
-      end
+      @total_hits = index.search_each(query, :limit => @per_page, :offset=>@offset){|index_id, score|
+        begin
+          found_doc=Document.new(index[index_id][:complete_path])
+          found_doc.matching_content=index.highlight(query, index_id,
+                                                     :field => :content, :excerpt_length => 80,
+                                                     :pre_tag => "<<", :post_tag => ">>"
+          )
+          found_doc.score=score
+          @matching_documents<<found_doc
+        rescue Errno::ENOENT
+          #"File has been moved/deleted!"
+        end
       }
       @executed=true
-      @time_needed=Time.now-start
+    @time_needed=Time.now-start
   end
 
   # Returns true if it has been executed.
