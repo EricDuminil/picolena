@@ -11,10 +11,11 @@ class Document
   end
 
   #Delegating properties to File::method_name(complete_path)
-  [:dirname, :basename, :extname, :ext_as_sym, :file?, :ext_as_sym].each{|method_name|
+  [:dirname, :basename, :extname, :ext_as_sym, :file?, :size?, :ext_as_sym].each{|method_name|
     define_method(method_name){File.send(method_name,complete_path)}
   }
   alias_method :filename, :basename
+  alias_method :size, :size?
 
   # Returns filename without extension
   #   "buildings.odt" => "buildings"
@@ -64,10 +65,13 @@ class Document
     from_index[:content]
   end
 
-  # FIXME: Not just date anymore.
   # Returns the last modification date before the document got indexed.
   # Useful to know how old a document is, and to which version the cache corresponds.
-  def date
+  def pretty_date
+    from_index[:modified].sub(/(\d{4})(\d{2})(\d{2})\d{6}/,'\1-\2-\3')
+  end
+  
+  def pretty_mtime
     from_index[:modified].sub(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,'\1-\2-\3 \4:\5:\6')
   end
 

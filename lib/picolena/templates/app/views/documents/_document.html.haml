@@ -7,5 +7,10 @@
 -if document.supported?
   %p
     =link_to_plain_text_content(document)
+    &#45;
+    =number_to_human_size(document.size)
+    &#45;
+    =document.pretty_date
+    &#45;
     =link_to_cached_content(document)
 %hr/
