@@ -14,10 +14,15 @@ namespace :index do
   task :update => :environment do
     Indexer.index_every_directory
   end
+  
+  desc 'Remove unneeded files from index'
+  task :prune => :environment do
+    Indexer.prune_index
+  end
 
   desc 'Returns the number of indexed documents'
   task :size => :environment do
-    puts "#{Indexer.doc_count} documents are currently indexed in #{Picolena::IndexSavePath}"
+    puts "#{Indexer.size} documents are currently indexed in #{Picolena::IndexSavePath}"
   end
 
   # Search index with query "some query" :

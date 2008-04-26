@@ -76,6 +76,19 @@ class Indexer
       # Ferret will SEGFAULT otherwise.
       @@index = nil
     end
+    
+    
+    # Checks for indexed files that are missing from filesytem
+    # and removes them from index & dbm file.
+    def prune_index
+      missing_files=index_time_dbm_file.reject{|filename,itime| File.exists?(filename)}
+      missing_files.each{|filename, itime|
+        index.writer.delete(:complete_path, filename)
+        index_time_dbm_file.delete(filename)
+        log :debug => "Removed : #{filename}"
+      }
+      index.optimize
+    end
 
     # Only one IndexWriter should be instantiated.
     # If one index already exists, returns it.
@@ -88,8 +101,9 @@ class Indexer
       index_every_directory(:remove_first) unless index_exists? or RAILS_ENV=="production"
     end
 
-    def doc_count
-      index.writer.doc_count
+    # Returns how many files are indexed.
+    def size
+      index.size
     end
 
     private
