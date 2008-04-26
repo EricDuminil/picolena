@@ -10,6 +10,7 @@ class Indexer
     def index_every_directory(remove_first=false)
       @@do_not_disturb_while_indexing=true
       clear! if remove_first
+      @from_scratch = remove_first
       # Forces Finder.searcher and Finder.index to be reloaded, by removing them from the cache.
       Finder.reload!
       log :debug => "Indexing every directory"
@@ -35,13 +36,19 @@ class Indexer
       prepare_multi_threads_environment
       
       indexing_list_chunks.each_with_thread{|chunk|
-        chunk.each{|filename|
-          add_file(filename)
+        chunk.each{|complete_path|
+          last_itime=index_time_dbm_file[complete_path]
+          if @from_scratch || !last_itime || File.mtime(complete_path)> Time._load(last_itime) then
+            add_or_update_file(complete_path)
+          else
+            log :debug => "Identical : #{complete_path}"
+          end
+          index_time_dbm_file[complete_path] = Time.now._dump
         }
       }
     end
 
-    def add_file(complete_path)
+    def add_or_update_file(complete_path)
       default_fields = Document.default_fields_for(complete_path)
       begin
         document = PlainTextExtractor.extract_content_and_language_from(complete_path)
@@ -86,6 +93,11 @@ class Indexer
     end
 
     private
+    
+    # Copied from Ferret book, By David Balmain
+    def index_time_dbm_file
+      @@dbm_file ||= DBM.open(File.join(Picolena::IndexSavePath, 'added_at'))
+    end
 
     def index_exists?
       index_filename and File.exists?(index_filename)
@@ -130,6 +142,8 @@ class Indexer
       # an IndexWriter at the same time, and get a
       #  Ferret::Store::Lock::LockError
       index
+      # Opens dbm file to dump indexing time.
+      index_time_dbm_file
       # NOTE: is it really necessary?
       # ActiveSupport sometime raises
       #  Expected Object is NOT missing constant

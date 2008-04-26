@@ -30,7 +30,7 @@ namespace :install_dependencies do
   task :deb_packages do
     root_privileges_required!
     #TODO: Should load this list from defined PlainTextExtractor's
-    packages=%w{antiword poppler-utils odt2txt html2text catdoc unrtf mguesser}.join(" ")
+    packages=%w{antiword poppler-utils odt2txt html2text catdoc unrtf mguesser libdbm-ruby1.8}.join(" ")
     puts "Installing "<<packages
     system("apt-get install "<<packages)
   end

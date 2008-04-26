@@ -2,6 +2,7 @@
 
 * 1 minor enhancement:
   * added cache highlighting à la Google
+  * rake index:update implemented as described in Ferret book by David Balmain
 
 == 0.1.6  2008-04-25
 
