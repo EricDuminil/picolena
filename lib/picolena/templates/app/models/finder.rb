@@ -17,9 +17,7 @@ class Finder
   def execute!
     @matching_documents=[]
     start=Time.now
-    top_docs=index.search(query, :limit => @per_page, :offset=>@offset)
-    top_docs.hits.each{|hit|
-      index_id,score=hit.doc,hit.score
+    @total_hits = index.search_each(query, :limit => @per_page, :offset=>@offset){|index_id, score|
       begin
         found_doc=Document.new(index[index_id][:complete_path])
         found_doc.matching_content=index.highlight(query, index_id,
@@ -34,7 +32,6 @@ class Finder
       }
       @executed=true
       @time_needed=Time.now-start
-      @total_hits=top_docs.total_hits
   end
 
   # Returns true if it has been executed.
@@ -53,8 +50,6 @@ class Finder
       instance_variable_get("@#{attribute_name}")
     }
   }
-
-
 
   def self.reload!
     @@index = nil
