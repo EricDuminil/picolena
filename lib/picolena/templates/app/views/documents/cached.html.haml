@@ -5,4 +5,4 @@
   =@document.pretty_date
   )
 %p=link_to_containing_directory(@document)
-%blockquote=h(@document.cached).gsub(/\n/,'<br/>')
+%blockquote=highlighted_cache(@document, @query)

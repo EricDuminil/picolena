@@ -71,8 +71,12 @@ module DocumentsHelper
   end
 
   # For any indexed document, returns a link to show its cached content.
-  def link_to_cached_content(document)
+  def link_to_cached_content(document, query)
     link_name="("<<content_tag(:small,:cached.l)<<")"
-    link_to link_name, cached_document_path(document.probably_unique_id)
+    link_to link_name, cached_document_path(:id => document.probably_unique_id, :query => query)
+  end
+  
+  def highlighted_cache(document, query)
+    h(document.highlighted_cache(query)).gsub(/\n/,'<br/>').gsub(/&lt;&lt;(.*?)&gt;&gt;/,content_tag(:span, '\1', :class=>"matching_content"))
   end
 end

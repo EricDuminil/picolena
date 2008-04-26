@@ -1,10 +1,15 @@
+== 0.1.7  2008-04-
+
+* 1 minor enhancement:
+  * added cache highlighting à la Google
+
 == 0.1.6  2008-04-25
 
 * 1 minor enhancement:
   * replaced index key by Document#probably_unique_id
 
 * bug fixes:
-  * Added forgotten public/images/flags to generator file.
+  * Added forgotten public/images/flags to generator file
 
 == 0.1.5  2008-04-25
 
@@ -24,7 +29,7 @@
 == 0.1.3  2008-04-20
 
 * 1 bug fix:
-  * removed verbose debug info.
+  * removed verbose debug info
 
 == 0.1.2  2008-04-20
 
@@ -49,7 +54,7 @@
 * 3 minor enhancements:
   * can now be installed on win32 (doesn't pass every spec though)
   * moved rails_plugins away from lib/ so that they don't get parsed by rdoc/ri
-  * shorter and prettier base26_hash id for documents.
+  * shorter and prettier base26_hash id for documents
 
 == 0.0.99  2008-04-06
 

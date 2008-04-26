@@ -47,6 +47,7 @@ class DocumentsController < ApplicationController
   # Returns the content of the document identified by probably_unique_id, as it was at the time it was indexed.
   # similar to Google cache.
   def cached
+    @query=[params[:query],params.delete(:format)].compact.join('.')
   end
 
   private

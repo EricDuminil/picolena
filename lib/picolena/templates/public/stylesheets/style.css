@@ -137,6 +137,11 @@ width: 80%;
 	padding:0px 20px;
 }
 
+#results .matching_content{
+	background-color:#ffff66;
+}
+
+
 #results a, #results small{
 	font-family:"Trebuchet MS";
 	font-size:11px;

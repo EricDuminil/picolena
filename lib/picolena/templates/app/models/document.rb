@@ -64,6 +64,14 @@ class Document
   def cached
     from_index[:content]
   end
+  
+  def highlighted_cache(raw_query)
+    #TODO: Report to Ferret. Highlight should accept :key and not only :doc_id.
+    Indexer.index.highlight(Query.extract_from(raw_query), doc_id,
+                            :field => :content, :excerpt_length => :all,
+                            :pre_tag => "<<", :post_tag => ">>"
+    )
+  end
 
   # Returns the last modification date before the document got indexed.
   # Useful to know how old a document is, and to which version the cache corresponds.
@@ -97,6 +105,12 @@ class Document
   end
 
   private
+  
+  # FIXME: Is there a way to easily retrieve doc_id for a given document?
+  # Better yet, fix Index#highlight to accept :probably_unique_id and stop using :doc_id.
+  def doc_id
+    Indexer.index.search(Ferret::Search::TermQuery.new(:probably_unique_id,probably_unique_id)).hits.first.doc
+  end
 
   # Retrieves the document from the index.
   # Useful to get meta-info about it.
