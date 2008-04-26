@@ -11,8 +11,7 @@ if %w(-v --version).include? ARGV.first
   exit(0)
 end
 
-#NOTE: Should accept either --spec or --spec-only
-action= ARGV.include?("--spec") ? "testing" : "installing"
+action= ARGV.any?{|opt| opt[0,6]=="--spec"} ? "testing" : "installing"
 
 require 'rubigen/scripts/generate'
 source = RubiGen::PathSource.new(:application,
