@@ -11,11 +11,10 @@ class Document
   end
 
   #Delegating properties to File::method_name(complete_path)
-  [:dirname, :basename, :extname, :ext_as_sym, :file?, :size?, :ext_as_sym].each{|method_name|
+  [:dirname, :basename, :extname, :ext_as_sym, :file?, :size, :ext_as_sym].each{|method_name|
     define_method(method_name){File.send(method_name,complete_path)}
   }
   alias_method :filename, :basename
-  alias_method :size, :size?
 
   # Returns filename without extension
   #   "buildings.odt" => "buildings"
