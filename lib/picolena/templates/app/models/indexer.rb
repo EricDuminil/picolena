@@ -81,7 +81,7 @@ class Indexer
     # Checks for indexed files that are missing from filesytem
     # and removes them from index & dbm file.
     def prune_index
-      missing_files=index_time_dbm_file.reject{|filename,itime| File.exists?(filename)}
+      missing_files=index_time_dbm_file.reject{|filename,itime| File.exists?(filename) && Picolena::IndexedDirectories.any?{|dir,alias_path| filename.starts_with?(dir)}}
       missing_files.each{|filename, itime|
         index.writer.delete(:complete_path, filename)
         index_time_dbm_file.delete(filename)
@@ -158,7 +158,6 @@ class Indexer
       index
       # Opens dbm file to dump indexing time.
       index_time_dbm_file
-      # NOTE: is it really necessary?
       # ActiveSupport sometime raises
       #  Expected Object is NOT missing constant
       # without.
