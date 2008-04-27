@@ -146,7 +146,7 @@ class Indexer
         field_infos.add_field(:filetype,           :store => :no,  :index => :yes, :boost => 1.5)
         field_infos.add_field(:modified,           :store => :yes, :index => :untokenized)
         field_infos.add_field(:probably_unique_id, :store => :no,  :index => :untokenized)
-        field_infos.add_field(:language,           :store => :yes, :index => :yes)
+        field_infos.add_field(:language,           :store => :yes, :index => :untokenized)
       end
     end
     

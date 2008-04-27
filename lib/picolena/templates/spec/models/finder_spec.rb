@@ -8,9 +8,9 @@ end
 
 
 def matching_document_for(query)
-   # Returns matching document for any given query only if
-   # exactly one document is found.
-   # Specs don't pass otherwise.
+  # Returns matching document for any given query only if
+  # exactly one document is found.
+  # Specs don't pass otherwise.
   matching_documents=Finder.new(query).matching_documents
   matching_documents.size.should == 1
   matching_documents.first

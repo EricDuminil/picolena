@@ -9,4 +9,7 @@
       -else
         %span{:class=>'pagination'}=should_paginate(@matching_documents, @query)
         =describe_results(@matching_documents, @total_hits, @time_needed, h(@query))
+-unless nothing_found?
+  %p
+    %span{:class=>'sort_by'}=sort_by_date_or_relevance(@query)
 = render :partial =>'document', :collection => @matching_documents, :locals => { :query => @query}

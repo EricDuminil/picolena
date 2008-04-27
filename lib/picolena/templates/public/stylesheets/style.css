@@ -82,6 +82,17 @@ h1, h2, h3, h4, h5, h6, p, form {
 	text-decoration:none;
 }
 
+.sort_by {
+	float:right;
+	font-size: 13px;
+	color:#000;
+}
+
+.sort_by a{
+	color: #EE8907;
+	text-decoration:none;
+}
+
 #mainimg input.btn{
    margin-right: 10px;
    height: 20px;
@@ -116,7 +127,7 @@ width: 80%;
 
 #results {
 	width:778px;
-	padding-top: 25px;
+	padding-top: 15px;
 }
 
 #results h2 a{

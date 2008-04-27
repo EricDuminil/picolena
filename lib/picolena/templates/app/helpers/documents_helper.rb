@@ -3,7 +3,7 @@ module DocumentsHelper
   def nothing_found?
     @matching_documents.nil? or @matching_documents.entries.empty?
   end
-
+  
   # Very basic pagination.
   # Provides liks to Next, Prev and FirstPage when needed.
   def should_paginate(page,query)
@@ -11,7 +11,7 @@ module DocumentsHelper
      (link_to("&larr;", :action => :show, :id => query, :page => page.prev.number) if page.prev?),
      (link_to("&rarr;", :action => :show, :id => query, :page => page.next.number) if page.next?)].compact.join(" | ")
   end
-
+  
   # Returns a localized sentence like "Results 1-10 of 12 for Zimbabwe (0.472s)" or
   # "Résultats 1-2 parmi 2 pour whatever (0.012s)"
   def describe_results(page, total_hits, dt, query)
@@ -24,7 +24,7 @@ module DocumentsHelper
     show_time_needed(dt)
     ].join(' ')
   end
-
+  
   # Returns the time needed to treat the query and launch the search, with a ms precision : (0.472s)
   def show_time_needed(dt)
     content_tag(:small,'('<<number_with_precision(dt,3)<<'s)')
@@ -78,5 +78,10 @@ module DocumentsHelper
   
   def highlighted_cache(document, query)
     h(document.highlighted_cache(query)).gsub(/\n/,'<br/>').gsub(/&lt;&lt;(.*?)&gt;&gt;/,content_tag(:span, '\1', :class=>"matching_content"))
+  end
+  
+  def sort_by_date_or_relevance(query)
+    [link_to_unless_current('By date', document_path(query, :sort=>'by_date')),
+     link_to_unless_current('By relevance', document_path(query))].join("&nbsp;")
   end
 end

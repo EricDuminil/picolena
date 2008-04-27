@@ -50,16 +50,16 @@ describe "Basic Finder" do
     Indexer.index_every_directory(remove_first=true)
   end
 
-  it "should accept one parameter as query, and 2 optionals for paginating" do
+  it "should accept one parameter as query, 1 optional for sorting results and 2 optionals for paginating" do
     lambda {Finder.new}.should raise_error(ArgumentError, "wrong number of arguments (0 for 1)")
     # show first page with 10 results per page
     lambda {Finder.new("a b")}.should_not raise_error
     # show second page
-    lambda {Finder.new("a", 2)}.should_not raise_error
+    lambda {Finder.new("a", "by_date")}.should_not raise_error
     # show first page with 15 results
-    lambda {Finder.new("a", 1, 15)}.should_not raise_error
+    lambda {Finder.new("a",  "by_date", 1, 15)}.should_not raise_error
     # Too many parameters
-    lambda {Finder.new("a", 10, 20, 30)}.should raise_error(ArgumentError, "wrong number of arguments (4 for 3)")
+    lambda {Finder.new("a",  "by_date", 10, 20, 30)}.should raise_error(ArgumentError, "wrong number of arguments (5 for 4)")
   end
 
   it "should return matching documents if executed successfully" do
