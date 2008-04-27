@@ -1,6 +1,6 @@
 == 0.1.7  2008-04-
 
-* 4 minor enhancement:
+* 4 minor enhancements:
   * added cache highlighting à la Google
   * rake index:update implemented as described in Ferret book by David Balmain
   * rake index:prune removes missing files from indexer.
