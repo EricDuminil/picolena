@@ -27,16 +27,4 @@ describe "PlainTextExtractors" do
       end
     }
   }
-
-  it "should guess language when enough content is available" do
-    Document.new("spec/test_dirs/indexed/lang/goethe").language.should == "de"
-    Document.new("spec/test_dirs/indexed/lang/shakespeare").language.should == "en"
-    Document.new("spec/test_dirs/indexed/lang/lorca").language.should == "es"
-    Document.new("spec/test_dirs/indexed/lang/hugo").language.should == "fr"
-  end if Picolena::UseLanguageRecognition
-
-  it "should not try to guess language when file is too small" do
-    Document.new("spec/test_dirs/indexed/basic/hello.rb").language.should be_nil
-    Document.new("spec/test_dirs/indexed/README").language.should be_nil
-  end if Picolena::UseLanguageRecognition
 end

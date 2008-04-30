@@ -19,6 +19,7 @@ end
 
 describe Finder do
   before(:all) do
+    Globalite.language = :en
     # SVN doesn't like non-ascii filenames.
     revert_changes!('spec/test_dirs/indexed/others/bäñüßé.txt',"just to know if files are indexed with utf8 filenames")
 

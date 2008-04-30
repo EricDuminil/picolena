@@ -42,5 +42,9 @@ module Picolena
   # Specify the default Levenshtein distance when using FuzzyQuery
   # see http://ferret.davebalmain.com/api/classes/Ferret/QueryParser.html for more information.
   Ferret::Search::FuzzyQuery.default_min_similarity=0.6
-  Analyzer=Ferret::Analysis::StandardAnalyzer.new
+
+  # PerFieldAnalyzer is used to prevent queries like "language:it" to be broken by StopFilter.
+  per_field_analyzer=Ferret::Analysis::PerFieldAnalyzer.new(Ferret::Analysis::StandardAnalyzer.new)
+  per_field_analyzer[:language]=Ferret::Analysis::WhiteSpaceAnalyzer.new
+  Analyzer=per_field_analyzer
 end

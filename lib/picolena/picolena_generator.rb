@@ -16,10 +16,14 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
     usage if args.empty? and !options[:spec_only]
     @destination_root = options[:destination]
 
-    @directories_to_index=ARGV.collect{|relative_path|
-      abs_dir=Pathname.new(relative_path).realpath.to_s
-      "\"#{abs_dir}\" : \"#{abs_dir}\""
-    }.join("\n  ")
+    @directories_to_index=if options[:spec_only] then
+       "/whatever : /whatever"
+    else
+      ARGV.collect{|relative_path|
+        abs_dir=Pathname.new(relative_path).realpath.to_s
+        "\"#{abs_dir}\" : \"#{abs_dir}\""
+      }.join("\n  ")      
+    end
 
     extract_options
   end
@@ -63,6 +67,7 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
       m.template '../config/indexed_directories.yml', 'config/custom/indexed_directories.yml', :assigns => {:directories_to_index => @directories_to_index}
       m.template '../config/title_and_names_and_links.yml', 'config/custom/title_and_names_and_links.yml', :assigns => {:version => Picolena::VERSION::STRING}
       m.file '../config/icons_and_filetypes.yml', 'config/custom/icons_and_filetypes.yml'
+      m.file '../config/indexing_performance.yml', 'config/custom/indexing_performance.yml'
 
       # README, License & Rakefile
       m.file 'MIT-LICENSE', 'LICENSE'

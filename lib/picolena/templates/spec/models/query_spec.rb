@@ -1,8 +1,16 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Query do
-  it "should return a BooleanQuery" do
+  it "should return a BooleanQuery, a TermQuery or a RangeQuery" do
     Query.extract_from("whatever").class.should == Ferret::Search::BooleanQuery
+    Query.extract_from("lang:de").class.should  == Ferret::Search::TermQuery
+    Query.extract_from("date:<1990").class.should  == Ferret::Search::RangeQuery
+  end
+  
+  it "should not remove stop-words from TermQuery" do
+    # it means "Italian language", but also is a stop-word.
+    Query.extract_from("lang:it").class.should  == Ferret::Search::TermQuery
+    Query.extract_from("lang:it").to_s.should   == "language:it"
   end
 
   it "should translate LIKE, NOT, OR and AND boolean ops to English" do
@@ -12,6 +20,7 @@ describe Query do
       :fr=>["COMME","NON","OU","ET"]
     }
 
+    Globalite.language = :en
     english_query_with_like_and_not=Query.extract_from("LIKE something NOT something")
     english_query_with_or=Query.extract_from("test OR another")
     english_query_with_and=Query.extract_from("test AND another")

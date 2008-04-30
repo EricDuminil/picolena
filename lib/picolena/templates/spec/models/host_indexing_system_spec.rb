@@ -13,10 +13,18 @@ describe "Host indexing system" do
 
   it "should know which IP addresses are allowed (config/custom/white_list_ip.yml)" do
     File.should be_readable('config/custom/white_list_ip.yml')
+    ip_conf=YAML.load_file('config/custom/white_list_ip.yml')
+    ip_conf.class.should == Hash
+    ip_conf['Allow'].should_not be_nil
   end
 
   it "should know which directories are to be indexed (config/custom/indexed_directories.yml)" do
     File.should be_readable('config/custom/indexed_directories.yml')
+    dirs_conf=YAML.load_file('config/custom/indexed_directories.yml')
+    dirs_conf.class.should == Hash
+    %w(development test production).all?{|env|
+      dirs_conf[env].should_not be_nil
+    }
   end
 
   it "should be able to calculate base26 hash from strings" do

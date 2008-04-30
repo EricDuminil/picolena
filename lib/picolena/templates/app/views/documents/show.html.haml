@@ -7,7 +7,7 @@
         %strong=h(@query)
         =show_time_needed(@time_needed)
       -else
-        %span{:class=>'pagination'}=should_paginate(@matching_documents, @query)
+        %span{:class=>'pagination'}=should_paginate(@matching_documents, @query, @sort)
         =describe_results(@matching_documents, @total_hits, @time_needed, h(@query))
 -unless nothing_found?
   %p

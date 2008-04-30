@@ -1,0 +1,30 @@
+# You probably shouldn't change those parameters
+# if you don't know what they represent.
+# For more information, refer to:
+#  http://ferret.davebalmain.com/api/classes/Ferret/Index/IndexWriter.html
+
+## Main performance parameters
+
+# Allowed memory for indexing process.
+# 128MB by default, or 2^27
+max_buffer_memory: 134_217_728
+
+# High value => fast indexing, slow searching
+# Low  value => slow indexing, fast searching
+# 10 by default
+merge_factor: 10
+
+# Maximum number of extracted terms for any given document
+max_field_length: 10_000
+
+
+## Other parameters
+# 1MB by default, or 2**20
+chunk_size: 1_048_576
+max_buffered_docs: 10_000
+# NOTE: Be extra careful with this parameter, setting it to -1 (infinite)
+# multiplied indexing time by an order of magnitude.
+# max_merge_docs: -1
+use_compound_file: true
+index_skip_interval: 128
+doc_skip_interval: 16

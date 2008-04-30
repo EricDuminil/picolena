@@ -69,7 +69,7 @@ class Document
     Indexer.index.highlight(Query.extract_from(raw_query), doc_id,
                             :field => :content, :excerpt_length => :all,
                             :pre_tag => "<<", :post_tag => ">>"
-    )
+    ).first
   end
 
   # Returns the last modification date before the document got indexed.

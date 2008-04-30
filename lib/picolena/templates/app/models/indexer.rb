@@ -134,7 +134,7 @@ class Indexer
         :field_infos => default_field_infos,
         # Great way to ensure that no file is indexed twice!
         :key         => :probably_unique_id
-        }
+        }.merge Picolena::IndexingConfiguration
     end
 
     def default_field_infos
