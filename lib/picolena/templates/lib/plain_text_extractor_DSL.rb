@@ -16,7 +16,6 @@ module PlainTextExtractorDSL
     @content_and_file_examples=[]
     self.instance_eval(&block)
     PlainTextExtractor.add(self)
-    MimeType.add(self.exts,self.mime_name)
   end
 
   def every(*exts)

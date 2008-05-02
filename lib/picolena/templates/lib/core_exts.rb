@@ -1,20 +1,3 @@
-class MimeType
-  @@all=[]
-  def self.all
-    @@all
-  end
-
-  def self.add(exts,mime_name)
-    all<<new(exts,mime_name)
-  end
-
-  attr_reader :exts, :name
-
-  def initialize(exts,mime_name)
-    @exts,@name=exts,mime_name
-  end
-end
-
 class String
   # Creates a "probably unique" id with the desired length, composed only of lowercase letters.
   def base26_hash(length=Picolena::HashLength)
@@ -60,12 +43,6 @@ end
 class File
   def self.ext_as_sym(filename)
     File.extname(filename).sub(/^\./,'').downcase.to_sym rescue :no_extension
-  end
-
-  def self.mime(filename)
-    ext=ext_as_sym(filename)
-    m=MimeType.all.find{|m| m.exts.include?(ext)}
-    m ? m.name : 'application/octet-stream'
   end
 
   def self.encoding(source)
