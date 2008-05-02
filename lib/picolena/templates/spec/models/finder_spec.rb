@@ -123,7 +123,6 @@ describe Finder do
     end
   end
 
-  it "should not index content of binary files"
 
   # Ferret sometimes SEGFAULT crashed with '*.pdf' queries
   it "should not crash while looking for *.pdf" do

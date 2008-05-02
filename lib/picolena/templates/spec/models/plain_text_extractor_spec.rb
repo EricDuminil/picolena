@@ -27,4 +27,8 @@ describe "PlainTextExtractors" do
       end
     }
   }
+
+  it "should not extract content of binary files" do
+    PlainTextExtractor.extract_content_from("spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION").should == "binary file!"
+  end
 end

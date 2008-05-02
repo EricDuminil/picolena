@@ -68,4 +68,8 @@ class File
     FileUtils.rm filename, :force=>true
     content
   end
+  
+  def self.plain_text?(filename)
+    %x{file -i "#{filename}"} =~ /: text\//
+  end
 end
