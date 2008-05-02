@@ -9,3 +9,4 @@ lib/picolena/templates/vendor
 doc
 pkg
 website/index.html
+*.swp
