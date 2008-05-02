@@ -20,7 +20,7 @@ LIKE: COMO
 
 ## Fields
 filename: filename|file|archivo
-filetype: extensión|ext
+filetype: extensión|ext|extension
 content: contenido
 modified: fecha|año|anho|modificado
 language: lang|idioma

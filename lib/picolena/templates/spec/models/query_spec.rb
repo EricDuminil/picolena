@@ -37,7 +37,21 @@ describe Query do
     }
   end
 
-  it "should accept field terms in different languages"
+  it "should accept field terms in different languages" do
+    Globalite.language = :en
+      english_query_with_french_words = Query.extract_from("absorption language:fr extension:pdf")
+      english_query_with_german_words = Query.extract_from("Unabhängigkeit modified:>2005 filename:job.txt")
+    Globalite.language = :de
+      Query.extract_from("absorption sprache:fr erweiterung:pdf").should == english_query_with_french_words
+      Query.extract_from("Unabhängigkeit geändert:>2005 datei:job.txt").should == english_query_with_german_words
+    Globalite.language = :fr
+      Query.extract_from("absorption langue:fr extension:pdf").should == english_query_with_french_words
+      Query.extract_from("Unabhängigkeit modifié:>2005 fichier:job.txt").should == english_query_with_german_words
+    Globalite.language = :es
+      Query.extract_from("absorption idioma:fr extensión:pdf").should == english_query_with_french_words
+      Query.extract_from("Unabhängigkeit modificado:>2005 archivo:job.txt").should == english_query_with_german_words
+ 
+  end
 
   it "should use AND as default boolean ops" do
     query_without_and = Query.extract_from("one AND two")

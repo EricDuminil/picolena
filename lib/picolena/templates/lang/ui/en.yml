@@ -20,7 +20,7 @@ LIKE: LIKE
 
 ## Fields
 filename: filename|file
-filetype: filetype|ext
+filetype: filetype|ext|extension
 content: content
 modified: year|date|modified
 language: lang|language
