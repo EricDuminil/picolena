@@ -29,6 +29,6 @@ namespace :index do
   # rake index:search query="some query"
   desc 'Search index'
   task :search => :environment do
-    Finder.new(ENV["query"]).matching_documents.entries.each{|doc| puts doc.to_s}
+    puts Finder.new(ENV["query"]).matching_documents.entries.collect{|doc| doc.inspect}.join("\n"<<"#"*80<<"\n")
   end
 end

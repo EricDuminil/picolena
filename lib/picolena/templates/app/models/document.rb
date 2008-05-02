@@ -15,6 +15,14 @@ class Document
     define_method(method_name){File.send(method_name,complete_path)}
   }
   alias_method :filename, :basename
+  alias_method :to_s, :complete_path
+
+
+  def inspect
+    [self,("(#{pretty_score})" if @score),("(language:#{language})" if language)].compact.join(" ")
+  end
+
+
 
   # Returns filename without extension
   #   "buildings.odt" => "buildings"
@@ -91,6 +99,10 @@ class Document
     from_index[:language]
   end
 
+  def pretty_score
+    "%3.1f%" % (@score*100)
+  end
+
   # Fields that are shared between every document.
   def self.default_fields_for(complete_path)
     {
@@ -102,6 +114,7 @@ class Document
       :modified           => File.mtime(complete_path).strftime("%Y%m%d%H%M%S")
     }
   end
+
 
   private
   
