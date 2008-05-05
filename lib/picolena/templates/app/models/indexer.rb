@@ -20,6 +20,7 @@ class Indexer
       }
       log :debug => "Now optimizing index"
       index.optimize
+      index_time_dbm_file['last']=Time.now._dump
       @@do_not_disturb_while_indexing=false
       log :debug => "Indexing done in #{Time.now-start} s."
     end
@@ -104,6 +105,10 @@ class Indexer
     # Returns how many files are indexed.
     def size
       index.size
+    end
+
+    def last_update
+      Time._load(index_time_dbm_file['last']) rescue "none"
     end
 
     private

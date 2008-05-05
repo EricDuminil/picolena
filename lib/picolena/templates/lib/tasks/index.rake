@@ -25,6 +25,11 @@ namespace :index do
     puts "#{Indexer.size} documents are currently indexed in #{Picolena::IndexSavePath}"
   end
 
+  desc 'Returns the last time the index was created/update'
+  task :last_update => :environment do
+    puts Indexer.last_update
+  end
+
   # Search index with query "some query" :
   # rake index:search query="some query"
   desc 'Search index'
