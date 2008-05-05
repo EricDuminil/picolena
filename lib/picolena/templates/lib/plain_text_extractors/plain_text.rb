@@ -3,7 +3,7 @@ PlainTextExtractor.new {
   as "application/plain"
   aka "plain text file"
   with {|source|
-    raise "Binary file : #{source}" unless File.plain_text?(source)
+    raise "binary file #{source}" unless File.plain_text?(source)
     encoding=File.encoding(source)
     if encoding.empty? then
       File.read(source)
