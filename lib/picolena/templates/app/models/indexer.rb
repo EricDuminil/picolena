@@ -1,3 +1,7 @@
+# Indexer is used to index (duh!) documents contained in IndexedDirectories
+# It can create, update, delete and prune the index, and take care that only
+# one IndexWriter exists at any given time, even when used in a multi-threaded
+# way.
 class Indexer
   # This regexp defines which files should *not* be indexed.
   @@exclude          = /(Thumbs\.db)/
@@ -7,6 +11,11 @@ class Indexer
   cattr_reader :do_not_disturb_while_indexing
 
   class << self
+    # Finds every document included in IndexedDirectories, parses them with
+    # PlainTextExtractor and adds them to the index.
+    #
+    # Updates the index unless remove_first parameter is set to true, in which
+    # case it removes the index first before re-creating it.
     def index_every_directory(remove_first=false)
       @@do_not_disturb_while_indexing=true
       clear! if remove_first
@@ -25,6 +34,9 @@ class Indexer
       log :debug => "Indexing done in #{Time.now-start} s."
     end
 
+    # Indexes a given directory, using @@threads_number threads.
+    # To do so, it retrieves a list of every included document, cuts it in
+    # @@threads_number chunks, and create a new indexing thread for every chunk.
     def index_directory_with_multithreads(dir)
       log :debug => "Indexing #{dir}, #{@@threads_number} threads"
 
@@ -48,6 +60,13 @@ class Indexer
       }
     end
 
+    # Retrieves content and language from a given document, and adds it to the index.
+    # Since Document#probably_unique_id is used as index :key, no document will be added
+    # twice to the index, and the old document will just get updated.
+    #
+    # If for some reason (no content found or no defined PlainTextExtractor), content cannot
+    # be found, some basic information about the document (mtime, filename, complete_path)
+    # gets indexed anyway.
     def add_or_update_file(complete_path)
       document = Document.default_fields_for(complete_path)
       begin
@@ -71,10 +90,8 @@ class Indexer
     # ensures that a new Index is instantiated next time index is called.
     def close
       @@index.close rescue nil
-      # Ferret will SEGFAULT otherwise.
       @@index = nil
     end
-    
     
     # Checks for indexed files that are missing from filesytem
     # and removes them from index & dbm file.
@@ -95,6 +112,7 @@ class Indexer
       @@index ||= Ferret::Index::Index.new(default_index_params)
     end
 
+    # Creates the index unless it already exists.
     def ensure_index_existence
       index_every_directory(:remove_first) unless index_exists? or RAILS_ENV=="production"
     end
@@ -104,6 +122,8 @@ class Indexer
       index.size
     end
 
+    # Returns the time at which the index was last created/updated.
+    # Returns "none" if it doesn't exist.
     def last_update
       Time._load(index_time_dbm_file['last']) rescue "none"
     end

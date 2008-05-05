@@ -6,6 +6,9 @@ class String
 end
 
 module Enumerable
+  # Similar to Enumerable#each, but creates a new thread for each element.
+  # Used for the indexer to make it multi-threaded.
+  # It ensures that threads are joined together before returning.
   def each_with_thread(&block)
     tds=self.collect{|elem|
       Thread.new(elem) {|elem|
@@ -41,10 +44,23 @@ class Array
 end
 
 class File
+  # Returns the filetype of filename as a symbol.
+  # Returns :no_extension unless an extension is found
+  #  >> File.ext_as_sym("test.pdf")
+  #  => :pdf
+  #  >> File.ext_as_sym("test.tar.gz")
+  #  => :gz
+  #  >> File.ext_as_sym("test")
+  #  => :no_extension
   def self.ext_as_sym(filename)
     File.extname(filename).sub(/^\./,'').downcase.to_sym rescue :no_extension
   end
 
+  # Returns a probable encoding for a given plain text file
+  # If source is a html file, it parses for metadata to retrieve encoding,
+  # and uses file -i otherwise.
+  # Returns iso-8859-15 instead of iso-8859-1, to be sure € char can be
+  # encoded
   def self.encoding(source)
     parse_for_charset="grep -io charset=[a-z0-9\\-]* | sed 's/charset=//i'"
     if File.extname(source)[0,4]==".htm" then
@@ -63,12 +79,17 @@ class File
      end
   end
 
+  # Returns the content of a file and removes it after.
+  # Could be used to read temporary output file written by a PlainTextExtractor.
   def self.read_and_remove(filename)
     content=read(filename)
     FileUtils.rm filename, :force=>true
     content
   end
-  
+ 
+  # Returns nil unless filename is a plain text file.
+  # It requires file command.
+  # NOTE: What to use for Win32?
   def self.plain_text?(filename)
     %x{file -i "#{filename}"} =~ /: text\//
   end
