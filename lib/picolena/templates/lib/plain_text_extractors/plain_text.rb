@@ -5,7 +5,6 @@ PlainTextExtractor.new {
   with {|source|
     if File.plain_text?(source) then
       encoding=File.encoding(source)
-      #TODO: Return "binary file" if binary
       if encoding.empty? then
          File.read(source)
       else
