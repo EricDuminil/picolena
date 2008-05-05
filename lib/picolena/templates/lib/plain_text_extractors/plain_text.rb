@@ -3,15 +3,12 @@ PlainTextExtractor.new {
   as "application/plain"
   aka "plain text file"
   with {|source|
-    if File.plain_text?(source) then
-      encoding=File.encoding(source)
-      if encoding.empty? then
-         File.read(source)
-      else
-         %x{iconv -f #{encoding} -t utf8  "#{source}" 2>/dev/null}
-      end
+    raise "Binary file : #{source}" unless File.plain_text?(source)
+    encoding=File.encoding(source)
+    if encoding.empty? then
+      File.read(source)
     else
-      nil
+      %x{iconv -f #{encoding} -t utf8  "#{source}" 2>/dev/null}
     end
   }
   # for dependencies spec
