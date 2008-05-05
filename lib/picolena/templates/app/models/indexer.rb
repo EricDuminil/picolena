@@ -50,15 +50,13 @@ class Indexer
     end
 
     def add_or_update_file(complete_path)
-      default_fields = Document.default_fields_for(complete_path)
+      document = Document.default_fields_for(complete_path)
       begin
-        document = PlainTextExtractor.extract_content_and_language_from(complete_path)
+        document.merge! PlainTextExtractor.extract_content_and_language_from(complete_path)
         raise "empty document #{complete_path}" if document[:content].strip.empty?
-        document.merge! default_fields
-        log :debug => ["Added : #{complete_path}",document[:language] ? " (#{document[:language]})" : ""].join
+        log :debug => ["Added : #{complete_path}",document[:language] && " ("<<document[:language]<<")"].join
       rescue => e
         log :debug => "\tindexing without content: #{e.message}"
-        document = default_fields
       end
       index << document
     end
