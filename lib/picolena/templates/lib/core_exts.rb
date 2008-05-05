@@ -43,6 +43,13 @@ class Array
   end
 end
 
+class Hash
+  def add(category)
+    self[category]||={:size=>0}
+    self[category][:size]+=1
+  end
+end
+
 class File
   # Returns the filetype of filename as a symbol.
   # Returns :no_extension unless an extension is found

@@ -2,6 +2,7 @@
 # It can create, update, delete and prune the index, and take care that only
 # one IndexWriter exists at any given time, even when used in a multi-threaded
 # way.
+require 'indexer_logger'
 class Indexer
   # This regexp defines which files should *not* be indexed.
   @@exclude          = /(Thumbs\.db)/
@@ -22,23 +23,22 @@ class Indexer
       @from_scratch = remove_first
       # Forces Finder.searcher and Finder.index to be reloaded, by removing them from the cache.
       Finder.reload!
-      log :debug => "Indexing every directory"
-      start=Time.now
+      logger.start_indexing
       Picolena::IndexedDirectories.each{|dir, alias_dir|
         index_directory_with_multithreads(dir)
       }
-      log :debug => "Now optimizing index"
+      logger.debug "Now optimizing index"
       index.optimize
       index_time_dbm_file['last']=Time.now._dump
       @@do_not_disturb_while_indexing=false
-      log :debug => "Indexing done in #{Time.now-start} s."
+      logger.show_report
     end
 
     # Indexes a given directory, using @@threads_number threads.
     # To do so, it retrieves a list of every included document, cuts it in
     # @@threads_number chunks, and create a new indexing thread for every chunk.
     def index_directory_with_multithreads(dir)
-      log :debug => "Indexing #{dir}, #{@@threads_number} threads"
+      logger.debug "Indexing #{dir}, #{@@threads_number} threads"
 
       indexing_list=Dir[File.join(dir,"**/*")].select{|filename|
         File.file?(filename) && filename !~ @@exclude
@@ -53,7 +53,7 @@ class Indexer
           if should_index_this_document?(complete_path) then
             add_or_update_file(complete_path)
           else
-            log :debug => "Identical : #{complete_path}"
+            logger.debug "Identical : #{complete_path}"
           end
           index_time_dbm_file[complete_path] = Time.now._dump
         }
@@ -72,9 +72,9 @@ class Indexer
       begin
         document.merge! PlainTextExtractor.extract_content_and_language_from(complete_path)
         raise "empty document #{complete_path}" if document[:content].strip.empty?
-        log :debug => ["Added : #{complete_path}",document[:language] && " ("<<document[:language]<<")"].join
+        logger.add_document document
       rescue => e
-        log :debug => "\tindexing without content: #{e.message}"
+        logger.reject_document document, e
       end
       index << document
     end
@@ -100,7 +100,7 @@ class Indexer
       missing_files.each{|filename, itime|
         index.writer.delete(:complete_path, filename)
         index_time_dbm_file.delete(filename)
-        log :debug => "Removed : #{filename}"
+        logger.debug "Removed : #{filename}"
       }
       index.optimize
     end
@@ -137,6 +137,10 @@ class Indexer
     end
 
     private
+
+    def logger
+      @@logger ||= IndexerLogger.new
+    end
     
     # Copied from Ferret book, By David Balmain
     def index_time_dbm_file
@@ -149,12 +153,6 @@ class Indexer
 
     def index_filename
       Dir.glob(File.join(Picolena::IndexSavePath,'*.cfs')).first
-    end
-
-    def log(hash)
-      hash.each{|level,message|
-        IndexerLogger.send(level,message)
-      }
     end
 
     def default_index_params

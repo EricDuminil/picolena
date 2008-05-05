@@ -50,6 +50,7 @@ lib/picolena/templates/lang/ui/en.yml
 lib/picolena/templates/lang/ui/es.yml
 lib/picolena/templates/lang/ui/fr.yml
 lib/picolena/templates/lib/core_exts.rb
+lib/picolena/templates/lib/indexer_logger.rb
 lib/picolena/templates/lib/plain_text_extractor_DSL.rb
 lib/picolena/templates/lib/plain_text_extractors/adobe.pdf.rb
 lib/picolena/templates/lib/plain_text_extractors/html.rb
