@@ -38,8 +38,7 @@ class Indexer
       
       indexing_list_chunks.each_with_thread{|chunk|
         chunk.each{|complete_path|
-          last_itime=index_time_dbm_file[complete_path]
-          if @from_scratch || !last_itime || File.mtime(complete_path)> Time._load(last_itime) then
+          if should_index_this_document?(complete_path) then
             add_or_update_file(complete_path)
           else
             log :debug => "Identical : #{complete_path}"
@@ -107,6 +106,14 @@ class Indexer
 
     def last_update
       Time._load(index_time_dbm_file['last']) rescue "none"
+    end
+    
+    # For a given document, it retrieves the time it was last indexed, compare it to
+    # its modification time and returns false unless the file has been
+    # modified after the last indexing process.
+    def should_index_this_document?(complete_path)
+      last_itime=index_time_dbm_file[complete_path]
+      @from_scratch || !last_itime || File.mtime(complete_path)> Time._load(last_itime) 
     end
 
     private
