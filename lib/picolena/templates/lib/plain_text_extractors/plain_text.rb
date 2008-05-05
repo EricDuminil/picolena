@@ -11,7 +11,7 @@ PlainTextExtractor.new {
          %x{iconv -f #{encoding} -t utf8  "#{source}" 2>/dev/null}
       end
     else
-      "binary file!"
+      nil
     end
   }
   # for dependencies spec

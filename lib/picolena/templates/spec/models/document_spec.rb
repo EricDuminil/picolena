@@ -78,6 +78,12 @@ describe Document do
     @valid_document.should be_supported
     Document.new("spec/test_dirs/indexed/others/ghjopdfg.xyz").should_not be_supported
   end
+
+  it "should not be considered supported if binary" do
+    Document.new("spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION").should_not be_supported
+  end
+
+
   
   it "should know its language when enough content is available" do
     Document.new("spec/test_dirs/indexed/lang/goethe").language.should == "de"

@@ -11,7 +11,7 @@ class Document
   end
 
   #Delegating properties to File::method_name(complete_path)
-  [:dirname, :basename, :extname, :ext_as_sym, :file?, :size, :ext_as_sym].each{|method_name|
+  [:dirname, :basename, :extname, :ext_as_sym, :file?, :plain_text?, :size, :ext_as_sym].each{|method_name|
     define_method(method_name){File.send(method_name,complete_path)}
   }
   alias_method :filename, :basename
@@ -58,7 +58,7 @@ class Document
   #  Document.new("presentation.pdf").supported? => true
   #  Document.new("presentation.some_weird_extension").supported? => false
   def supported?
-    PlainTextExtractor.supported_extensions.include?(self.ext_as_sym)
+    PlainTextExtractor.supported_extensions.include?(self.ext_as_sym) unless ext_as_sym==:no_extension and !plain_text?
   end
 
   # Retrieves content as it is *now*.
