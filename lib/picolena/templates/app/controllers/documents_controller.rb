@@ -22,9 +22,9 @@ class DocumentsController < ApplicationController
   def show
     start=Time.now
       @query=[params[:id],params.delete(:format)].compact.join('.')
-      @sort=params[:sort]
+      @sort_by=params[:sort_by]
       page=params[:page]||1
-      finder=Finder.new(@query,@sort,page)
+      finder=Finder.new(@query,@sort_by,page)
       finder.execute!
       pager=::Paginator.new(finder.total_hits, Picolena::ResultsPerPage) do
         finder.matching_documents

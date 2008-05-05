@@ -6,10 +6,10 @@ module DocumentsHelper
   
   # Very basic pagination.
   # Provides liks to Next, Prev and FirstPage when needed.
-  def should_paginate(page,query, sort)
-    [(link_to("&larr;&larr;", :action => :show, :id => query, :sort=>sort) if page.number>2),
-     (link_to("&larr;", :action => :show, :id => query, :page => page.prev.number, :sort=>sort) if page.prev?),
-     (link_to("&rarr;", :action => :show, :id => query, :page => page.next.number, :sort=>sort) if page.next?)].compact.join(" | ")
+  def should_paginate(page,query, sort_by)
+    [(link_to("&larr;&larr;", :action => :show, :id => query, :sort_by=>sort_by) if page.number>2),
+     (link_to("&larr;", :action => :show, :id => query, :page => page.prev.number, :sort_by=>sort_by) if page.prev?),
+     (link_to("&rarr;", :action => :show, :id => query, :page => page.next.number, :sort_by=>sort_by) if page.next?)].compact.join(" | ")
   end
   
   # Returns a localized sentence like "Results 1-10 of 12 for Zimbabwe (0.472s)" or
@@ -81,7 +81,7 @@ module DocumentsHelper
   end
   
   def sort_by_date_or_relevance(query)
-    [link_to_unless_current('By date', document_path(query, :sort=>'by_date')),
+    [link_to_unless_current('By date', document_path(query, :sort_by=>'date')),
      link_to_unless_current('By relevance', document_path(query))].join("&nbsp;")
   end
 end

@@ -5,20 +5,20 @@ class Finder
     @@index ||= Indexer.index
   end
 
-  def initialize(raw_query,by_date=false, page=1,results_per_page=Picolena::ResultsPerPage)
+  def initialize(raw_query,sort_by='relevance', page=1,results_per_page=Picolena::ResultsPerPage)
     @query = Query.extract_from(raw_query)
     @raw_query= raw_query
     Indexer.ensure_index_existence
     @per_page=results_per_page
     @offset=(page.to_i-1)*results_per_page
-    @by_date=by_date
+    @sort_by=sort_by
     index_should_have_documents
   end
 
   def execute!
     @matching_documents=[]
     start=Time.now
-      @total_hits = index.search_each(query, :limit => @per_page, :offset=>@offset, :sort => (sort_by_date if @by_date)){|index_id, score|
+      @total_hits = index.search_each(query, :limit => @per_page, :offset=>@offset, :sort => (sort_by_date if @sort_by=='date')){|index_id, score|
         begin
           found_doc=Document.new(index[index_id][:complete_path])
           found_doc.matching_content=index.highlight(query, index_id,
