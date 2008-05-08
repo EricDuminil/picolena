@@ -1,6 +1,11 @@
 == 0.1.8  2008-05-08
 
-* 1 bug fix:
+* 2 minor enhancements:
+  * New IndexerLogger with basic statistics
+  * More specs & documentation.
+
+* 2 bug fixes:
+  * Binary documents without extension are not considered supported anymore
   * Ensure that index is locked system-wide by using lock file.
 
 == 0.1.7  2008-04-30
