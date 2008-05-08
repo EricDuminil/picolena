@@ -1,4 +1,7 @@
-== 0.1.8  2008-05-
+== 0.1.8  2008-05-08
+
+* 1 bug fix:
+  * Ensure that index is locked system-wide by using lock file.
 
 == 0.1.7  2008-04-30
 

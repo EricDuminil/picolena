@@ -7,6 +7,8 @@ describe "Finder without index on disk" do
     @original_indexed_dirs=Picolena::IndexedDirectories.dup
     @new_index_path=File.join(Dir::tmpdir,'ferret_tst')
     Picolena::IndexSavePath.replace(@new_index_path)
+    Picolena::MetaIndexPath.replace(File.join(@new_index_path,'meta'))
+    FileUtils.mkpath Picolena::MetaIndexPath
   end
 
   before(:each) do
@@ -30,6 +32,7 @@ describe "Finder without index on disk" do
   after(:all) do
     Picolena::IndexedDirectories.replace(@original_indexed_dirs)
     Picolena::IndexSavePath.replace(@original_index_path)
+    Picolena::MetaIndexPath.replace(File.join(@original_index_path,'meta'))
   end
 end
 

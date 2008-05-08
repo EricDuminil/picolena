@@ -8,8 +8,6 @@ class Indexer
   @@exclude          = /(Thumbs\.db)/
   # Number of threads that will be used during indexing process
   @@threads_number = 8
-  
-  cattr_reader :do_not_disturb_while_indexing
 
   class << self
     # Finds every document included in IndexedDirectories, parses them with
@@ -18,8 +16,8 @@ class Indexer
     # Updates the index unless remove_first parameter is set to true, in which
     # case it removes the index first before re-creating it.
     def index_every_directory(remove_first=false)
-      @@do_not_disturb_while_indexing=true
       clear! if remove_first
+      lock!
       @from_scratch = remove_first
       logger.start_indexing
       Picolena::IndexedDirectories.each{|dir, alias_dir|
@@ -28,9 +26,7 @@ class Indexer
       logger.debug "Now optimizing index"
       index.optimize
       index_time_dbm_file['last']=Time.now._dump
-      # Forces Finder.index to be reloaded.
-      @@do_not_disturb_while_indexing=false
-      touch_reload_file!
+      unlock!
       logger.show_report
     end
 
@@ -39,15 +35,13 @@ class Indexer
     # @@threads_number chunks, and create a new indexing thread for every chunk.
     def index_directory_with_multithreads(dir)
       logger.debug "Indexing #{dir}, #{@@threads_number} threads"
-
       indexing_list=Dir[File.join(dir,"**/*")].select{|filename|
         File.file?(filename) && filename !~ @@exclude
       }
 
       indexing_list_chunks=indexing_list.in_transposed_slices(@@threads_number)
-      
       prepare_multi_threads_environment
-      
+
       indexing_list_chunks.each_with_thread{|chunk|
         chunk.each{|complete_path|
           if should_index_this_document?(complete_path) then
@@ -143,6 +137,10 @@ class Indexer
       last_itime=index_time_dbm_file[complete_path]
       @from_scratch || !last_itime || File.mtime(complete_path)> Time._load(last_itime) 
     end
+    
+    def locked?
+      File.exists?(lock_file)
+    end
 
     private
     
@@ -154,7 +152,21 @@ class Indexer
     end
     
     def reload_file
-      File.join(Picolena::IndexSavePath,'reload')
+      File.join(Picolena::MetaIndexPath,'reload')
+    end
+    
+    def lock!
+      FileUtils.touch(lock_file)
+    end
+    
+    def unlock!
+      FileUtils.rm(lock_file)
+      # Forces Finder.index to be reloaded.
+      touch_reload_file!
+    end
+    
+    def lock_file
+      File.join(Picolena::MetaIndexPath,'lock')
     end
 
     def logger
@@ -163,7 +175,7 @@ class Indexer
     
     # Copied from Ferret book, By David Balmain
     def index_time_dbm_file
-      @@dbm_file ||= DBM.open(File.join(Picolena::IndexSavePath, 'added_at'))
+      @@dbm_file ||= DBM.open(File.join(Picolena::MetaIndexPath, 'added_at'))
     end
 
     def index_exists?

@@ -8,4 +8,6 @@ module Picolena
   
   IndexSavePath=File.join(IndexesSavePath,ENV["RAILS_ENV"] || "development")
   FileUtils.mkpath IndexSavePath
+  MetaIndexPath= File.join(IndexSavePath,'meta')
+  FileUtils.mkpath MetaIndexPath
 end

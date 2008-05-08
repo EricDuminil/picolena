@@ -64,7 +64,7 @@ class DocumentsController < ApplicationController
   
   def ensure_index_is_created
     Indexer.ensure_index_existence
-    while Indexer.do_not_disturb_while_indexing do
+    while Indexer.locked? do
       sleep 1
     end
   end

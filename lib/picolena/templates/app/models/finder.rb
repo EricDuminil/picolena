@@ -2,7 +2,7 @@ class Finder
   attr_reader :query
 
   def index
-    Indexer.index
+    @@index ||= Indexer.index 
   end
 
   def initialize(raw_query,sort_by='relevance', page=1,results_per_page=Picolena::ResultsPerPage)
@@ -10,7 +10,6 @@ class Finder
     @raw_query= raw_query
     Indexer.ensure_index_existence
     reload_index! if should_be_reloaded?
-    uncache_index if Indexer.do_not_disturb_while_indexing
     @per_page=results_per_page
     @offset=(page.to_i-1)*results_per_page
     @sort_by=sort_by
@@ -58,12 +57,8 @@ class Finder
   
   def reload_index!
     Indexer.close
-    uncache_index
-    @@last_reload = Time.now
-  end
-  
-  def uncache_index
     @@index = nil
+    @@last_reload = Time.now
   end
 
   def should_be_reloaded?
