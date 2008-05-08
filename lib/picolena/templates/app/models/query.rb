@@ -4,6 +4,11 @@ class Query
     def extract_from(raw_query)
       parser.parse(convert_to_english(raw_query))
     end
+    
+    # Returns terms related to content. Useful for cache highlighting
+    def content_terms(raw_query)
+      Query.extract_from(raw_query).terms(Indexer.index.searcher).select{|term| term.field==:content}.collect{|term| term.text}.uniq
+    end
 
     private
 

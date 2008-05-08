@@ -76,4 +76,14 @@ describe Query do
     Query.extract_from("test").should == Query.extract_from("tesT")
     Query.extract_from("test").should_not == Query.extract_from("tesTe")
   end
+  
+  it "should be able to extract search terms related to :content" do
+    Query.content_terms("plain text").should == %w(plain text)
+    Query.content_terms("plain text extension:pdf").should == %w(plain text)
+    Query.content_terms("plain AND text").should == %w(plain text)
+    Query.content_terms("absorption OR adsorption").should ==%w(absorption adsorption)
+    Query.content_terms("filename:plain_text").should be_empty
+    Globalite.language = :en
+    Query.content_terms("LIKE absorption").include?("adsorption").should be_true
+  end
 end
