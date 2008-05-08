@@ -21,8 +21,8 @@ class Indexer
       @@do_not_disturb_while_indexing=true
       clear! if remove_first
       @from_scratch = remove_first
-      # Forces Finder.searcher and Finder.index to be reloaded, by removing them from the cache.
-      Finder.reload!
+      # Forces Finder.index to be reloaded.
+      touch_reload_file!
       logger.start_indexing
       Picolena::IndexedDirectories.each{|dir, alias_dir|
         index_directory_with_multithreads(dir)
@@ -128,6 +128,14 @@ class Indexer
       Time._load(index_time_dbm_file['last']) rescue "none"
     end
     
+    # Returns the time at which the reload file was last touched.
+    # Useful to know if other processes have modified the shared index,
+    # and if the Indexer should be reloaded.
+    def reload_file_mtime
+      touch_reload_file! unless File.exists?(reload_file)
+      File.mtime(reload_file)
+    end
+    
     # For a given document, it retrieves the time it was last indexed, compare it to
     # its modification time and returns false unless the file has been
     # modified after the last indexing process.
@@ -137,6 +145,14 @@ class Indexer
     end
 
     private
+    
+    def touch_reload_file!
+      FileUtils.touch(reload_file)
+    end
+    
+    def reload_file
+      File.join(Picolena::IndexSavePath,'reload')
+    end
 
     def logger
       @@logger ||= IndexerLogger.new

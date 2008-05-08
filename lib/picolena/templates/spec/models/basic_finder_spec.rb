@@ -11,6 +11,7 @@ describe "Finder without index on disk" do
 
   before(:each) do
     Indexer.clear!
+    Finder.send(:class_variable_set,'@@last_reload',nil)
   end
 
   it "should create index" do

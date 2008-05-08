@@ -9,6 +9,7 @@ class Finder
     @query = Query.extract_from(raw_query)
     @raw_query= raw_query
     Indexer.ensure_index_existence
+    reload! if should_be_reloaded?
     @per_page=results_per_page
     @offset=(page.to_i-1)*results_per_page
     @sort_by=sort_by
@@ -52,11 +53,21 @@ class Finder
     }
   }
 
-  def self.reload!
+  private
+  
+  def reload!
+    Indexer.close
     @@index = nil
+    @@last_reload = Time.now
   end
 
-  private
+  def should_be_reloaded?
+    Indexer.reload_file_mtime > last_reload
+  end
+ 
+  def last_reload
+    @@last_reload ||= Time.at(0)
+  end
   
   def sort_by_date
     Ferret::Search::SortField.new(:modified, :type => :byte, :reverse => true)
