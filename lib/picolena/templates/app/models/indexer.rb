@@ -21,8 +21,6 @@ class Indexer
       @@do_not_disturb_while_indexing=true
       clear! if remove_first
       @from_scratch = remove_first
-      # Forces Finder.index to be reloaded.
-      touch_reload_file!
       logger.start_indexing
       Picolena::IndexedDirectories.each{|dir, alias_dir|
         index_directory_with_multithreads(dir)
@@ -30,7 +28,9 @@ class Indexer
       logger.debug "Now optimizing index"
       index.optimize
       index_time_dbm_file['last']=Time.now._dump
+      # Forces Finder.index to be reloaded.
       @@do_not_disturb_while_indexing=false
+      touch_reload_file!
       logger.show_report
     end
 
