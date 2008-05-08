@@ -148,6 +148,9 @@ class Indexer
     
     def touch_reload_file!
       FileUtils.touch(reload_file)
+      # To ensure that every process can touch reload_file, even if Picolena
+      # is launched as a special user.
+      FileUtils.chmod(0666, reload_file)
     end
     
     def reload_file
