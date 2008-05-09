@@ -11,3 +11,5 @@ pkg
 website/index.html
 *.swp
 lib/picolena/templates/coverage
+.loadpath
+.project
