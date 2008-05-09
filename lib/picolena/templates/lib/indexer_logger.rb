@@ -1,13 +1,7 @@
 class IndexerLogger<Logger
   def initialize
     super($stdout)
-    #FIXME: Should be defined in config/environments/*.rb
-    levels={
-      "development"=>Logger::DEBUG,
-      "production" =>Logger::INFO,
-      "test"       =>Logger::WARN    
-    }
-    @level=levels[RAILS_ENV]
+    @level=Picolena::LOGLEVEL
     @found_languages={}
     @supported_filetypes={}
     @unsupported_filetypes={}
