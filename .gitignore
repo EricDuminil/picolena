@@ -1,5 +1,6 @@
 lib/picolena/templates/LICENSE
 lib/picolena/templates/README
+lib/picolena/templates/config/environment.rb
 lib/picolena/templates/config/custom
 lib/picolena/templates/doc
 lib/picolena/templates/log

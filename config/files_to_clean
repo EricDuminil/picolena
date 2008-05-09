@@ -1,5 +1,6 @@
 lib/picolena/templates/LICENSE
 lib/picolena/templates/README
+lib/picolena/templates/config/environment.rb
 lib/picolena/templates/config/custom/picolena.rb
 lib/picolena/templates/config/custom/indexed_directories.yml
 lib/picolena/templates/config/custom/white_list_ip.yml
