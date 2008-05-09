@@ -1,7 +1,7 @@
 = Picolena
 
 * http://picolena.devjavu.com
-* http://svn.devjavu.com/picolena
+* http://github.com/EricDuminil/picolena/
 
 == DESCRIPTION:
 

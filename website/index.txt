@@ -49,7 +49,7 @@ h2. How to submit patches
 
 Read the "8 steps for fixing other people's code":http://drnicwilliams.com/2007/06/01/8-steps-for-fixing-other-peoples-code/ and for section "8b: Submit patch to Google Groups":http://drnicwilliams.com/2007/06/01/8-steps-for-fixing-other-peoples-code/#8b-google-groups, use the Google Group above.
 
-The trunk repository is <code>http://svn.devjavu.com/picolena/trunk</code> for anonymous access.
+The git repository is <code>git://github.com/EricDuminil/picolena.git</code>.
 
 h2. License
 
