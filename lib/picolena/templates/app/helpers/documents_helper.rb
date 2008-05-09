@@ -76,8 +76,17 @@ module DocumentsHelper
     link_to link_name, cached_document_path(:id => document.probably_unique_id, :query => query)
   end
   
+  # Returns multicolor cache à la Google.
   def highlighted_cache(document, query)
-    h(document.highlighted_cache(query)).gsub(/\n/,'<br/>').gsub(/&lt;&lt;(.*?)&gt;&gt;/,content_tag(:span, '\1', :class=>"matching_content"))
+    # What are the terms related to :content field?
+    content_terms=Query.content_terms(query)
+    # Parses cache for found terms
+    # Replaces linebreak by <br/>
+    # < and > by &lt; and &gt;
+    h(document.highlighted_cache(query)).gsub(/\n/,'<br/>').gsub(/&lt;&lt;(.*?)&gt;&gt;/){|c| term=$1
+      # and affects a span class to each term
+      content_tag(:span, term, :class=>"matching_content_#{content_terms.index(term.downcase)}")
+    }
   end
   
   def sort_by_date_or_relevance(query)

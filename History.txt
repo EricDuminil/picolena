@@ -1,5 +1,9 @@
 == 0.1.9  2008-05-
 
+* 2 minor enhancements:
+  * Multicolor cache highlighting à la Google
+  * More documentation
+
 == 0.1.8  2008-05-08
 
 * 2 minor enhancements:

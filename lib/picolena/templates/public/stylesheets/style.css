@@ -148,10 +148,33 @@ width: 80%;
 	padding:0px 20px;
 }
 
-#results .matching_content{
+#results .matching_content_0{
 	background-color:#ffff66;
 }
 
+#results .matching_content_1{
+	background-color:#66ffff;
+}
+
+#results .matching_content_2{
+	background-color:#99ff99;
+}
+
+#results .matching_content_3{
+	background-color:#ff9999;
+}
+
+#results .matching_content_4{
+	background-color:#ff66ff;
+}
+
+#results .matching_content_5{
+	background-color:#9999ff;
+}
+
+#results .matching_content_6{
+	background-color:#66ff66;
+}
 
 #results a, #results small{
 	font-family:"Trebuchet MS";
