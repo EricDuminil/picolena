@@ -56,11 +56,16 @@ xls:
 picture:
   psd
   jpg
+  jpeg
+  tga
   png
   gif
   eps
   bmp
   ico
+  tiff
+  tif
+  svg
 cad:
   dwg
   dxf
