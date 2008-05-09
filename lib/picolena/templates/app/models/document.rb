@@ -18,11 +18,13 @@ class Document
   alias_method :to_s, :complete_path
 
 
+  # Returns complete path as well as matching score and language if available.
+  #  ../spec/test_dirs/indexed/just_one_doc/for_test.txt (56.3%) (language:en)
+  # Used for example by
+  #  rake index:search query="some query"
   def inspect
     [self,("(#{pretty_score})" if @score),("(language:#{language})" if language)].compact.join(" ")
   end
-
-
 
   # Returns filename without extension
   #   "buildings.odt" => "buildings"
@@ -72,8 +74,8 @@ class Document
     from_index[:content]
   end
   
+  # Returns cached content with matching terms between '<<' '>>'.
   def highlighted_cache(raw_query)
-    #TODO: Report to Ferret. Highlight should accept :key and not only :doc_id.
     Indexer.index.highlight(Query.extract_from(raw_query), doc_id,
                             :field => :content, :excerpt_length => :all,
                             :pre_tag => "<<", :post_tag => ">>"
@@ -82,23 +84,32 @@ class Document
 
   # Returns the last modification date before the document got indexed.
   # Useful to know how old a document is, and to which version the cache corresponds.
+  #   >> doc.pretty_date
+  #   => "2008-05-09"
   def pretty_date
     from_index[:modified].sub(/(\d{4})(\d{2})(\d{2})\d{6}/,'\1-\2-\3')
   end
   
+  # Returns the last modification time before the document got indexed.
+  #   >> doc.pretty_mtime
+  #   => "2008-05-09 09:39:51"
   def pretty_mtime
     from_index[:modified].sub(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,'\1-\2-\3 \4:\5:\6')
   end
 
+  # Returns the last modification time before the document got indexed, as YYYYMMDDHHMMSS integer.
+  #   >> doc.mtime
+  #   => 20080509093951
   def mtime
     from_index[:modified].to_i
   end
 
-  # Returns language.
+  # Returns found language, if any.
   def language
     from_index[:language]
   end
 
+  # Returns matching score as a percentage, e.g. 56.3%
   def pretty_score
     "%3.1f%" % (@score*100)
   end
