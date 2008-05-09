@@ -15,3 +15,8 @@ Rails::Initializer.run do |config|
   # Ferret backs us up.
   config.frameworks -= [ :active_record ]
 end
+
+#Initialises Picolena module.
+module Picolena
+  VERSION='<%= version %>'
+end
