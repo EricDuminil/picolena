@@ -1,10 +1,20 @@
+# Finder is the class that is in charge to ensure that an index is instantiated and
+# that the raw query is converted into a Ferret::Query.
+# It then launches a search and returns found documents with corresponding matching scores.
 class Finder
   attr_reader :query
 
+  # No need to instantiate a new index for every search, so it gets cached.
   def index
     @@index ||= Indexer.index 
   end
 
+  # Instantiates a new Finder
+  # extracts a Ferret::Query from plain text raw query
+  # ensures that an Index has been instantiated
+  # reloads the index if needed
+  # prepares matching_documents pagination
+  # and ensures that the index contains at least one document.
   def initialize(raw_query,sort_by='relevance', page=1,results_per_page=Picolena::ResultsPerPage)
     @query = Query.extract_from(raw_query)
     @raw_query= raw_query
@@ -16,6 +26,13 @@ class Finder
     index_should_have_documents
   end
 
+  # Launches the search and writes correspondings
+  #  @matching_documents
+  #  @total_hits
+  #  @time_needed
+  #
+  # If a document is found in the index but not on the filesystem, it doesn't appear on
+  # the @matching_documents list.
   def execute!
     @matching_documents=[]
     start=Time.now
@@ -54,25 +71,34 @@ class Finder
   }
 
   private
-  
+  # Closes Index and clears the cache.
+  # This is used when the index has been modified by an external process
+  # and needs to get reloaded.
+  # Processes sharing the same index can force each other to reload by touching
+  # the "reload" file in Picolena::MetaIndexPath.
   def reload_index!
     Indexer.close
     @@index = nil
     @@last_reload = Time.now
   end
 
+  # Returns true if reload file has been touched since last reload.
   def should_be_reloaded?
     Indexer.reload_file_mtime > last_reload
   end
- 
+
+  # Returns the last time the index was reloaded.
+  # Returns Time.at(0) if undefined.
   def last_reload
     @@last_reload ||= Time.at(0)
   end
-  
+ 
+  # Returns a SortField that sorts documents by reversed modified time.
   def sort_by_date
     Ferret::Search::SortField.new(:modified, :type => :byte, :reverse => true)
   end
 
+  # Raises if index does not contain any document.
   def index_should_have_documents
     raise IndexError, "no document found" unless index.size > 0
   end
