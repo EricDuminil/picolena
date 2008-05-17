@@ -112,4 +112,13 @@ describe DocumentsController do
     response.should be_redirect
     response.should redirect_to(documents_url)
   end
+
+  it "GET 'download' should redirect if given id of an non indexed file" do
+    %w(/etc/passwd /etc/shadow /etc/fstab).each{|sensitive_file|
+      probably_unique_id=sensitive_file.base26_hash
+      get 'download', :id=>probably_unique_id
+      response.should be_redirect
+      response.should redirect_to(documents_url)
+    }
+  end
 end
