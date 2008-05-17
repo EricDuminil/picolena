@@ -3,14 +3,17 @@ class Document
   attr_reader :complete_path
   attr_accessor :score, :matching_content
 
+  # Instantiates a new Document, and ensure that the given path exists and
+  # is included in an indexed directory.
+  # Raises otherwise.
   def initialize(path)
-    #To ensure @complete_path is an absolute direction.
+    # To ensure @complete_path is an absolute direction.
     @complete_path=File.expand_path(path)
     validate_existence_of_file
     validate_in_indexed_directory
   end
 
-  #Delegating properties to File::method_name(complete_path)
+  # Delegating properties to File::method_name(complete_path)
   [:dirname, :basename, :extname, :ext_as_sym, :file?, :plain_text?, :size, :ext_as_sym].each{|method_name|
     define_method(method_name){File.send(method_name,complete_path)}
   }
@@ -114,7 +117,7 @@ class Document
     "%3.1f%" % (@score*100)
   end
 
-  # Fields that are shared between every document.
+  # Indexing fields that are shared between every document.
   def self.default_fields_for(complete_path)
     {
       :complete_path      => complete_path,
@@ -149,16 +152,21 @@ class Document
     !indexed_directory.nil?
   end
 
+  # Returns the IndexedDirectory in which the Document is included.
+  # Returns nil if no corresponding dir is found.
   def indexed_directory
     Picolena::IndexedDirectories.keys.find{|indexed_dir|
       dirname.starts_with?(indexed_dir)
     }
   end
 
+  # Raises unless @complete_path is the path of an existing file
   def validate_existence_of_file
     raise Errno::ENOENT, @complete_path unless file?
   end
 
+  # Raises unless @complete_path is included in an indexed_directory.
+  # It prevents end user to get information about non-indexed sensitive files.
   def validate_in_indexed_directory
     raise ArgumentError, "required document is not in indexed directory" unless in_indexed_directory?
   end
