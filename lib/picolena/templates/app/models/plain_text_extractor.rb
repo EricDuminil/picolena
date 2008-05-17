@@ -1,5 +1,8 @@
 require 'plain_text_extractor_DSL'
 
+# PlainTextExtractor is the class responsible for extracting plain text contents from
+# different documents filetypes (.doc, .html, .pdf, .od?), as defined in
+#   lib/plain_text_extractors/*.rb
 class PlainTextExtractor
   include PlainTextExtractorDSL
   class<<self
