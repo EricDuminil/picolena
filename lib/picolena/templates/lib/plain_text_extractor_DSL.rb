@@ -9,6 +9,7 @@
 #    or_extract 'Basic Word template for Picolena specs', :from => 'office2003-word-template.dot'
 #  }
 
+require 'open3'
 module PlainTextExtractorDSL
   attr_reader :exts, :mime_name, :description, :command, :content_and_file_examples
 
@@ -83,7 +84,5 @@ module PlainTextExtractorDSL
     else
       block || raise("No command defined for this extractor: #{description}")
     end
-    # TODO, replace it with Open3 or something.
-    @command<<' 2>/dev/null' if (@command.is_a?(String) && platform.to_s=~/(linux|mac_os)/ && !@command.include?('|'))
   end
 end

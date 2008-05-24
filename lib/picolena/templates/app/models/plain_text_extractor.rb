@@ -79,11 +79,11 @@ class PlainTextExtractor
         # If command includes 'DESTINATION' keyword,
         # launches the command and returns the content of
         # DESTINATION file.
-        system(specific_command)
+        IO.popen(specific_command){}
         File.read_and_remove(destination)
       else
         # Otherwise, launches the command and returns STDOUT.
-        IO.popen(specific_command){|io| io.read}
+        Open3.popen3(specific_command){|stdin,stdout,stderr| stdout.read}
       end
     else
       # command is a Block.
