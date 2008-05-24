@@ -71,19 +71,6 @@ class PlainTextExtractor
   end
 
   ## Conversion part
-
-  # destination method can be used by some conversion command that cannot output to stdout (example?)
-  # a file containing plain text result will first be written by command, and then be read by extract_content.
-  def destination
-    require 'tmpdir'
-    @@temp_file_as_destination ||= File.join(Dir::tmpdir,"ferret_#{Time.now.to_i}")
-  end
-
-  # Replaces generic command with specific source and destination (if specified) files
-  def specific_command
-    command.sub('SOURCE','"'<<source<<'"').sub('DESTINATION','"'<<destination<<'"')
-  end
-
   # Returns plain text content of source file
   def extract_content
     if command.is_a?(String) then
@@ -129,5 +116,19 @@ class PlainTextExtractor
       end
     }
     {:content => content, :language => language}
+  end
+
+  private
+
+  # destination method can be used by some conversion command that cannot output to stdout (example?)
+  # a file containing plain text result will first be written by command, and then be read by extract_content.
+  def destination
+    require 'tmpdir'
+    @@temp_file_as_destination ||= File.join(Dir::tmpdir,"ferret_#{Time.now.to_i}")
+  end
+
+  # Replaces generic command with specific source and destination (if specified) files
+  def specific_command
+    command.sub('SOURCE','"'<<source<<'"').sub('DESTINATION','"'<<destination<<'"')
   end
 end
