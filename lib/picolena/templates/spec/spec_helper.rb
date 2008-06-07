@@ -4,3 +4,9 @@ ENV["RAILS_ENV"] = "test"
 require File.expand_path(File.dirname(__FILE__) + "/../config/environment")
 require 'spec'
 require 'spec/rails'
+
+def revert_changes!(file,content)
+  File.open(file,'w'){|might_have_been_modified|
+    might_have_been_modified.write content
+  }
+end

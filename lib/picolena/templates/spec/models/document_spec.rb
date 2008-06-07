@@ -11,6 +11,11 @@ basic_pdf_attribute={
 }
 
 describe Document do
+  before(:all) do
+    # To be sure this file has the right content
+    revert_changes!("spec/test_dirs/indexed/others/placeholder.txt","Absorption and Adsorption cooling machines!!!")
+  end
+  
   before(:each) do
     @valid_document=Document.new("spec/test_dirs/indexed/basic/basic.pdf")
   end
@@ -43,7 +48,19 @@ describe Document do
     another_doc=Document.new("spec/test_dirs/indexed/basic/plain.txt")
     another_doc.cached.should == "just a content test\nin a txt file"
   end
-  
+
+  it "should keep content cached" do
+    filename = "spec/test_dirs/indexed/others/placeholder.txt"
+    content_before = "Absorption and Adsorption cooling machines!!!"
+    some_doc=Document.new(filename)
+    some_doc.content.should == content_before
+    File.open(filename,'a'){|doc|
+      doc.write("This line should not be indexed. It shouldn't be found in cache")
+      }
+    some_doc.content.should_not == content_before
+    some_doc.cached.should == content_before
+  end
+
   it "should know its highlighted cached content for a given query" do
     another_doc=Document.new("spec/test_dirs/indexed/basic/plain.txt")
     another_doc.highlighted_cache('a content test').should == "just a <<content>> <<test>>\nin a txt file"
@@ -109,5 +126,9 @@ describe Document do
     @valid_document.matching_content.should be_nil
     @valid_document.matching_content=["thermal cooling", "heat driven cooling"]
     @valid_document.matching_content.should include("thermal cooling")
+  end
+
+  after(:all) do
+    revert_changes!("spec/test_dirs/indexed/others/placeholder.txt","Absorption and Adsorption cooling machines!!!")
   end
 end

@@ -14,4 +14,5 @@ describe "IndexedDirectories" do
       File.should be_directory(dir)
     }
   end
+
 end

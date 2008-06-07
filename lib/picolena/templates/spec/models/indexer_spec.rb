@@ -15,4 +15,11 @@ describe Indexer do
       Indexer.last_update.should == "none"
     end
   end
+  
+  it "should give a boost to basename, filename and filetype in index" do
+    index=Indexer.index
+    index.field_infos[:basename].boost.should > 1.0
+    index.field_infos[:filename].boost.should > 1.0
+    index.field_infos[:filetype].boost.should > 1.0
+  end
 end
