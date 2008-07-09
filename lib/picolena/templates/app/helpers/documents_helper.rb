@@ -91,8 +91,8 @@ module DocumentsHelper
     }
   end
   
-  def sort_by_date_or_relevance(query)
-    [link_to_unless_current('By date', document_path(query, :sort_by=>'date')),
-     link_to_unless_current('By relevance', document_path(query))].join("&nbsp;")
+  def sort_by_date_or_relevance(query,params)
+    [link_to_if(params[:sort_by]!='date','By date', document_path(query, :sort_by=>'date')),
+     link_to_if(params[:sort_by],'By relevance', document_path(query))].join("&nbsp;")
   end
 end
