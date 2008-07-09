@@ -37,9 +37,11 @@ module DocumentsHelper
     }) if document.matching_content
   end
 
-  def language_icon_for(document)
+  def language_icon_for(document,query)
     lang=document.language
-    link_to(image_tag("flags/#{lang}.png"), document_url('lang:'<<lang)) unless lang.blank?
+    return if lang.blank?
+    query_with_lang= query=~/#{:language.l}/ ? query : "#{query} lang:#{lang}"
+    link_to(image_tag("flags/#{lang}.png"), document_url(query_with_lang))
   end
 
   # Returns icon and filename for any given document.
