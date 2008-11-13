@@ -87,7 +87,7 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
       m.rake 'spec' unless options[:no_spec]
 
       # Cleaning up temp folder if --spec-only
-      m.clean if options[:spec_only]
+      m.clean if false
     end
   end
 
