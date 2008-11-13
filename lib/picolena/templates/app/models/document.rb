@@ -66,6 +66,14 @@ class Document
     PlainTextExtractor.supported_extensions.include?(self.ext_as_sym) unless ext_as_sym==:no_extension and !plain_text?
   end
 
+  def extractor
+    PlainTextExtractor.find_by_extension(self.ext_as_sym) rescue nil
+  end
+
+  def mime
+    extractor.mime_name rescue 'application/octet-stream'
+  end
+
   # Retrieves content as it is *now*.
   def content
     PlainTextExtractor.extract_content_from(complete_path)

@@ -38,7 +38,7 @@ class DocumentsController < ApplicationController
   # Download the file whose probably_unique_id is given.
   # If the checksum is incorrect, redirect to documents_url via no_valid_link
   def download
-    send_file @document.complete_path
+    send_file @document.complete_path, :type => @document.mime, :disposition => 'inline'
   end
 
   # Returns the content of the document identified by probably_unique_id, as it is *now*.
