@@ -1,5 +1,8 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+# NOTE : This file should only be loaded after the Index has been created.
+# Otherwise, no go
+
 basic_pdf_attribute={
   :dirname=>File.join(RAILS_ROOT, 'spec/test_dirs/indexed/basic'),
   :basename=>'basic',
