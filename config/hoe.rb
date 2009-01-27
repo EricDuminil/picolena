@@ -70,7 +70,7 @@ hoe = Hoe.new(GEM_NAME, VERS) do |p|
                   # TODO: test with 1.1.1
                    ['paginator', '>= 1.1.0'],
                   # TODO: test with 1.1.12
-                   ['rspec', '>= 1.1.3']
+                   ['rspec', '>= 1.1.12']
                  ]
 
   #p.spec_extras = {}    # A hash of extra values to set in the gemspec.
