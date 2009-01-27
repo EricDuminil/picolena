@@ -1,4 +1,10 @@
-== 0.1.9  2008-05-
+== 0.2.0  2009-01-27
+
+* 1 major enhancement :
+  * Upgraded to Rails 2.2.2
+
+
+== 0.1.9  2008-05-09
 
 * 2 minor enhancements:
   * Multicolor cache highlighting à la Google
