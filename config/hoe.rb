@@ -62,14 +62,11 @@ hoe = Hoe.new(GEM_NAME, VERS) do |p|
   p.changes = p.paragraphs_of("History.txt", 0..1).join("\n\n")
   p.extra_deps = [ ['rails', '= 2.2.2'],
                    ['ferret', '>= 0.11.5'],
-                  # TODO: test with 2.0.7
-                   ['haml', '>= 1.8.2'],
+                   ['haml', '>= 2.0.7'],
                    ['rubyzip', '>= 0.9.1'],
-                  # TODO: test with 1.5.2
+                  # TODO: upgrade to 1.5.2
                    ['rubigen', '>= 1.2.4'],
-                  # TODO: test with 1.1.1
-                   ['paginator', '>= 1.1.0'],
-                  # TODO: test with 1.1.12
+                   ['paginator', '>= 1.1.1'],
                    ['rspec', '>= 1.1.12']
                  ]
 
