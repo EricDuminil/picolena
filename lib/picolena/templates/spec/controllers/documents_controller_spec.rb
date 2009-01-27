@@ -56,47 +56,47 @@ describe DocumentsController do
   it "GET 'show' should find corresponding docs" do
     get 'show', :id=>'forschung an fachhochschulen nachhaltige energietechnik'
     response.should be_success
-    assigns[:matching_documents].any?{|doc| doc.filename=="zafh.net.html"}.should be_true
+    orig_assigns['matching_documents'].any?{|doc| doc.filename=="zafh.net.html"}.should be_true
   end
 
   it "GET 'show' should accept * in queries" do
     lambda{get 'show', :id=>'*ric'}.should_not raise_error
     response.should be_success
-    assigns[:matching_documents].entries.should_not be_empty
-    assigns[:matching_documents].any?{|doc| doc.matching_content.join.starts_with?("<<Éric>> Mößer\n\n\f")}.should be_true
+    orig_assigns['matching_documents'].entries.should_not be_empty
+    orig_assigns['matching_documents'].any?{|doc| doc.matching_content.join.starts_with?("<<Éric>> Mößer\n\n\f")}.should be_true
   end
 
   it "GET 'show' should accept ? in queries" do
     lambda{get 'show', :id=>'?ric'}.should_not raise_error(ActionController::RoutingError)
     response.should be_success
-    assigns[:matching_documents].entries.should_not be_empty
-    assigns[:matching_documents].any?{|doc| doc.filename=="basic.tex"}.should be_true
+    orig_assigns['matching_documents'].entries.should_not be_empty
+    orig_assigns['matching_documents'].any?{|doc| doc.filename=="basic.tex"}.should be_true
   end
 
   it "GET 'show' should accept . in queries" do
     lambda{get 'show', :id=>'basic.pdf'}.should_not raise_error(ActionController::RoutingError)
     response.should be_success
-    assigns[:matching_documents].entries.should_not be_empty
-    assigns[:matching_documents].any?{|doc| doc.matching_content.join.starts_with?("just another content test in a pdf file")}.should be_true
+    orig_assigns['matching_documents'].entries.should_not be_empty
+    orig_assigns['matching_documents'].any?{|doc| doc.matching_content.join.starts_with?("just another content test in a pdf file")}.should be_true
   end
 
   it "GET 'show' should accept combined queries" do
     get 'show', :id=>'test filetype:pdf'
     response.should be_success
-    assigns[:matching_documents].entries.should_not be_empty
+    orig_assigns['matching_documents'].entries.should_not be_empty
   end
 
   it "GET 'show' should accept empty query but should redirect to index" do
     lambda{get 'show', :id=>''}.should_not raise_error
     response.should be_success
-    assigns[:matching_documents].entries.should be_empty
+    orig_assigns['matching_documents'].entries.should be_empty
   end
 
   it "GET 'download' should be successful with correct ID" do
     get 'show', :id=>'basic.pdf'
     response.should be_success
-    assigns[:matching_documents].entries.should_not be_empty
-    d=assigns[:matching_documents].entries.first
+    orig_assigns['matching_documents'].entries.should_not be_empty
+    d=orig_assigns['matching_documents'].entries.first
     get 'download', :id=>d.probably_unique_id
     assigns[:document].complete_path == d.complete_path
     response.should be_success
