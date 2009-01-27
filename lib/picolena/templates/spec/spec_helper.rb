@@ -10,3 +10,11 @@ def revert_changes!(file,content)
     might_have_been_modified.write content
   }
 end
+
+module Spec
+  module Matchers
+    class Change
+      alias_method :evaluate_value_proc, :evaluate_value_proc_without_ensured_evaluation_of_proxy
+    end
+  end
+end
