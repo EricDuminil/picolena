@@ -133,7 +133,6 @@ lib/picolena/templates/script/spec
 lib/picolena/templates/script/spec_server
 lib/picolena/templates/spec/controllers/application_controller_spec.rb
 lib/picolena/templates/spec/controllers/documents_controller_spec.rb
-lib/picolena/templates/spec/helpers/application_helper_spec.rb
 lib/picolena/templates/spec/helpers/documents_helper_spec.rb
 lib/picolena/templates/spec/models/basic_finder_spec.rb
 lib/picolena/templates/spec/models/document_spec.rb
