@@ -24,3 +24,7 @@ filetype: extensión|ext|extension
 content: contenido
 modified: fecha|año|anho|modificado
 language: lang|idioma
+
+## Sort by
+by_date     : por fecha
+by_relevance: por importancia

@@ -24,3 +24,7 @@ filetype: erweiterung|ext
 content: inhalt
 modified: jahr|zeit|geändert|geaendert|geandert
 language: lang|sprache
+
+## Sort by
+by_date     : nach Datum
+by_relevance: nach Relevanz

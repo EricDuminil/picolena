@@ -24,3 +24,7 @@ filetype: filetype|ext|extension
 content: content
 modified: year|date|modified
 language: lang|language
+
+## Sort by
+by_date     : by date
+by_relevance: by relevance
