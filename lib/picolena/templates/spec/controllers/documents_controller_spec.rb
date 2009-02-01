@@ -60,6 +60,7 @@ describe DocumentsController do
   end
 
   it "GET 'show' should accept * in queries" do
+    params_from(:get, '/documents/*ric').should == {:controller => 'documents', :action => 'show', :id => '*ric'}
     lambda{get 'show', :id=>'*ric'}.should_not raise_error
     response.should be_success
     orig_assigns['matching_documents'].entries.should_not be_empty
@@ -67,13 +68,23 @@ describe DocumentsController do
   end
 
   it "GET 'show' should accept ? in queries" do
+    params_from(:get, '/documents/?ric').should == {:controller => 'documents', :action => 'show', :id => '?ric'}
     lambda{get 'show', :id=>'?ric'}.should_not raise_error(ActionController::RoutingError)
     response.should be_success
     orig_assigns['matching_documents'].entries.should_not be_empty
     orig_assigns['matching_documents'].any?{|doc| doc.filename=="basic.tex"}.should be_true
   end
 
+  it "GET 'show' should accept queries like *.pdf" do
+    params_from(:get, '/documents/*.pdf').should == {:controller => 'documents', :action => 'show', :id => '*.pdf'}
+    lambda{get 'show', :id=>'*.pdf'}.should_not raise_error
+    response.should be_success
+    orig_assigns['matching_documents'].entries.should_not be_empty
+    orig_assigns['matching_documents'].to_a.size.should == Finder.new('ext:pdf').matching_documents.size
+  end
+
   it "GET 'show' should accept . in queries" do
+    params_from(:get, '/documents/basic.pdf').should == {:controller => 'documents', :action => 'show', :id => 'basic.pdf'}
     lambda{get 'show', :id=>'basic.pdf'}.should_not raise_error(ActionController::RoutingError)
     response.should be_success
     orig_assigns['matching_documents'].entries.should_not be_empty

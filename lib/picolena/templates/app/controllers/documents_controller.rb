@@ -21,7 +21,7 @@ class DocumentsController < ApplicationController
   # Show the matching documents for a given query
   def show
     start=Time.now
-      @query=[params[:id],params.delete(:format)].compact.join('.')
+      @query=params[:id]
       @sort_by=params[:sort_by]
       page=params[:page]||1
       finder=Finder.new(@query,@sort_by,page)
