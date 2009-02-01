@@ -27,7 +27,7 @@ module DocumentsHelper
   
   # Returns the time needed to treat the query and launch the search, with a ms precision : (0.472s)
   def show_time_needed(dt)
-    content_tag(:small,'('<<number_with_precision(dt,3)<<'s)')
+    content_tag(:small,'('<<number_with_precision(dt,:precision => 3)<<'s)')
   end
 
   # When possible, highlights content of the document that matches the query.
