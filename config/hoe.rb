@@ -67,7 +67,8 @@ hoe = Hoe.new(GEM_NAME, VERS) do |p|
                   # TODO: upgrade to 1.5.2
                    ['rubigen', '>= 1.2.4'],
                    ['paginator', '>= 1.1.1'],
-                   ['rspec', '>= 1.1.12']
+                   ['rspec', '>= 1.1.12'],
+                   ['rspec-rails', '>= 1.1.12']
                  ]
 
   #p.spec_extras = {}    # A hash of extra values to set in the gemspec.
