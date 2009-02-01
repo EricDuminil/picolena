@@ -165,6 +165,7 @@ EOS
     spec/test_dirs/indexed/just_one_doc
     spec/test_dirs/indexed/lang
     spec/test_dirs/indexed/literature
+    spec/test_dirs/indexed/media
     spec/test_dirs/indexed/others
     spec/test_dirs/indexed/others/nested
     spec/test_dirs/indexed/yet_another_dir

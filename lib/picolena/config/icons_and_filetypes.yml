@@ -66,6 +66,9 @@ picture:
   tiff
   tif
   svg
+  raw
+  nef
+  crw
 cad:
   dwg
   dxf

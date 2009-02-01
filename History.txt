@@ -3,6 +3,8 @@
 * 1 major enhancement :
   * Upgraded to Rails 2.2.2
 
+* 1 minor enhancement :
+  * extract EXIF data from pictures
 
 == 0.1.9  2008-05-09
 

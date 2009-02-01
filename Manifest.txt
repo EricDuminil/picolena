@@ -61,6 +61,7 @@ lib/picolena/templates/lib/plain_text_extractors/ms.word.rb
 lib/picolena/templates/lib/plain_text_extractors/opendocument.presentation.rb
 lib/picolena/templates/lib/plain_text_extractors/opendocument.spreadsheet.rb
 lib/picolena/templates/lib/plain_text_extractors/opendocument.text.rb
+lib/picolena/templates/lib/plain_text_extractors/pictures.rb
 lib/picolena/templates/lib/plain_text_extractors/plain_text.rb
 lib/picolena/templates/lib/tasks/annotations.rake
 lib/picolena/templates/lib/tasks/index.rake
@@ -172,6 +173,7 @@ lib/picolena/templates/spec/test_dirs/indexed/lang/lorca
 lib/picolena/templates/spec/test_dirs/indexed/lang/shakespeare
 lib/picolena/templates/spec/test_dirs/indexed/literature/Simulation of district heating systems for evaluation of real-time control strategies.pdf
 lib/picolena/templates/spec/test_dirs/indexed/literature/Types of malfunction in DH substations.doc
+lib/picolena/templates/spec/test_dirs/indexed/media/crow.jpg
 lib/picolena/templates/spec/test_dirs/indexed/others/'weird'filename.txt
 lib/picolena/templates/spec/test_dirs/indexed/others/7.html
 lib/picolena/templates/spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION
