@@ -2,13 +2,16 @@
 # It can create, update, delete and prune the index, and take care that only
 # one IndexWriter exists at any given time, even when used in a multi-threaded
 # way.
+#
+# Related configuration files are written as .yml files in /config/custom/:
+#   indexed_directories.yml
+#   indexing_performance.yml
+#   picolena.rb
+# They control the indexing performance, which directories should be indexed
+# , which files should be ignored and if language recognition is to be used.
+
 require 'indexer_logger'
 class Indexer
-  # This regexp defines which files should *not* be indexed.
-  @@exclude          = /(Thumbs\.db)/
-  # Number of threads that will be used during indexing process
-  @@threads_number = 8
-
   class << self
     # Finds every document included in IndexedDirectories, parses them with
     # PlainTextExtractor and adds them to the index.
@@ -34,12 +37,12 @@ class Indexer
     # To do so, it retrieves a list of every included document, cuts it in
     # @@threads_number chunks, and create a new indexing thread for every chunk.
     def index_directory_with_multithreads(dir)
-      logger.debug "Indexing #{dir}, #{@@threads_number} threads"
+      logger.debug "Indexing #{dir}, #{Picolena::IndexingConfiguration[:threads_number]} threads"
       indexing_list=Dir[File.join(dir,"**/*")].select{|filename|
-        File.file?(filename) && filename !~ @@exclude
+        File.file?(filename) && File.basename(filename) !~ Picolena::ToIgnore
       }
 
-      indexing_list_chunks=indexing_list.in_transposed_slices(@@threads_number)
+      indexing_list_chunks=indexing_list.in_transposed_slices(Picolena::IndexingConfiguration[:threads_number])
       prepare_multi_threads_environment
 
       indexing_list_chunks.each_with_thread{|chunk|

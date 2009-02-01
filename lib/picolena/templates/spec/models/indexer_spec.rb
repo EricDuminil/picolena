@@ -22,4 +22,9 @@ describe Indexer do
     index.field_infos[:filename].boost.should > 1.0
     index.field_infos[:filetype].boost.should > 1.0
   end
+
+  it "should use at least one thread" do
+    Picolena::IndexingConfiguration[:threads_number].should_not be_nil
+    Picolena::IndexingConfiguration[:threads_number].should > 0
+  end
 end

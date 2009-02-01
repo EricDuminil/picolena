@@ -8,3 +8,10 @@ test:
   "spec/test_dirs/indexed": "http://picolena.devjavu.com/browser/trunk/lib/picolena/templates/spec/test_dirs/indexed"
 production:
   <%= directories_to_index %>
+
+## Defines which files should be ignored by the indexer. 
+ignore:
+  Thumbs.db
+#  *.bak
+#  *.log
+#  *.tmp

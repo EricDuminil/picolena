@@ -5,6 +5,9 @@
 
 ## Main performance parameters
 
+## Number of threads created by the Indexer
+threads_number: 8 
+
 # Allowed memory for indexing process.
 # 128MB by default, or 2^27
 max_buffer_memory: 134_217_728

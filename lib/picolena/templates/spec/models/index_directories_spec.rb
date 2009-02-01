@@ -15,4 +15,7 @@ describe "IndexedDirectories" do
     }
   end
 
+  it "should define which files are to be ignored" do
+    Picolena::ToIgnore.should be_kind_of(Regexp)
+  end
 end
