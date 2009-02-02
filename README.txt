@@ -38,8 +38,8 @@ This would create the picolena file structure, index every file inside ~/shared_
 
 == REQUIREMENTS:
 
-* packages : antiword poppler-utils odt2txt html2text catdoc unrtf
-* gems     : rails ferret paginator haml rubyzip rubigen
+* packages : antiword catppt exiftool grep html2text iconv pdftotext sed unrtf xls2csv
+* gems     : rails ferret paginator haml rubyzip rubigen rspec rspec-rails
 
 == INSTALL:
 
@@ -47,7 +47,7 @@ This would create the picolena file structure, index every file inside ~/shared_
 
 == LICENSE:
 
-Copyright (c) 2008 Eric Duminil
+Copyright (c) 2009 Eric Duminil
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

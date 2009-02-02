@@ -1,13 +1,11 @@
 h1. Picolena
-h1. &#x2192; 'picolena'
 
-
-h2. What
+h2. Introduction
 
 ''Picolena'' is a lightweight "ferret-powered":http://ferret.davebalmain.com/trac documents search engine written in "Ruby on rails":http://www.rubyonrails.org/ :
 
- 1. Just let Ferret index any directory you want.
- 2. Enter queries on your browser to get corresponding documents in a few milliseconds.
+# Just let Ferret index any directory you want
+# Enter queries on your browser to get corresponding documents in a few milliseconds.
 
 
 h2. Installing
@@ -27,13 +25,13 @@ This would create the picolena file structure, index every file inside ~/shared_
 
 h2. Demonstration of usage
 
- * "Basic query":http://193.197.204.23:4000/documents/test
- * "every indexed .doc":http://193.197.204.23:4000/documents/filetype:doc
- * "Every indexed file":http://193.197.204.23:4000/documents/%2A
- * "Fuzzy query":http://193.197.204.23:4000/documents/LIKE%20Einstien
- * "Typo tracker :)":http://193.197.204.23:4000/documents/LIKE%20Einstein%20NOT%20Einstein
- * "Accented queries thanks to UTF8 encoding":http://193.197.204.23:4000/documents/málaga
- * "some hardcore UTF-8 query!":http://193.197.204.23:4000/documents/pʰəˈɹɪzɪənz
+* "Basic query":http://193.196.138.49:4000/documents/test
+* "every indexed .doc":http://193.196.138.49:4000/documents/filetype:doc
+* "Every indexed file":http://193.196.138.49:4000/documents/%2A
+* "Fuzzy query":http://193.196.138.49:4000/documents/LIKE%20Einstien
+* "Typo tracker :)":http://193.196.138.49:4000/documents/LIKE%20Einstein%20NOT%20Einstein
+* "Accented queries thanks to UTF8 encoding":http://193.196.138.49:4000/documents/málaga
+* "some hardcore UTF-8 query!":http://193.196.138.49:4000/documents/pʰəˈɹɪzɪənz
 
 
 h2. Trac

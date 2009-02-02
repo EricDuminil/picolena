@@ -1,10 +1,13 @@
-== 0.2.0  2009-01-27
+== 0.2.0  2009-02-02
 
 * 1 major enhancement :
   * Upgraded to Rails 2.2.2
 
 * 1 minor enhancement :
   * extract EXIF data from pictures
+
+* 1 bug fix:
+  * permissions were set the wrong way
 
 == 0.1.9  2008-05-09
 
