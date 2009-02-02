@@ -51,7 +51,7 @@ lib/picolena/templates/lang/ui/es.yml
 lib/picolena/templates/lang/ui/fr.yml
 lib/picolena/templates/lib/core_exts.rb
 lib/picolena/templates/lib/indexer_logger.rb
-lib/picolena/templates/lib/plain_text_extractor_DSL.rb
+lib/picolena/templates/lib/plain_text_extractor_dsl.rb
 lib/picolena/templates/lib/plain_text_extractors/adobe.pdf.rb
 lib/picolena/templates/lib/plain_text_extractors/html.rb
 lib/picolena/templates/lib/plain_text_extractors/ms.excel.rb
@@ -112,6 +112,7 @@ lib/picolena/templates/public/images/icons/txt.png
 lib/picolena/templates/public/images/icons/video.png
 lib/picolena/templates/public/images/icons/xls.png
 lib/picolena/templates/public/images/main_img.jpg
+lib/picolena/templates/public/images/thumbnails
 lib/picolena/templates/public/images/zafh_net.png
 lib/picolena/templates/public/robots.txt
 lib/picolena/templates/public/stylesheets/style.css

@@ -1,4 +1,4 @@
-require 'plain_text_extractor_DSL'
+require 'plain_text_extractor_dsl'
 
 # PlainTextExtractor is the class responsible for extracting plain text contents from
 # different documents filetypes (.doc, .html, .pdf, .od?), as defined in
