@@ -11,6 +11,15 @@ def revert_changes!(file,content)
   }
 end
 
+
+class Document
+  def self.find_by_extension(ext)
+    Finder.new("ext:#{ext}").matching_documents.first
+  end
+end
+
+
+## Rspec-rails assume that everybody uses ActiveRecord, but that's not Picolena's case.
 module Spec
   module Matchers
     class Change

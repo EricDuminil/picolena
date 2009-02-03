@@ -7,10 +7,16 @@ describe "PlainTextExtractors" do
 
   PlainTextExtractor.all.each{|extractor|
     extractor.exts.each{|ext|
-      should_extract= "should be able to extract content from #{extractor.description} (.#{ext})"
+      should_extract_content  = "should be able to extract content from #{extractor.description} (.#{ext})"
+      should_extract_thumbnail= "should be able to extract thumbnail from #{extractor.description} (.#{ext})"
       content_and_file_examples_for_this_ext=extractor.content_and_file_examples.select{|content,file| File.ext_as_sym(file)==ext}
-      unless content_and_file_examples_for_this_ext.empty? then
-        it should_extract do
+      if content_and_file_examples_for_this_ext.empty? then
+        ## It means that the spec for this extension file is "Not yet implemented"!
+        ## add this line to the corresponding extractor in lib/extractors:
+        # which_should_for_example_extract 'some content', :from => 'a file you could add in spec/test_dirs/indexed/'
+        it should_extract_content
+      else
+        it should_extract_content do
           content_and_file_examples_for_this_ext.each{|content_example,file_example|
             finder=Finder.new(content_example)
             finder.execute!
@@ -19,11 +25,19 @@ describe "PlainTextExtractors" do
             matching_documents_filenames.should include(file_example)
           }
         end
-      else
-        ## It means that the spec for this extension file is "Not yet implemented"!
-        ## add this line to the corresponding extractor in lib/extractors:
-        # which_should_for_example_extract 'some content', :from => 'a file you could add in spec/test_dirs/indexed/'
-        it should_extract
+      end
+
+      if extractor.thumbnail_command then
+        doc=Document.find_by_extension(ext)
+        if doc then
+          it should_extract_thumbnail do
+            #NOTE: This doesn't seem to work, why?
+            #  File.should exist(doc.send(:thumbnail_path))
+            File.exist?(doc.send(:thumbnail_path)).should be_true
+          end
+        else
+          it should_extract_thumbnail
+        end
       end
     }
   }
