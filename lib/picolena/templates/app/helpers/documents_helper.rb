@@ -51,7 +51,8 @@ module DocumentsHelper
 
   # Returns the location (if avaible) of the filetype icon.
   def icon_for(document)
-    image_tag(document.icon_path)
+    path=document.icon_path
+    image_tag(document.icon_path) if path
   end
 
   # Returns a link to a backup search engine that could maybe find more results for the same query.
