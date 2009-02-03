@@ -53,6 +53,7 @@ lib/picolena/templates/lib/core_exts.rb
 lib/picolena/templates/lib/indexer_logger.rb
 lib/picolena/templates/lib/plain_text_extractor_dsl.rb
 lib/picolena/templates/lib/plain_text_extractors/adobe.pdf.rb
+lib/picolena/templates/lib/plain_text_extractors/avi.rb
 lib/picolena/templates/lib/plain_text_extractors/html.rb
 lib/picolena/templates/lib/plain_text_extractors/ms.excel.rb
 lib/picolena/templates/lib/plain_text_extractors/ms.powerpoint.rb
