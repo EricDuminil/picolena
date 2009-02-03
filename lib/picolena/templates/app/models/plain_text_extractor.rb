@@ -122,7 +122,7 @@ class PlainTextExtractor
   end
 
   def extract_thumbnail
-    IO.popen(specific_thumbnail_command){}
+    system(specific_thumbnail_command)
   end
 
   private
