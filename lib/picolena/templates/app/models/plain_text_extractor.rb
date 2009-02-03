@@ -118,7 +118,7 @@ class PlainTextExtractor
   end
 
   def extract_thumbnail
-    system(specific_thumbnail_command)
+    Open3.popen3(specific_thumbnail_command){}
   end
 
   private
