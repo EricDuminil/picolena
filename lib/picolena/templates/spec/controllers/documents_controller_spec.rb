@@ -91,6 +91,14 @@ describe DocumentsController do
     orig_assigns['matching_documents'].any?{|doc| doc.matching_content.join.starts_with?("just another content test in a pdf file")}.should be_true
   end
 
+  it "GET 'show' should accept * as query" do
+    params_from(:get, '/documents/*').should == {:controller => 'documents', :action => 'show', :id => '*'}
+    lambda{get 'show', :id=>'*'}.should_not raise_error(ActionController::RoutingError)
+    response.should be_success
+    orig_assigns['matching_documents'].entries.should_not be_empty
+    orig_assigns['total_hits'].should == Indexer.size
+  end
+
   it "GET 'show' should accept combined queries" do
     get 'show', :id=>'test filetype:pdf'
     response.should be_success
