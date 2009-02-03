@@ -104,8 +104,6 @@ describe Document do
   it "should not be considered supported if binary" do
     Document.new("spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION").should_not be_supported
   end
-
-
   
   it "should know its language when enough content is available" do
     Document.new("spec/test_dirs/indexed/lang/goethe").language.should == "de"
@@ -131,6 +129,23 @@ describe Document do
     @valid_document.matching_content.should be_nil
     @valid_document.matching_content=["thermal cooling", "heat driven cooling"]
     @valid_document.matching_content.should include("thermal cooling")
+  end
+
+  it "should know its icon_path if a thumbnail if available" do
+    doc=Document.new("spec/test_dirs/indexed/media/badminton.avi")
+    doc.icon_path.should_not be_nil
+    doc.icon_path.should == "thumbnails/#{doc.probably_unique_id}.jpg"
+  end
+
+  it "should know its icon_path if an icon  if available for its mimetype" do
+    doc=Document.new("spec/test_dirs/indexed/others/xor.vee")
+    doc.icon_path.should_not be_nil
+    doc.icon_path.should == 'icons/insel.png'
+  end
+
+  it "should return nil as icon_path if no icon or thumbnail is available" do
+    doc=Document.new("spec/test_dirs/indexed/others/ghjopdfg.xyz")
+    doc.icon_path.should be_nil
   end
 
   after(:all) do
