@@ -13,3 +13,4 @@ lib/picolena/templates/tmp
 lib/picolena/templates/vendor
 lib/picolena/templates/coverage
 lib/picolena/templates/doc
+lib/picolena/templates/public/images/thumbnails/*.png

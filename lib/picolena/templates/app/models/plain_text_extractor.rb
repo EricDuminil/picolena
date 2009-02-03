@@ -47,8 +47,8 @@ class PlainTextExtractor
     end
 
     # Launches extractor on given file and outputs plain text result and language (if found)
-    def extract_content_and_language_from(source)
-      find_by_filename(source).extract_content_and_language
+    def extract_information_from(source)
+      find_by_filename(source).extract_information
     end
 
     # Returns which language guesser should be used by the system.
@@ -97,8 +97,10 @@ class PlainTextExtractor
   # using mguesser to guess used language.
   # This method only returns probable language if the content is bigger than 500 chars
   # and if probability score is higher than 90%.
-  def extract_content_and_language
+  def extract_information
     content=extract_content
+    extract_thumbnail if thumbnail_command
+
     return {:content => content} unless [# Is LanguageRecognition turned on? (cf config/custom/picolena.rb)
                                          Picolena::UseLanguageRecognition,
                                          # Is a language guesser already installed?
@@ -115,7 +117,12 @@ class PlainTextExtractor
         lang unless score<0.9
       end
     }
+
     {:content => content, :language => language}
+  end
+
+  def extract_thumbnail
+    IO.popen(specific_thumbnail_command){}
   end
 
   private
@@ -130,5 +137,10 @@ class PlainTextExtractor
   # Replaces generic command with specific source and destination (if specified) files
   def specific_command
     command.sub('SOURCE','"'<<source<<'"').sub('DESTINATION','"'<<destination<<'"')
+  end
+
+  # Replaces generic command with specific source and thumbnail (if specified) files
+  def specific_thumbnail_command
+    thumbnail_command.sub('SOURCE','"'<<source<<'"').sub('THUMBNAIL','"'<<File.thumbnail_path(source)<<'"')
   end
 end

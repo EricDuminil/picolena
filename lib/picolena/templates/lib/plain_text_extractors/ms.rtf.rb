@@ -8,7 +8,7 @@ PlainTextExtractor.new {
   every :rtf
   as "application/rtf"
   aka "Microsoft Rich Text Format"
-  with "unrtf  SOURCE -t text" => :on_linux_and_mac_os,
-       "some other command" => :on_windows
+  extract_content_with "unrtf  SOURCE -t text" => :on_linux_and_mac_os,
+                       "some other command" => :on_windows
   which_should_for_example_extract 'Resampling when limiting', :from => 'ReadMe.rtf'
 }

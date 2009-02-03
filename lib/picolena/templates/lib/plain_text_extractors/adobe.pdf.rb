@@ -8,7 +8,7 @@ PlainTextExtractor.new {
   every :pdf
   as "application/pdf"
   aka "Adobe Portable Document Format"
-  with "pdftotext -enc UTF-8 SOURCE -" => :on_linux_and_mac_os,
-       "some other command" => :on_windows
+  extract_content_with "pdftotext -enc UTF-8 SOURCE -" => :on_linux_and_mac_os,
+                       "some other command" => :on_windows
   which_should_for_example_extract 'in a pdf file', :from => 'basic.pdf'
 }

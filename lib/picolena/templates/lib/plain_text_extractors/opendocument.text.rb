@@ -5,7 +5,7 @@ PlainTextExtractor.new {
   every :odt
   as 'application/vnd.oasis.opendocument.text'
   aka "Open Document Format for text"
-  with {|source|
+  extract_content_with {|source|
     Zip::ZipFile.open(source){|zipfile|
       zipfile.read("content.xml").split(/</).grep(/^text:(p|span)/).collect{|l|
         l.sub(/^[^>]+>/,'')

@@ -1,0 +1,79 @@
+%!PS-Adobe-2.0 EPSF-1.2
+%%BoundingBox: 0 0 258 43
+%
+% commented version of EPSDICE.EPS  by Thomas A. Heim 
+%
+% LICENSE: LPPL
+%
+% 2001/02/09 -- thomas.heim@unibas.ch
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% face measures 32x32 and fits within a 43x43 bounding box
+%
+% ==> if you change these dimensions, you will have to adjust
+%     the bounding box of the clipped region in the .STY file!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% the frame macro: a simple box with rounded corners
+%
+%     takes one argument off the stack: n (x-offset is 43*(n - 1) )
+%
+/frame {
+  1 sub 43 mul        %  calculate 43*(n-1), given n on the stack
+  /o exch def         %  store result in o
+  gsave
+  newpath 
+  o 0 translate       %  shift coordinate system by offset o in x
+  32 5 moveto         % 
+  32 10 5 -90 0 arc   %  the frame goes from 5 to 37 units both 
+  37 32 lineto        %  in x and y, with rounded corners having
+  32 32 5 0 90 arc    %  radius 5 units, centered 5 units inward
+  10 37 lineto        %  in both directions
+  10 32 5 90 180 arc
+  5 10 lineto 
+  10 10 5 180 270 arc
+  closepath
+  stroke
+  grestore
+} def
+% 
+% dot positions are designated by (x,y) labels from (1,1) to (3,3)
+%
+% change position and radius of filled circles as you like
+%
+% the dot macro: a filled circle 
+%
+%     takes three arguments off the stack: 
+%                            n (x-offset 43*(n - 1) )
+%                            x-label: 1, 2, or 3
+%                            y-label: 1, 2, or 3
+/dot {
+  /y exch def         %  store y-label of dot
+  /x exch def         %  store x-label of dot
+  1 sub 43 mul        %  calculate 43*(n-1), given n on the stack
+  /o exch def         %  store result in offset o
+  gsave
+  newpath 
+  o 0 translate       %  shift coordinate system by offset o in x
+  x 8 mul 5 add       %  x-position of dot: 8*x+5 (-> 13,21,29)
+  y 8 mul 5 add       %  y-position of dot: 8*y+5 (-> 13,21,29) 
+  3.5 0 360 arc       %  I like big dots (radius 3.5 units)
+  closepath 
+  fill
+  grestore
+} def
+%
+2 setlinewidth        %  lines 2 units wide
+0 setgray             %  fill the dots in black
+%
+% now use the macros to draw the dice faces in loops
+%
+1 1 6 { frame } for                      % the six frames
+2 1 6 { dup 1 2 3 { dup dot } for } for  % (1,1), (3,3) on 2, 3, 4, 5, 6
+1 2 5 { 2 2 dot } for                    % (2,2) dot on 1, 3, 5
+4 1 6 { dup 1 3 dot 3 1 dot } for        % (1,3), (3,1) dots on 4, 5, 6
+1 2 3 { 6 exch 2 dot } for               % (1,2), (3,2) dots only on 6
+%%EOF
+

@@ -4,14 +4,14 @@
 #    every :doc, :dot
 #    as "application/msword"
 #    aka "Microsoft Office Word document"
-#    with "antiword SOURCE" => :on_linux, "some other command" => :on_windows
+#    extract_content_with "antiword SOURCE" => :on_linux, "some other command" => :on_windows
 #    which_should_for_example_extract 'district heating', :from => 'Types of malfunction in DH substations.doc'
 #    or_extract 'Basic Word template for Picolena specs', :from => 'office2003-word-template.dot'
 #  }
 
 require 'open3'
 module PlainTextExtractorDSL
-  attr_reader :exts, :mime_name, :description, :command, :content_and_file_examples
+  attr_reader :exts, :mime_name, :description, :command, :content_and_file_examples, :thumbnail_command
 
   def initialize(&block)
     @content_and_file_examples=[]
@@ -50,39 +50,56 @@ module PlainTextExtractorDSL
   #  or_extract 'text inside!', :from => 'crossed.txt'
   alias_method :or_extract, :which_should_for_example_extract
 
-  def with(command_as_hash_or_string=nil,&block)
+  def extract_content_with(command_as_hash_or_string=nil,&block)
     #TODO: Find a better way to manage platforms, and include OS X, Vista, BSD...
-    platform=case RUBY_PLATFORM
-    when /linux/
-      :linux
-    when /win/
-      :windows
-    when /darwin/
-      :mac_os
-    end
-    @command=case command_as_hash_or_string
-    when String
-      command_as_hash_or_string
-    when Hash
-      # Allows to write
-      #     with "pdftotext -enc UTF-8 SOURCE -" => :on_linux_and_mac_os,
-      #          "some other command" => :on_windows
-      #
-      # On linux and mac_os platforms, it returns "pdftotext -enc UTF-8 SOURCE -",
-      # on windows, it returns "some other command"
-      #
-      # If commands for linux & mac os were different :
-      #     with "some command"        => :on_linux,
-      #          "another command"     => :on_mac_os,
-      #          "yet another command" => :on_windows
-      #
-      #TODO: Make it clearer and more robust.
-      #NOTE: What to do when no command is defined for a given platform?
-      command_as_hash_or_string.invert.find{|platforms,command|
-        platforms.to_s.split(/_?and_?/i).collect{|on_platform| on_platform.sub(/on_/,'').to_sym}.include?(platform)
-      }.last.dup
+  @command=case command_as_hash_or_string
+  when String
+    command_as_hash_or_string
+  when Hash
+    command_for_current_platform(command_as_hash_or_string)
     else
       block || raise("No command defined for this extractor: #{description}")
     end
   end
+
+  def extract_thumbnail_with(command_as_hash_or_string=nil, &block)
+    #TODO: Don't ignore block and use it as in extract_content_with
+    @thumbnail_command=case command_as_hash_or_string
+    when String
+      command_as_hash_or_string
+    when Hash
+      command_for_current_platform(command_as_hash_or_string)
+    end
+  end
+
+  private
+  def command_for_current_platform(command_as_hash)
+    # Allows to write
+    #     with "pdftotext -enc UTF-8 SOURCE -" => :on_linux_and_mac_os,
+    #          "some other command" => :on_windows
+    #
+    # On linux and mac_os platforms, it returns "pdftotext -enc UTF-8 SOURCE -",
+    # on windows, it returns "some other command"
+    #
+    # If commands for linux & mac os were different :
+    #     with "some command"        => :on_linux,
+    #          "another command"     => :on_mac_os,
+    #          "yet another command" => :on_windows
+    #
+    #NOTE: What to do when no command is defined for a given platform?
+    command_as_hash.invert.find{|platforms,command|
+      platforms.to_s.split(/_?and_?/i).collect{|on_platform| on_platform.sub(/on_/,'').to_sym}.include?(current_platform_symbol)
+    }.last.dup
+  end
+
+  def current_platform_symbol
+    @@platform_symbol||=case RUBY_PLATFORM
+      when /linux/
+        :linux
+      when /win/
+        :windows
+      when /darwin/
+        :mac_os
+      end
+    end
 end

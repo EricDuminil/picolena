@@ -4,8 +4,8 @@ PlainTextExtractor.new {
   every :doc, :dot
   as "application/msword"
   aka "Microsoft Office Word document"
-  with "antiword SOURCE" => :on_linux_and_mac_os,
-       "some other command" => :on_windows
+  extract_content_with "antiword SOURCE" => :on_linux_and_mac_os,
+                       "some other command" => :on_windows
   which_should_for_example_extract 'district heating', :from => 'Types of malfunction in DH substations.doc'
   or_extract 'Basic Word template for Picolena specs', :from => 'office2003-word-template.dot'
 }
@@ -17,7 +17,7 @@ PlainTextExtractor.new {
   every :docx, :dotx
   as 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   aka "Microsoft Office 2007 Word document"
-  with {|source|
+  extract_content_with {|source|
     Zip::ZipFile.open(source){|zipfile|
       zipfile.read("word/document.xml").split(/</).grep(/^w:t/).collect{|l|
         l.sub(/^[^>]+>/,'')

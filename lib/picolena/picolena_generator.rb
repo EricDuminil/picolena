@@ -150,6 +150,7 @@ EOS
     public/images
     public/images/icons
     public/images/flags
+    public/images/thumbnails
     public/javascripts
     public/stylesheets
     spec

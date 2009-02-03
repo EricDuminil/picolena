@@ -100,4 +100,10 @@ class File
   def self.plain_text?(filename)
     %x{file -i "#{filename}"} =~ /: text\//
   end
+
+  # For a given file, returns the path at which a thumbnail should be saved
+  def self.thumbnail_path(filename, public_dir=false)
+    thumb=expand_path(filename).base26_hash+'.jpg'
+    public_dir ? File.join('thumbnails', thumb) : File.join(RAILS_ROOT,  'public/images/thumbnails', thumb)
+  end
 end

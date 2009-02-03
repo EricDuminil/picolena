@@ -4,8 +4,8 @@ PlainTextExtractor.new {
   every :xls
   as "application/excel"
   aka "Microsoft Office Excel document"
-  with "xls2csv SOURCE 2>/dev/null | grep -i [a-z] | sed -e 's/\"//g' -e 's/,*$//' -e 's/,/ /g'" => :on_linux_and_mac_os,
-       "some other command" => :on_windows
+  extract_content_with "xls2csv SOURCE 2>/dev/null | grep -i [a-z] | sed -e 's/\"//g' -e 's/,*$//' -e 's/,/ /g'" => :on_linux_and_mac_os,
+                       "some other command" => :on_windows
   which_should_for_example_extract 'Some text (should be indexed!)', :from => 'table.xls'
 }
 
@@ -16,7 +16,7 @@ PlainTextExtractor.new {
   every :xlsx
   as 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   aka "Microsoft Office 2007 Excel spreadsheet"
-  with {|source|
+  extract_content_with {|source|
     Zip::ZipFile.open(source){|zipfile|
       text_cells=zipfile.read("xl/sharedStrings.xml").split(/</).grep(/^t/).collect{|l|
         l.sub(/^[^>]+>/,'')

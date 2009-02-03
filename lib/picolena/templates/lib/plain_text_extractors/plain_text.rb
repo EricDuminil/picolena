@@ -2,7 +2,7 @@ PlainTextExtractor.new {
   every :txt, :text, :tex, :for, :cpp, :c, :rb, :ins, :vee, :java, :no_extension
   as "application/plain"
   aka "plain text file"
-  with {|source|
+  extract_content_with {|source|
     raise "binary file" unless File.plain_text?(source)
     encoding=File.encoding(source)
     if encoding.empty? then

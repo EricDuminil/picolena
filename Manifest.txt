@@ -175,6 +175,10 @@ lib/picolena/templates/spec/test_dirs/indexed/lang/shakespeare
 lib/picolena/templates/spec/test_dirs/indexed/literature/Simulation of district heating systems for evaluation of real-time control strategies.pdf
 lib/picolena/templates/spec/test_dirs/indexed/literature/Types of malfunction in DH substations.doc
 lib/picolena/templates/spec/test_dirs/indexed/media/crow.jpg
+lib/picolena/templates/spec/test_dirs/indexed/media/cygnus.jpeg
+lib/picolena/templates/spec/test_dirs/indexed/media/diceface.eps
+lib/picolena/templates/spec/test_dirs/indexed/media/glass.png
+lib/picolena/templates/spec/test_dirs/indexed/media/gnu.bmp
 lib/picolena/templates/spec/test_dirs/indexed/others/'weird'filename.txt
 lib/picolena/templates/spec/test_dirs/indexed/others/7.html
 lib/picolena/templates/spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION

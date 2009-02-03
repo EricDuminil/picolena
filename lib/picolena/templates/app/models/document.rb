@@ -136,9 +136,22 @@ class Document
       :modified           => File.mtime(complete_path).strftime("%Y%m%d%H%M%S")
     }
   end
-
-
+  
+  # Returns thumbnail if available, mime icon otherwise
+  def icon_path
+    if File.exists?(thumbnail_path) then
+      thumbnail_path(:public_dir)
+    else
+      icon_symbol=Picolena::FiletypeToIconSymbol[ext_as_sym]
+      "icons/#{icon_symbol}.png" if icon_symbol
+    end
+  end
+  
   private
+ 
+  def thumbnail_path(public_dir=false)
+    File.thumbnail_path(complete_path,public_dir)
+  end
   
   # FIXME: Is there a way to easily retrieve doc_id for a given document?
   # Better yet, fix Index#highlight to accept :probably_unique_id and stop using :doc_id.

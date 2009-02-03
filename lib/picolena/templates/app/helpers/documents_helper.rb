@@ -46,13 +46,12 @@ module DocumentsHelper
 
   # Returns icon and filename for any given document.
   def icon_and_filename_for(document)
-    [icon_for(document.ext_as_sym),document.filename].join("&nbsp;")
+    [icon_for(document),document.filename].join("&nbsp;")
   end
 
   # Returns the location (if avaible) of the filetype icon.
-  def icon_for(ext)
-    icon_symbol=Picolena::FiletypeToIconSymbol[ext]
-    image_tag("icons/#{icon_symbol}.png") if icon_symbol
+  def icon_for(document)
+    image_tag(document.icon_path)
   end
 
   # Returns a link to a backup search engine that could maybe find more results for the same query.

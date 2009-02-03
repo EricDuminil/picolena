@@ -2,7 +2,7 @@ PlainTextExtractor.new {
   every :html, :htm
   as "text/html"
   aka "HyperText Markup Language document"
-  with {|source|
+  extract_content_with {|source|
     encoding=File.encoding(source)
     if encoding.empty? or encoding.gsub(/[^\w]/,'').downcase=="utf8" then
       %x{html2text -nobs "#{source}"}
