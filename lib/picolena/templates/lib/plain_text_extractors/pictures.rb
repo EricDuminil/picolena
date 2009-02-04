@@ -4,7 +4,6 @@ PlainTextExtractor.new {
   aka "some picture"
   extract_content_with 'exiftool SOURCE'
   extract_thumbnail_with 'convert -quality 50 -thumbnail 80x80 SOURCE THUMBNAIL'
-  which_requires 'convert'
 
   which_should_for_example_extract 'Eric Duminil Nikon D90', :from => 'crow.jpg'
   or_extract '64x64 BMP' , :from => 'gnu.bmp'
