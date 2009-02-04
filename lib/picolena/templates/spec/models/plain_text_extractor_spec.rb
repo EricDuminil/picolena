@@ -31,9 +31,12 @@ describe "PlainTextExtractors" do
         doc=Document.find_by_extension(ext)
         if doc then
           it should_extract_thumbnail do
-            #NOTE: This doesn't seem to work, why?
+            thumb_path=doc.send(:thumbnail_path)
+            # NOTE: This doesn't seem to work, why?
             #  File.should exist(doc.send(:thumbnail_path))
-            File.exist?(doc.send(:thumbnail_path)).should be_true
+            File.exist?(thumb_path).should be_true
+            # NOTE: It seems that ffmpegthumbnailer outputs a png file even with -o output.jpg
+            %x(file -ib #{thumb_path}).chomp.should =~ /image\/(jpeg|png)/
           end
         else
           it should_extract_thumbnail
