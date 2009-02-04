@@ -1,5 +1,5 @@
 PlainTextExtractor.new {
-  every :bmp, :crw, :eps, :gif, :jpeg, :jpg, :nef, :png, :psd, :raw, :tif, :tiff
+  every :bmp, :crw, :eps, :gif, :jpeg, :jpg, :nef, :png, :raw, :tif, :tiff
   as "image/*"
   aka "some picture"
   extract_content_with 'exiftool SOURCE'
