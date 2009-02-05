@@ -37,13 +37,14 @@ lib/picolena/templates/config/boot.rb
 lib/picolena/templates/config/environments/development.rb
 lib/picolena/templates/config/environments/production.rb
 lib/picolena/templates/config/environments/test.rb
-lib/picolena/templates/config/initializers/001_load_custom_config.rb
-lib/picolena/templates/config/initializers/002_load_indexed_dirs.rb
-lib/picolena/templates/config/initializers/003_load_white_list_IPs.rb
-lib/picolena/templates/config/initializers/004_load_plain_text_extractors.rb
-lib/picolena/templates/config/initializers/005_load_custom_title_and_names_and_links.rb
-lib/picolena/templates/config/initializers/006_load_icons.rb
-lib/picolena/templates/config/initializers/007_load_performance_tweaks.rb
+lib/picolena/templates/config/initializers/001_load_ferret.rb
+lib/picolena/templates/config/initializers/002_load_custom_config.rb
+lib/picolena/templates/config/initializers/003_load_indexed_dirs.rb
+lib/picolena/templates/config/initializers/004_load_white_list_IPs.rb
+lib/picolena/templates/config/initializers/005_load_plain_text_extractors.rb
+lib/picolena/templates/config/initializers/006_load_custom_title_and_names_and_links.rb
+lib/picolena/templates/config/initializers/007_load_icons.rb
+lib/picolena/templates/config/initializers/008_load_performance_tweaks.rb
 lib/picolena/templates/config/routes.rb
 lib/picolena/templates/lang/ui/de.yml
 lib/picolena/templates/lang/ui/en.yml
@@ -53,6 +54,7 @@ lib/picolena/templates/lib/core_exts.rb
 lib/picolena/templates/lib/indexer_logger.rb
 lib/picolena/templates/lib/plain_text_extractor_dsl.rb
 lib/picolena/templates/lib/plain_text_extractors/adobe.pdf.rb
+lib/picolena/templates/lib/plain_text_extractors/adobe.photoshop.rb
 lib/picolena/templates/lib/plain_text_extractors/avi.rb
 lib/picolena/templates/lib/plain_text_extractors/html.rb
 lib/picolena/templates/lib/plain_text_extractors/ms.excel.rb
@@ -155,6 +157,7 @@ lib/picolena/templates/spec/test_dirs/indexed/basic/basic.pdf
 lib/picolena/templates/spec/test_dirs/indexed/basic/basic.tex
 lib/picolena/templates/spec/test_dirs/indexed/basic/crossed.text
 lib/picolena/templates/spec/test_dirs/indexed/basic/crossed.txt
+lib/picolena/templates/spec/test_dirs/indexed/basic/fake_thumbnailer
 lib/picolena/templates/spec/test_dirs/indexed/basic/hello.rb
 lib/picolena/templates/spec/test_dirs/indexed/basic/myfirstjavaprog.java
 lib/picolena/templates/spec/test_dirs/indexed/basic/one_page.ppt
@@ -176,11 +179,15 @@ lib/picolena/templates/spec/test_dirs/indexed/lang/shakespeare
 lib/picolena/templates/spec/test_dirs/indexed/literature/Simulation of district heating systems for evaluation of real-time control strategies.pdf
 lib/picolena/templates/spec/test_dirs/indexed/literature/Types of malfunction in DH substations.doc
 lib/picolena/templates/spec/test_dirs/indexed/media/badminton.avi
+lib/picolena/templates/spec/test_dirs/indexed/media/caution.tif
 lib/picolena/templates/spec/test_dirs/indexed/media/crow.jpg
 lib/picolena/templates/spec/test_dirs/indexed/media/cygnus.jpeg
 lib/picolena/templates/spec/test_dirs/indexed/media/diceface.eps
 lib/picolena/templates/spec/test_dirs/indexed/media/glass.png
 lib/picolena/templates/spec/test_dirs/indexed/media/gnu.bmp
+lib/picolena/templates/spec/test_dirs/indexed/media/picolena.psd
+lib/picolena/templates/spec/test_dirs/indexed/media/rails_logo_remix.gif
+lib/picolena/templates/spec/test_dirs/indexed/media/warning.tiff
 lib/picolena/templates/spec/test_dirs/indexed/others/'weird'filename.txt
 lib/picolena/templates/spec/test_dirs/indexed/others/7.html
 lib/picolena/templates/spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION
