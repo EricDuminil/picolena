@@ -44,11 +44,8 @@ module Picolena
   Ferret::Search::FuzzyQuery.default_min_similarity=0.6
 
   # PerFieldAnalyzer is used to prevent queries like "language:it" to be broken by StopFilter.
-  # NOTE: Actually, no StopFilter is used, even for StandardAnalyzer.
-  #       If StopFilter is used, alias_path queries should be disabled in Query.parser (app/models/query.rb)
-  # TODO: implement a LetterAnalyzerWithStopFilter
-  per_field_analyzer=Ferret::Analysis::PerFieldAnalyzer.new(Ferret::Analysis::StandardAnalyzer.new([]))
+  per_field_analyzer=Ferret::Analysis::PerFieldAnalyzer.new(Ferret::Analysis::StandardAnalyzer.new)
   per_field_analyzer[:language]=Ferret::Analysis::WhiteSpaceAnalyzer.new
-  per_field_analyzer[:alias_path]=Ferret::Analysis::LetterAnalyzer.new
+  per_field_analyzer[:alias_path]=Ferret::Analysis::LetterAnalyzerWithStopFilter.new
   Analyzer=per_field_analyzer
 end
