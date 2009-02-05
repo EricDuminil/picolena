@@ -17,7 +17,8 @@ describe "Finder without index on disk" do
   end
 
   it "should create index" do
-    Picolena::IndexedDirectories.replace({'spec/test_dirs/indexed/just_one_doc'=>'//justonedoc/'})
+    new_dir=File.expand_path(File.join(RAILS_ROOT, 'spec/test_dirs/indexed/just_one_doc'))
+    Picolena::IndexedDirectories.replace(new_dir => '//justonedoc/')
     lambda {@finder_with_new_index=Finder.new("test moi")}.should change(Indexer, :index_exists?).from(false).to(true)
     File.exists?(File.join(@new_index_path,'_0.cfs')).should be_true
     Indexer.index.size.should >0
@@ -38,7 +39,7 @@ end
 
 
 fields={
-  # description => key
+  # description       => key
   :content            => :content,
   :complete_path      => :complete_path,
   :basename           => :basename,
