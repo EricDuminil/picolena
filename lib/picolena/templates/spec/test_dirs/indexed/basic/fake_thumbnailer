@@ -1,0 +1,14 @@
+#! /bin/bash
+#
+#   extract_thumbnail_with 'spec/test_dirs/indexed/basic/fake_thumbnailer SOURCE THUMBNAIL'
+# written in a PlainTextExtractpr will write some debug information
+# about the thumbnailing process
+echo "Beginning" >> $2
+echo $1 >> $2
+date >> $2
+for ((i=1; i<=3; i+=1)); do
+	sleep 1
+	echo $i >> $2
+done
+date >> $2
+echo "End" >> $2
