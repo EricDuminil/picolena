@@ -202,13 +202,14 @@ class Indexer
 
     def default_field_infos
       returning Ferret::Index::FieldInfos.new do |field_infos|
+        field_infos.add_field(:probably_unique_id, :store => :no,  :index => :untokenized)
         field_infos.add_field(:complete_path,      :store => :yes, :index => :untokenized)
         field_infos.add_field(:content,            :store => :yes, :index => :yes)
+        field_infos.add_field(:alias_path,         :store => :no,  :index => :yes, :boost => 0.5)
         field_infos.add_field(:basename,           :store => :no,  :index => :yes, :boost => 1.5)
         field_infos.add_field(:filename,           :store => :no,  :index => :yes, :boost => 1.5)
         field_infos.add_field(:filetype,           :store => :no,  :index => :yes, :boost => 1.5)
         field_infos.add_field(:modified,           :store => :yes, :index => :untokenized)
-        field_infos.add_field(:probably_unique_id, :store => :no,  :index => :untokenized)
         field_infos.add_field(:language,           :store => :yes, :index => :untokenized)
       end
     end

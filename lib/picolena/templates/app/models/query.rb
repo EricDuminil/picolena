@@ -32,7 +32,7 @@ class Query
 
     # Instantiates a QueryParser once, and keeps it in cache.
     def parser
-      @@parser ||= Ferret::QueryParser.new(:fields => [:content, :filename, :basename, :filetype, :modified], :or_default => false, :analyzer=>Picolena::Analyzer)
+      @@parser ||= Ferret::QueryParser.new(:fields => [:content, :filename, :basename, :alias_path, :filetype, :modified], :or_default => false, :analyzer=>Picolena::Analyzer)
     end
   end
 end

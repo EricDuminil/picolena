@@ -127,9 +127,11 @@ class Document
 
   # Indexing fields that are shared between every document.
   def self.default_fields_for(complete_path)
+    doc=Document.new(complete_path)
     {
       :complete_path      => complete_path,
       :probably_unique_id => complete_path.base26_hash,
+      :alias_path         => doc.alias_path,
       :filename           => File.basename(complete_path),
       :basename           => File.basename(complete_path, File.extname(complete_path)).gsub(/_/,' '),
       :filetype           => File.extname(complete_path),
