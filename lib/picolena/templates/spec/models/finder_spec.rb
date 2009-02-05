@@ -48,6 +48,13 @@ describe Finder do
     Finder.new("crossed").total_hits.should >= 2
   end
 
+  it "should find documents according to parts of their alias_path" do
+    media_files=Dir["#{RAILS_ROOT}/spec/test_dirs/indexed/media/*"]
+    Finder.new("media").total_hits.should >= media_files.size
+    Finder.new("nested indexed").matching_documents.collect{|d| d.filename}.should include("ReadMe.rtf")
+    matching_document_for("test_dirs yet_another_dir ext:xlsx").basename.should == "office2007-excel"
+  end
+
   it "should also index unreadable files with known mimetypes" do
     Finder.new("unreadable.pdf").matching_documents.should_not be_empty
     Finder.new("too_small.doc").matching_documents.should_not be_empty
