@@ -11,4 +11,9 @@ PlainTextExtractor.new {
   or_extract                       'application/postscript 258x43'               , :from => 'diceface.eps'
   or_extract                       'Panasonic DMC-FZ8 320x240'                   , :from => 'glass.png'
   or_extract                       'Panasonic DMC-FZ8 "35mm equivalent: 432.0mm"', :from => 'cygnus.jpeg'
+  or_extract                       '"1990 bytes" 24x24 LZW'                      , :from => 'warning.tiff'
+  or_extract                       '"1978 bytes" 24x24 LZW'                      , :from => 'caution.tif'
+  or_extract                       'GIF 110x140'                                 , :from => 'rails_logo_remix.gif'
+  # Raw pictures (.nef, .crw, .raw) would also need to be tested, but their size doesn't make it worth including
+  # corresponding files in the repository. Specs will therefore stay with "Not Yet Implemented" status.
 }
