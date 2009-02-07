@@ -96,9 +96,9 @@ describe "Basic Finder" do
 
   it "should know how much time was needed for execution" do
     finder=Finder.new("yet another stupid query")
-    finder.executed?.should be_nil
+    finder.should_not be_executed
     finder.time_needed.should > 0
-    finder.executed?.should be_true
+    finder.should be_executed
   end
 
   it "should not need more than 100ms to find documents" do
