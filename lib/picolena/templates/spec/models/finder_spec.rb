@@ -88,20 +88,18 @@ describe Finder do
     matching_document_for("bäñüßé").content.should == "just to know if files are indexed with utf8 filenames"
   end
 
-  it "should find documents according to their modification date" do
+  it "should find documents according to their modification date"
     ## Not implemented yet!
     # matching_document_for("19831209").basename.should == "office2003-word-template"
     # matching_document_for("19820216").basename.should == "basic"
-  end
 
-  it "should find documents according to their modification year" do
+  it "should find documents according to their modification year"
     ## Not implemented yet!
     # Finder.new("date:<1982").matching_documents.should be_empty
     # matching_document_for("date:<1983").filename.should == "basic.pdf"
     # matching_document_for("date:1982").filename.should == "basic.pdf"
     # matching_document_for("year:1983").filename.should == "basic.pdf"
     # matching_document_for("date:>=1989 AND date:<=1992").filename.should == "placeholder.txt"
-  end
 
   it "should not concatenate cells from xls file" do
     Finder.new("content:ABC").matching_documents.select{|doc| doc.extname==".xls"}.should be_empty
