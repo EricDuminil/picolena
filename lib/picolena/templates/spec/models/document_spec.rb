@@ -148,6 +148,13 @@ describe Document do
     doc.icon_path.should be_nil
   end
 
+  it "should not raise when asked for highlighted_cache even though content is empty" do
+    doc=Document.new("spec/test_dirs/indexed/others/nested/unreadable.pdf")
+    doc.content.should ~ /^\s*$/
+    lambda {doc.highlighted_cache('unreadable')}.should_not raise_error
+    doc.highlighted_cache('unreadable').should ~ /^\s*$/
+  end
+
   after(:all) do
     revert_changes!("spec/test_dirs/indexed/others/placeholder.txt","Absorption and Adsorption cooling machines!!!")
   end

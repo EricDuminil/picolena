@@ -7,9 +7,14 @@ describe DocumentsHelper do
     end
   }
 
-  it "should not raise for filetypes without any associated icon" do
+  it "should not raise for filetypes without any associated icon when calling icon_for" do
      Picolena::FiletypeToIconSymbol[:xyz].should be_nil
      document=Spec::Mocks::Mock.new('Document', :ext_as_sym => :xyz, :icon_path => nil)
      lambda {helper.icon_for(document)}.should_not raise_error
+  end
+
+  it "should not raise for files without content when calling highlighted_cache" do
+     document=Spec::Mocks::Mock.new('Document', :highlighted_cache => "\f")
+     lambda {helper.highlighted_cache(document, 'some_query')}.should_not raise_error
   end
 end
