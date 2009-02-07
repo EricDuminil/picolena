@@ -1,3 +1,14 @@
+* 2 major enhancements :
+  * Thumbnails created for pictures & videos
+  * Alias_path is now LetterTokenized
+
+* 1 minor enhancement:
+  * More specs
+  * Some aesthetical changes
+
+* 1 bug fix :
+  * Displaying filetypes without any icon would raise an Exception
+
 == 0.2.0  2009-02-02
 
 * 1 major enhancement :
