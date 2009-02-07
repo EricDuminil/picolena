@@ -47,8 +47,6 @@ describe Document do
     another_doc.content.should == "just a content test\nin a txt file"
   end
   
-  #FIXME: Check if content has been cached before trying to display cached content. extension check is not enough
-  #(e.g. unreadable pdf file)
   it "should know its cached content" do
     another_doc=Document.new("spec/test_dirs/indexed/basic/plain.txt")
     another_doc.cached.should == "just a content test\nin a txt file"
@@ -150,7 +148,7 @@ describe Document do
 
   it "should not raise when asked for highlighted_cache even though content is empty" do
     doc=Document.new("spec/test_dirs/indexed/others/nested/unreadable.pdf")
-    doc.content.should ~ /^\s*$/
+    doc.should_not have_content
     lambda {doc.highlighted_cache('unreadable')}.should_not raise_error
     doc.highlighted_cache('unreadable').should ~ /^\s*$/
   end

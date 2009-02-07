@@ -107,3 +107,7 @@ class File
     public_dir ? File.join('thumbnails', thumb) : File.join(RAILS_ROOT,  'public/images/thumbnails', thumb)
   end
 end
+
+class Object
+  alias_method :is_an?, :is_a?
+end

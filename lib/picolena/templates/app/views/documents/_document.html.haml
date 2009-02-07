@@ -6,7 +6,7 @@
 %p
   =link_to_containing_directory(document)
   %br/
-  -if document.supported?
+  -if document.supported? && document.has_content?
     =link_to_plain_text_content(document)
     &#45;
     =link_to_cached_content(document,query)

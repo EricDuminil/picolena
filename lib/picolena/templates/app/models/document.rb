@@ -87,10 +87,11 @@ class Document
   
   # Returns cached content with matching terms between '<<' '>>'.
   def highlighted_cache(raw_query)
-    Indexer.index.highlight(Query.extract_from(raw_query), doc_id,
+    excerpts=Indexer.index.highlight(Query.extract_from(raw_query), doc_id,
                             :field => :content, :excerpt_length => :all,
                             :pre_tag => "<<", :post_tag => ">>"
-    ).first
+             )
+    excerpts.is_an?(Array) ? excerpts.first : ""
   end
 
   # Returns the last modification date before the document got indexed.
@@ -147,6 +148,11 @@ class Document
       icon_symbol=Picolena::FiletypeToIconSymbol[ext_as_sym]
       "icons/#{icon_symbol}.png" if icon_symbol
     end
+  end
+
+  # Returns true unless content is empty
+  def has_content?
+    cached !~ /^\s*$/
   end
   
   private
