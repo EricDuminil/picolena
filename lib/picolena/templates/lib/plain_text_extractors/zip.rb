@@ -13,7 +13,7 @@ PlainTextExtractor.new {
           tmp_file=File.join(temp_dir, [entry.name.base26_hash, File.extname(entry.name)].compact.join('.'))
           entry.extract(tmp_file)
           content=PlainTextExtractor.extract_content_from(tmp_file) rescue "---"
-          [entry.name.gsub('/', '>'), content]
+          ["## "<<entry.name.gsub('/', '>'), content]
         }
       }.compact.join("\n")
     ensure
