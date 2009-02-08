@@ -1,0 +1,2 @@
+## TODO: Find a way to manage thumbnails for different environments.
+Accessorily, leaving this file here prevents rake manifest:refresh to remove thumbnails dir
