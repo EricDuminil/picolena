@@ -67,6 +67,7 @@ lib/picolena/templates/lib/plain_text_extractors/opendocument.spreadsheet.rb
 lib/picolena/templates/lib/plain_text_extractors/opendocument.text.rb
 lib/picolena/templates/lib/plain_text_extractors/pictures.rb
 lib/picolena/templates/lib/plain_text_extractors/plain_text.rb
+lib/picolena/templates/lib/plain_text_extractors/zip.rb
 lib/picolena/templates/lib/tasks/annotations.rake
 lib/picolena/templates/lib/tasks/index.rake
 lib/picolena/templates/lib/tasks/install_dependencies.rake
@@ -152,6 +153,7 @@ lib/picolena/templates/spec/rcov.opts
 lib/picolena/templates/spec/spec.opts
 lib/picolena/templates/spec/spec_helper.rb
 lib/picolena/templates/spec/test_dirs/indexed/README
+lib/picolena/templates/spec/test_dirs/indexed/archives/some_test_files.zip
 lib/picolena/templates/spec/test_dirs/indexed/basic/another_plain.text
 lib/picolena/templates/spec/test_dirs/indexed/basic/basic.odt
 lib/picolena/templates/spec/test_dirs/indexed/basic/basic.pdf

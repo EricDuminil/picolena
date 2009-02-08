@@ -161,6 +161,7 @@ EOS
     spec/test_dirs
     spec/test_dirs/empty_folder
     spec/test_dirs/indexed
+    spec/test_dirs/indexed/archives
     spec/test_dirs/indexed/basic
     spec/test_dirs/indexed/different_encodings
     spec/test_dirs/indexed/just_one_doc
