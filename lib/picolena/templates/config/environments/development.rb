@@ -19,3 +19,5 @@ config.action_mailer.raise_delivery_errors = false
 module Picolena
   LOGLEVEL = Logger::DEBUG
 end
+
+require 'development_helpers'
