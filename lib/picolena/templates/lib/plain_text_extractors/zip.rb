@@ -5,23 +5,8 @@ PlainTextExtractor.new {
 
   # TODO: Transpose this structure to support .tgz, .rar, .deb, 7z, ar, .cab, .ace, .lzma, .bz2
   # NOTE: What to do when the archive is too big?
-  extract_content_with {|source|
-    begin
-      temp_dir=File.join(Dir::tmpdir, 'picolena_zip_temp', source.base26_hash)
-      FileUtils.mkpath temp_dir
-      Zip::ZipFile.open(source){|zipfile|
-        zipfile.select{|entry| entry.file?}.map{|entry|
-          tmp_file=File.join(temp_dir, [entry.name.base26_hash, File.extname(entry.name)].compact.join('.'))
-          entry.extract(tmp_file)
-          content=PlainTextExtractor.extract_content_from(tmp_file) rescue "---"
-          ["## "<<entry.name.gsub('/', '>'), content]
-        }
-      }.compact.join("\n")
-    ensure
-      FileUtils.remove_entry_secure(temp_dir)
-      FileUtils.rmdir(File.join(Dir::tmpdir, 'picolena_zip_temp')) rescue "not empty"
-    end
-  }
+
+  extract_content_from_archive_with "unzip SOURCE -d TEMPDIR"
 
   which_should_for_example_extract 'some_test_files some_dir dumb.rb', :from => 'some_test_files.zip'
   or_extract                       'puts 2+2',                         :from => 'some_test_files.zip'

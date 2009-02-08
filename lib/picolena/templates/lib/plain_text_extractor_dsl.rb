@@ -71,6 +71,28 @@ module PlainTextExtractorDSL
     end
   end
 
+  # Unpack an archive and extract content from every supported file
+  def extract_content_from_archive_with(unpack_command)
+    #FIXME: Cleaner code needed!
+    @command=lambda {|source|
+      begin
+        global_temp_dir   = File.join(Dir::tmpdir, 'picolena_archive_temp')
+        specific_temp_dir = File.join(global_temp_dir, source.base26_hash)
+        FileUtils.mkpath specific_temp_dir
+        specific_unpack_command=unpack_command.sub('SOURCE','"'<<source<<'"').sub(/TE?MPDIR/,'"'<<specific_temp_dir<<'"')
+        silently_execute(specific_unpack_command)
+        Dir["#{specific_temp_dir}/**/*"].select{|f| File.file?(f)}.map{|filename|
+          content=PlainTextExtractor.extract_content_from(filename) rescue "---"
+          ["##"<<filename.sub(specific_temp_dir,'').gsub('/', '>'),
+            content]
+        }.join("\n")
+      ensure
+        FileUtils.remove_entry_secure(specific_temp_dir)
+        FileUtils.rmdir(global_temp_dir) rescue "not empty"
+      end
+    }
+  end
+
   private
   def command_for_current_platform(command_as_hash)
     # Allows to write
