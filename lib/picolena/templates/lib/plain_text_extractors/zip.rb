@@ -3,7 +3,8 @@ PlainTextExtractor.new {
   as "archive/zip"
   aka "ZIP Archive"
 
-  # NOTE: With RubyZip or just a tmp dir from unzip?
+  # TODO: Transpose this structure to support .tgz, .rar, .deb, 7z, ar, .cab, .ace, .lzma, .bz2
+  # NOTE: What to do when the archive is too big?
   extract_content_with {|source|
     begin
       temp_dir=File.join(Dir::tmpdir, 'picolena_zip_temp', source.base26_hash)
