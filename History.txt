@@ -1,6 +1,6 @@
 * 3 major enhancements :
   * Thumbnails created for pictures & videos
-  * Support for .zip archives
+  * Support for .zip  & .rar archives
   * Alias_path is now LetterTokenized
 
 * 2 minor enhancements:
