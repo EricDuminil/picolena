@@ -34,6 +34,7 @@ describe "Finder without index on disk" do
     Picolena::IndexedDirectories.replace(@original_indexed_dirs)
     Picolena::IndexSavePath.replace(@original_index_path)
     Picolena::MetaIndexPath.replace(File.join(@original_index_path,'meta'))
+    FileUtils.remove_entry_secure(@new_index_path)
   end
 end
 

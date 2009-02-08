@@ -17,7 +17,7 @@ PlainTextExtractor.new {
         }
       }.compact.join("\n")
     ensure
-      FileUtils.rm_rf(temp_dir)
+      FileUtils.remove_entry_secure(temp_dir)
       FileUtils.rmdir(File.join(Dir::tmpdir, 'picolena_zip_temp')) rescue "not empty"
     end
   }
