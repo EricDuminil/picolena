@@ -9,7 +9,6 @@
 #    or_extract 'Basic Word template for Picolena specs', :from => 'office2003-word-template.dot'
 #  }
 
-require 'open3'
 module PlainTextExtractorDSL
   attr_reader :exts, :mime_name, :description, :command, :content_and_file_examples, :thumbnail_command
 

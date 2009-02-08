@@ -111,3 +111,11 @@ end
 class Object
   alias_method :is_an?, :is_a?
 end
+
+module Kernel
+  require 'open3'
+  # Executes a command and returns stdout while silenting stderr
+  def silently_execute(command)
+    Open3.popen3(command){|i,e,o| e.read}
+  end
+end

@@ -81,11 +81,11 @@ class PlainTextExtractor
         # If command includes 'DESTINATION' keyword,
         # launches the command and returns the content of
         # DESTINATION file.
-        IO.popen(specific_command){}
+        silently_execute(specific_command)
         File.read_and_remove(destination)
       else
         # Otherwise, launches the command and returns STDOUT.
-        Open3.popen3(specific_command){|stdin,stdout,stderr| stdout.read}
+        silently_execute(specific_command)
       end
     else
       # command is a Block.
@@ -124,7 +124,7 @@ class PlainTextExtractor
   end
 
   def extract_thumbnail
-    Open3.popen3(specific_thumbnail_command){|i,e,o| e.read} if thumbnail_command
+    silently_execute(specific_thumbnail_command) if thumbnail_command
   end
 
   private
