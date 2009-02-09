@@ -60,7 +60,7 @@ class PlainTextExtractor
     # Returns which language guesser should be used by the system.
     # Returns nil if none is found.
     def language_guesser
-      @@language_guesser||=('mguesser -n1' unless IO.popen("which mguesser"){|i| i.read}.empty?)
+      @@language_guesser||=('mguesser -n1' if 'mguesser'.installed?)
     end
   end
 

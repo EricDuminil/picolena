@@ -4,6 +4,14 @@ class String
     Digest::MD5.hexdigest(self).to_i(16).to_s(26).tr('0-9a-p', 'a-z')[-length,length]
   end
 
+  # Returns true iff self is an available command on the system
+  # >> "grep".installed?
+  # => true
+  # >> "sdfgsdfgsdf".installed?
+  # => false
+  def installed?
+     !IO.popen("which #{self}"){|i| i.read}.empty?
+  end
 end
 
 module Enumerable

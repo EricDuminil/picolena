@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe "Host indexing system" do
  PlainTextExtractor.dependencies.each do |dependency|
     it "should have #{dependency} installed" do
-       IO.popen("which #{dependency}"){|i| i.read.should_not be_empty}
+       dependency.should be_installed
     end
   end
 
