@@ -115,6 +115,7 @@ end
 module Kernel
   require 'open3'
   # Executes a command and returns stdout while silenting stderr
+  # NOTE: Restricted to systems on which forking is possible. How to do on windows?
   def silently_execute(command)
     Open3.popen3(command){|i,e,o| e.read}
   end

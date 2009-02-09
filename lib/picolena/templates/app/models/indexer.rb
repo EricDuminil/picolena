@@ -178,6 +178,8 @@ class Indexer
     end
     
     # Copied from Ferret book, By David Balmain
+    # FIXME : Find an alternative that doesn't need any more dependency.
+    # NOTE: Not supported on windows.
     def index_time_dbm_file
       @@dbm_file ||= DBM.open(File.join(Picolena::MetaIndexPath, 'added_at'))
     end
