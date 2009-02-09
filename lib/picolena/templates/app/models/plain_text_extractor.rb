@@ -69,7 +69,7 @@ class PlainTextExtractor
   # Parses commands in order to know which programs are needed.
   # rspec will then check that every dependecy is installed on the system
   def dependencies
-      [@dependencies, find_dependencies(command), find_dependencies(thumbnail_command)].flatten.compact
+      [@dependencies, command.dependencies, thumbnail_command.dependencies].flatten
   end
 
   ## Conversion part
@@ -144,9 +144,5 @@ class PlainTextExtractor
   # Replaces generic command with specific source and thumbnail (if specified) files
   def specific_thumbnail_command
     thumbnail_command.sub('SOURCE','"'<<source<<'"').sub('THUMBNAIL','"'<<File.thumbnail_path(source)<<'"')
-  end
-
-  def find_dependencies(command)
-    command.split(/\|\s*/).collect{|command_part| command_part.split(/ /).first} if command.is_a?(String)
   end
 end

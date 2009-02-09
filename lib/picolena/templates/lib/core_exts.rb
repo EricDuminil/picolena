@@ -3,6 +3,7 @@ class String
   def base26_hash(length=Picolena::HashLength)
     Digest::MD5.hexdigest(self).to_i(16).to_s(26).tr('0-9a-p', 'a-z')[-length,length]
   end
+
 end
 
 module Enumerable
@@ -109,6 +110,7 @@ class File
 end
 
 class Object
+  # [1,2,3].is_an?(Array) just looks better than [1,2,3].is_a?(Array)
   alias_method :is_an?, :is_a?
 end
 
@@ -118,5 +120,28 @@ module Kernel
   # NOTE: Restricted to systems on which forking is possible. How to do on windows?
   def silently_execute(command)
     Open3.popen3(command){|i,e,o| e.read}
+  end
+end
+
+
+# A PlainTextExtractor.command can be either a String, a Block or undefined.
+class String
+  # For a given *nix command line, returns an Array of required commands:
+  #   >> "xls2csv SOURCE | grep -i [a-z] | sed -e 's/\"//g' -e 's/,*$//' -e 's/,/ /g'".dependencies
+  #   => ["xls2csv", "grep", "sed"]
+  def dependencies
+    self.split(/\|\s*/).collect{|command_part| command_part.split(/ /).first}
+  end
+end
+
+class Proc
+  def dependencies
+    []
+  end
+end
+
+class NilClass
+  def dependencies
+    []
   end
 end

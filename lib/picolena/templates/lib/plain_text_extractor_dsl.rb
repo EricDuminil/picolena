@@ -91,6 +91,7 @@ module PlainTextExtractorDSL
         FileUtils.rmdir(global_temp_dir) rescue "not empty"
       end
     }
+    (@dependencies||=[])<<unpack_command.dependencies
   end
 
   private
