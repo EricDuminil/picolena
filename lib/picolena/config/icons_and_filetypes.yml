@@ -18,6 +18,10 @@ txt:
   bib
   log
   ini
+  sub
+  srt
+  vcf
+  vcard
   no_extension
 doc:
   doc

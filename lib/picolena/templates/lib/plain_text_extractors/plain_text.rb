@@ -1,5 +1,12 @@
 PlainTextExtractor.new {
-  every :txt, :text, :tex, :for, :cpp, :c, :rb, :ins, :vee, :java, :no_extension
+  every :txt, :text
+  every :tex, :bib, :for, :cpp, :c, :rb, :ins, :vee, :java
+  every :ini
+  every :sub, :srt
+  #NOTE: Could be interesting to extract thumbnail from vCards
+  every :vcf, :vcard 
+  every :no_extension
+
   as "application/plain"
   aka "plain text file"
   extract_content_with {|source|
