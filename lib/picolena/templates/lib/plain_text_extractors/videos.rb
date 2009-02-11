@@ -1,9 +1,10 @@
-# Test with avi
+# Basic support for different videos
+# It only has been tested with .avi so far
 
 PlainTextExtractor.new {
-  every :avi
-  as "video"
-  aka "avi video"
+  every :avi, :mpg, :mpeg, :mov, :wmv
+  as "video/*"
+  aka "some video"
 
   extract_thumbnail_with           'ffmpegthumbnailer -i SOURCE -o THUMBNAIL'
 

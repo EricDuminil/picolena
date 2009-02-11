@@ -56,7 +56,6 @@ lib/picolena/templates/lib/indexer_logger.rb
 lib/picolena/templates/lib/plain_text_extractor_dsl.rb
 lib/picolena/templates/lib/plain_text_extractors/adobe.pdf.rb
 lib/picolena/templates/lib/plain_text_extractors/adobe.photoshop.rb
-lib/picolena/templates/lib/plain_text_extractors/avi.rb
 lib/picolena/templates/lib/plain_text_extractors/html.rb
 lib/picolena/templates/lib/plain_text_extractors/ms.excel.rb
 lib/picolena/templates/lib/plain_text_extractors/ms.powerpoint.rb
@@ -68,6 +67,7 @@ lib/picolena/templates/lib/plain_text_extractors/opendocument.text.rb
 lib/picolena/templates/lib/plain_text_extractors/pictures.rb
 lib/picolena/templates/lib/plain_text_extractors/plain_text.rb
 lib/picolena/templates/lib/plain_text_extractors/rar.rb
+lib/picolena/templates/lib/plain_text_extractors/videos.rb
 lib/picolena/templates/lib/plain_text_extractors/zip.rb
 lib/picolena/templates/lib/tasks/annotations.rake
 lib/picolena/templates/lib/tasks/extract.rake
