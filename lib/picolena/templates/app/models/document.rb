@@ -150,9 +150,11 @@ class Document
     end
   end
 
-  # Returns true unless content is empty
+  # Did at least one letter got extracted from the document?
+  # This boolean is used in views to know if a link should be
+  # displayed to show the content
   def has_content?
-    cached !~ /^\s*$/
+    cached =~ /\w/
   end
   
   private
