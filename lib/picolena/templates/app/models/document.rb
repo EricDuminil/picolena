@@ -1,5 +1,5 @@
 # Document class retrieves information from filesystem and the index for any given document.
-class Document
+class Document < ActiveRecord::Base
   attr_reader :complete_path
   attr_accessor :score, :matching_content
 
