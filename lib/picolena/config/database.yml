@@ -19,7 +19,7 @@ development:
   encoding: utf8
   database: picolena_development
   pool: 5
-  username: root
+  username: <%= user %>
   password:
   host: localhost
 
@@ -31,15 +31,17 @@ test:
   encoding: utf8
   database: picolena_test
   pool: 5
-  username: root
+  username: <%= user %>
   password:
   host: localhost
 
 production:
   adapter: mysql
   encoding: utf8
-  database: picolena_production
+  # You should probably specify your own production database.
+  # It might get overwritten otherwise!
+  database:
   pool: 5
-  username: root
+  username: <%= user %>
   password: 
   host: localhost

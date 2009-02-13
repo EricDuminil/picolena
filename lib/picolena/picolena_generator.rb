@@ -69,7 +69,7 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
       m.template '../config/title_and_names_and_links.yml', 'config/custom/title_and_names_and_links.yml', :assigns => {:version => Picolena::VERSION::STRING}
       m.file '../config/icons_and_filetypes.yml', 'config/custom/icons_and_filetypes.yml'
       m.file '../config/indexing_performance.yml', 'config/custom/indexing_performance.yml'
-      m.file '../config/database.yml', 'config/database.yml'
+      m.template '../config/database.yml', 'config/database.yml', :assigns => {:db_name => @db_name, :user => ENV['USER']}
 
       # README, License & Rakefile
       m.file 'MIT-LICENSE', 'LICENSE'
@@ -141,6 +141,7 @@ EOS
     config/initializers
     config/custom
     doc
+    db
     lang/ui
     lib
     lib/plain_text_extractors
