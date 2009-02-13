@@ -17,7 +17,7 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
     @destination_root = options[:destination]
 
     @directories_to_index=if options[:spec_only] then
-       "/whatever : /whatever"
+      '"spec/test_dirs/indexed": "http://picolena.devjavu.com/browser/trunk/lib/picolena/templates/spec/test_dirs/indexed"'
     else
       ARGV.collect{|relative_path|
         abs_dir=Pathname.new(relative_path).realpath.to_s
