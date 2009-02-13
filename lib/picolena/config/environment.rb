@@ -11,9 +11,9 @@ RAILS_GEM_VERSION = '2.2.2' unless defined? RAILS_GEM_VERSION
 require File.join(File.dirname(__FILE__), 'boot')
 
 Rails::Initializer.run do |config|
-  # We don't need no stinkin' AR!
-  # Ferret backs us up.
-  config.frameworks -= [ :active_record ]
+  # Actually, we do need ActiveRecord!
+  # Ferret does not back us up anymore.
+  # config.frameworks -= [ :active_record ]
 end
 
 #Initialises Picolena module.

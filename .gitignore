@@ -2,6 +2,7 @@ lib/picolena/templates/LICENSE
 lib/picolena/templates/README
 lib/picolena/templates/config/environment.rb
 lib/picolena/templates/config/custom
+lib/picolena/templates/config/database.yml
 lib/picolena/templates/doc
 lib/picolena/templates/log
 lib/picolena/templates/spec/test_dirs/indexed/others/bäñüßé.txt
