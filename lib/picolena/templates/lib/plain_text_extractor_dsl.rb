@@ -19,9 +19,8 @@ module PlainTextExtractorDSL
   end
 
   def every(*exts)
-    @exts||=[]
-    @exts<<exts
-    @exts.flatten!
+    @exts ||=[]
+    @exts |= exts
   end
 
   def as(mime_name)
