@@ -2,15 +2,12 @@
 class Document < ActiveRecord::Base
   attr_accessor :score, :matching_content
 
-  # Instantiates a new Document, and ensure that the given path exists and
-  # is included in an indexed directory.
-  # Raises otherwise.
-#  def initialize(path)
-#    # To ensure @complete_path is an absolute direction.
-#    #@complete_path=File.expand_path(path)
-#    validate_existence_of_file
-#    validate_in_indexed_directory
-#  end
+  validate          :must_be_an_existing_file
+  validate          :must_be_in_an_indexed_directory
+
+  def complete_path
+    @complete_path||=File.expand_path(attributes['complete_path'])
+  end
 
   # Delegating properties to File::method_name(complete_path)
   [:dirname, :basename, :extname, :ext_as_sym, :file?, :plain_text?, :size, :ext_as_sym].each{|method_name|
@@ -191,13 +188,13 @@ class Document < ActiveRecord::Base
   end
 
   # Raises unless @complete_path is the path of an existing file
-  def validate_existence_of_file
+  def must_be_an_existing_file
     raise Errno::ENOENT, @complete_path unless file?
   end
 
   # Raises unless @complete_path is included in an indexed_directory.
   # It prevents end user to get information about non-indexed sensitive files.
-  def validate_in_indexed_directory
+  def must_be_in_an_indexed_directory
     raise ArgumentError, "required document is not in indexed directory" unless in_indexed_directory?
   end
 end
