@@ -2,12 +2,13 @@
 class Document < ActiveRecord::Base
   attr_accessor :score, :matching_content
 
+  # Ensures that complete_path is absolute
+  def after_initialize
+    self[:complete_path]=File.expand_path(self[:complete_path])
+  end
+
   validate          :must_be_an_existing_file
   validate          :must_be_in_an_indexed_directory
-
-  def complete_path
-    @complete_path||=File.expand_path(attributes['complete_path'])
-  end
 
   # Delegating properties to File::method_name(complete_path)
   [:dirname, :basename, :extname, :ext_as_sym, :file?, :plain_text?, :size, :ext_as_sym].each{|method_name|

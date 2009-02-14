@@ -12,11 +12,15 @@
 ActiveRecord::Schema.define(:version => 20090213234937) do
 
   create_table "documents", :force => true do |t|
+    t.string   "probably_unique_id"
     t.string   "complete_path"
-    t.text     "content"
-    t.string   "p_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "alias_path"
+    t.string   "filename"
+    t.string   "basename"
+    t.string   "filetype"
+    t.text     "cached"
+    t.string   "language"
+    t.datetime "modified"
   end
 
 end
