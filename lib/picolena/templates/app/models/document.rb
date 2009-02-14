@@ -1,24 +1,23 @@
 # Document class retrieves information from filesystem and the index for any given document.
 class Document < ActiveRecord::Base
-  attr_reader :complete_path
   attr_accessor :score, :matching_content
 
   # Instantiates a new Document, and ensure that the given path exists and
   # is included in an indexed directory.
   # Raises otherwise.
-  def initialize(path)
-    # To ensure @complete_path is an absolute direction.
-    @complete_path=File.expand_path(path)
-    validate_existence_of_file
-    validate_in_indexed_directory
-  end
+#  def initialize(path)
+#    # To ensure @complete_path is an absolute direction.
+#    #@complete_path=File.expand_path(path)
+#    validate_existence_of_file
+#    validate_in_indexed_directory
+#  end
 
   # Delegating properties to File::method_name(complete_path)
   [:dirname, :basename, :extname, :ext_as_sym, :file?, :plain_text?, :size, :ext_as_sym].each{|method_name|
     define_method(method_name){File.send(method_name,complete_path)}
   }
   alias_method :filename, :basename
-  alias_method :to_s, :complete_path
+  alias_attribute :to_s, :complete_path
 
 
   # Returns complete path as well as matching score and language if available.
