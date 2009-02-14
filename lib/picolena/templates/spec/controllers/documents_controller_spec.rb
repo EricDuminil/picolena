@@ -117,7 +117,7 @@ describe DocumentsController do
     orig_assigns['matching_documents'].entries.should_not be_empty
     d=orig_assigns['matching_documents'].entries.first
     get 'download', :id=>d.probably_unique_id
-    assigns[:document].complete_path == d.complete_path
+    orig_assigns['document'].complete_path.should == d.complete_path
     response.should be_success
   end
 

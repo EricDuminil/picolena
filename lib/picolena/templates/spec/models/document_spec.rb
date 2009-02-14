@@ -24,14 +24,14 @@ describe Document do
   end
 
   it "should be an existing file" do
-    lambda {Document.new(:complete_path => "/patapouf.txt")}.should raise_error(Errno::ENOENT)
+    lambda {Document.new(:complete_path => "/patapouf.txt").valid?}.should raise_error(Errno::ENOENT)
     lambda {@valid_document}.should_not raise_error
-    lambda {Document.new(:complete_path => "spec/test_dirs/not_indexed/Rakefile")}.should_not raise_error(Errno::ENOENT)
+    lambda {Document.new(:complete_path => "spec/test_dirs/not_indexed/Rakefile").valid?}.should_not raise_error(Errno::ENOENT)
   end
 
   it "should belong to an indexed directory" do
     lambda {@valid_document}.should_not raise_error
-    lambda {Document.new(:complete_path => "spec/test_dirs/not_indexed/Rakefile")}.should raise_error(ArgumentError, "required document is not in indexed directory")
+    lambda {Document.new(:complete_path => "spec/test_dirs/not_indexed/Rakefile").valid?}.should raise_error(ArgumentError, "required document is not in indexed directory")
   end
 
   basic_pdf_attribute.each{|attribute,expected_value|
