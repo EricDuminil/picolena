@@ -127,7 +127,7 @@ class Document < ActiveRecord::Base
 
   # Indexing fields that are shared between every document.
   def self.default_fields_for(complete_path)
-    doc=Document.new(complete_path)
+    doc=Document.new(:complete_path=>complete_path)
     {
       :complete_path      => complete_path,
       :probably_unique_id => complete_path.base26_hash,
