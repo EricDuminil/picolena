@@ -59,8 +59,8 @@ class Document < ActiveRecord::Base
   end
 
   # Returns true iff some PlainTextExtractor has been defined to convert it to plain text.
-  #  Document.new("presentation.pdf").supported? => true
-  #  Document.new("presentation.some_weird_extension").supported? => false
+  #  Document.new(:complete_path => "presentation.pdf").supported? => true
+  #  Document.new(:complete_path => "presentation.some_weird_extension").supported? => false
   def supported?
     PlainTextExtractor.supported_extensions.include?(self.ext_as_sym) unless ext_as_sym==:no_extension and !plain_text?
   end
