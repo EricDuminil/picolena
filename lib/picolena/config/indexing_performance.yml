@@ -5,7 +5,9 @@
 
 ## Main performance parameters
 
-## Number of threads created by the Indexer
+# Number of threads created by the Indexer
+# NOTE: It should not be bigger than the pool size in database.yml
+# Some indexing threads won't get access to the DB otherwise!
 threads_number: 8 
 
 # Allowed memory for indexing process.
