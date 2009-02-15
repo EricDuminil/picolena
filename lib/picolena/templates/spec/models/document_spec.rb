@@ -24,9 +24,9 @@ describe Document do
   end
 
   it "should be an existing file" do
-    lambda {Document["/patapouf.txt"].valid?}.should raise_error(Errno::ENOENT)
+    lambda {Document["/patapouf.txt"]}.should raise_error(Errno::ENOENT)
     lambda {@valid_document}.should_not raise_error
-    lambda {Document["spec/test_dirs/not_indexed/Rakefile"].valid?}.should_not raise_error(Errno::ENOENT)
+    lambda {Document["spec/test_dirs/not_indexed/Rakefile"]}.should_not raise_error(Errno::ENOENT)
   end
 
   it "should belong to an indexed directory" do
