@@ -78,9 +78,9 @@ class Document < ActiveRecord::Base
 
   # Cache à la Google.
   # Returns content as it was at the time it was indexed.
-  def cached
-    from_index[:content]
-  end
+#  def cached
+#    from_index[:content]
+#  end
   
   # Returns cached content with matching terms between '<<' '>>'.
   def highlighted_cache(raw_query)
