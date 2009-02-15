@@ -10,6 +10,11 @@ class Document < ActiveRecord::Base
   validate          :must_be_an_existing_file
   validate          :must_be_in_an_indexed_directory
 
+  def self.[](path)
+    complete_path=File.expand_path(path)
+    find_or_create_by_complete_path(complete_path)
+  end
+
   # Delegating properties to File::method_name(complete_path)
   [:dirname, :basename, :extname, :ext_as_sym, :file?, :plain_text?, :size, :ext_as_sym].each{|method_name|
     define_method(method_name){File.send(method_name,complete_path)}
@@ -125,7 +130,7 @@ class Document < ActiveRecord::Base
 
   # Indexing fields that are shared between every document.
   def self.default_fields_for(complete_path)
-    doc=Document.new(:complete_path=>complete_path)
+    doc=Document[complete_path]
     {
       :complete_path      => complete_path,
       :probably_unique_id => complete_path.base26_hash,

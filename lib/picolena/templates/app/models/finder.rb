@@ -38,7 +38,7 @@ class Finder
     start=Time.now
       @total_hits = index.search_each(query, :limit => @per_page, :offset=>@offset, :sort => (sort_by_date if @sort_by=='date')){|index_id, score|
         begin
-          found_doc=Document.new(:complete_path => index[index_id][:complete_path])
+          found_doc=Document[index[index_id][:complete_path]]
           found_doc.matching_content=index.highlight(query, index_id,
                                                      :field => :content, :excerpt_length => 80,
                                                      :pre_tag => "<<", :post_tag => ">>"

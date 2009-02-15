@@ -70,6 +70,9 @@ class Indexer
         PlainTextExtractor.extract_thumbnail_from(complete_path)
         document.merge! PlainTextExtractor.extract_information_from(complete_path)
         raise "empty document #{complete_path}" if document[:content].strip.empty?
+        d=Document[complete_path]
+        d.cached = document[:content]
+        d.save
         logger.add_document document
       rescue => e
         logger.reject_document document, e
