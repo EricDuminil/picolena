@@ -5,9 +5,25 @@ class Document < ActiveRecord::Base
   validate          :must_be_an_existing_file
   validate          :must_be_in_an_indexed_directory
 
+  # find_or_create_by_complete_path(complete_path) on steroids
+  # not using find_or_create to avoid recalculating each parameter
+  # everytime a Document is initialized
   def self.[](path)
     complete_path=File.expand_path(path)
-    find_or_create_by_complete_path(complete_path)
+    unless doc = find_by_complete_path(complete_path)
+      doc            = new(:complete_path => complete_path)
+      doc.valid?
+      # If no such file exists in the DB, add it
+      doc.probably_unique_id = complete_path.base26_hash
+      doc.filename   = File.basename(complete_path)
+      doc.filetype   = File.extname(complete_path)
+      doc.basename   = File.basename(complete_path, doc.filetype)
+      doc.modified   = File.mtime(complete_path)
+      doc.get_alias_path!
+      doc.cache_content    = PlainTextExtractor.extract_content_from(complete_path) rescue ""
+      doc.save
+    end
+    doc
   end
 
   # Delegating properties to File::method_name(complete_path)
@@ -30,22 +46,6 @@ class Document < ActiveRecord::Base
   #   "buildings.odt" => "buildings"
   def basename
     filename.chomp(extname)
-  end
-
-  # End users should not always know where documents are stored internally.
-  # An alias path can be specified in config/indexed_directories.yml
-  #
-  # For example, with:
-  #   "/media/wiki_dump/" : "http://www.mycompany.com/wiki/"
-  #
-  # The documents
-  #   "/media/wiki_dump/organigram.odp"
-  # will be displayed as being:
-  #   "http://www.mycompany.com/wiki/organigram.odp"
-  def alias_path
-    original_dir=indexed_directory
-    alias_dir=Picolena::IndexedDirectories[original_dir]
-    dirname.sub(original_dir,alias_dir)
   end
 
   # Returns an id for this document.
@@ -112,19 +112,6 @@ class Document < ActiveRecord::Base
     "%3.1f%" % (@score*100)
   end
 
-  # Indexing fields that are shared between every document.
-  def self.default_fields_for(complete_path)
-    doc=Document[complete_path]
-    {
-      :complete_path      => complete_path,
-      :probably_unique_id => complete_path.base26_hash,
-      :alias_path         => doc.alias_path,
-      :filename           => File.basename(complete_path),
-      :basename           => File.basename(complete_path, File.extname(complete_path)).gsub(/_/,' '),
-      :filetype           => File.extname(complete_path),
-      :modified           => File.mtime(complete_path).strftime("%Y%m%d%H%M%S")
-    }
-  end
   
   # Returns thumbnail if available, mime icon otherwise
   def icon_path
@@ -141,6 +128,21 @@ class Document < ActiveRecord::Base
   # displayed to show the content
   def has_content?
     cache_content =~ /\w/
+  end
+
+  # End users should not always know where documents are stored internally.
+  # An alias path can be specified in config/indexed_directories.yml
+  #
+  # For example, with:
+  #   "/media/wiki_dump/" : "http://www.mycompany.com/wiki/"
+  #
+  # The documents
+  #   "/media/wiki_dump/organigram.odp"
+  # will be displayed as being:
+  #   "http://www.mycompany.com/wiki/organigram.odp"
+  def get_alias_path!
+    alias_dir=Picolena::IndexedDirectories[indexed_directory]
+    self[:alias_path]=dirname.sub(indexed_directory,alias_dir)
   end
   
   private
@@ -172,11 +174,11 @@ class Document < ActiveRecord::Base
   # Returns the IndexedDirectory in which the Document is included.
   # Returns nil if no corresponding dir is found.
   def indexed_directory
-    Picolena::IndexedDirectories.keys.find{|indexed_dir|
+    @indexed_dir||=Picolena::IndexedDirectories.keys.find{|indexed_dir|
       dirname.starts_with?(indexed_dir)
     }
   end
-
+  
   # Raises unless @complete_path is the path of an existing file
   def must_be_an_existing_file
     raise Errno::ENOENT, @complete_path unless file?

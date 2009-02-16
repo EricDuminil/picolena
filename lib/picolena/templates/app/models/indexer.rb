@@ -65,23 +65,22 @@ class Indexer
     # be found, some basic information about the document (mtime, filename, complete_path)
     # gets indexed anyway.
     def add_or_update_file(complete_path)
-      document = Document.default_fields_for(complete_path)
+      document=Document[complete_path]
+      #document = Document.default_fields_for(complete_path)
       begin
         PlainTextExtractor.extract_thumbnail_from(complete_path)
-        document.merge! PlainTextExtractor.extract_information_from(complete_path)
-        raise "empty document #{complete_path}" if document[:content].strip.empty?
-        d=Document[complete_path]
-        d.cached = document[:content]
-        d.save
+        #document.merge! PlainTextExtractor.extract_information_from(complete_path)
+        #raise "empty document #{complete_path}" if document[:content].strip.empty?
         logger.add_document document
       rescue => e
         logger.reject_document document, e
       end
-      index << document
+      index << document.attributes
     end
 
     # Ensures index is closed, and removes every index file for RAILS_ENV.
     def clear!(all=false)
+      Document.destroy_all
       close
       to_remove=all ? Picolena::IndexesSavePath : Picolena::IndexSavePath
       Dir.glob(File.join(to_remove,'**/*')).each{|f| FileUtils.rm(f) if File.file?(f)}
@@ -209,7 +208,7 @@ class Indexer
       returning Ferret::Index::FieldInfos.new do |field_infos|
         field_infos.add_field(:probably_unique_id, :store => :no,  :index => :untokenized)
         field_infos.add_field(:complete_path,      :store => :yes, :index => :untokenized)
-        field_infos.add_field(:content,            :store => :yes, :index => :yes)
+        field_infos.add_field(:cache_content,      :store => :yes, :index => :yes)
         field_infos.add_field(:alias_path,         :store => :no,  :index => :yes, :boost => 0.5)
         field_infos.add_field(:basename,           :store => :no,  :index => :yes, :boost => 1.5)
         field_infos.add_field(:filename,           :store => :no,  :index => :yes, :boost => 1.5)

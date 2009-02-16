@@ -31,7 +31,7 @@ describe Document do
 
   it "should belong to an indexed directory" do
     lambda {@valid_document}.should_not raise_error
-    lambda {Document["spec/test_dirs/not_indexed/Rakefile"].valid?}.should raise_error(ArgumentError, "required document is not in indexed directory")
+    lambda {Document["spec/test_dirs/not_indexed/Rakefile"]}.should raise_error(ArgumentError, "required document is not in indexed directory")
   end
 
   basic_pdf_attribute.each{|attribute,expected_value|
