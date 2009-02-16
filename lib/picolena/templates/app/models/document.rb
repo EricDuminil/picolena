@@ -113,11 +113,6 @@ class Document < ActiveRecord::Base
     from_index[:modified].to_i
   end
 
-  # Returns found language, if any.
-  def language
-    from_index[:language]
-  end
-
   # Returns matching score as a percentage, e.g. 56.3%
   def pretty_score
     "%3.1f%" % (@score*100)
