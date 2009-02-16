@@ -150,12 +150,6 @@ class Document < ActiveRecord::Base
     Indexer.index.search(Ferret::Search::TermQuery.new(:probably_unique_id,probably_unique_id)).hits.first.doc
   end
 
-  # Retrieves the document from the index.
-  # Useful to get meta-info about it.
-  def from_index
-    Indexer.index[probably_unique_id]
-  end
-
   def in_indexed_directory?
     !indexed_directory.nil?
   end
