@@ -11,26 +11,25 @@ class Document < ActiveRecord::Base
   def self.[](path)
     complete_path=File.expand_path(path)
     unless doc = find_by_complete_path(complete_path)
+      # If no such file exists in the DB, add it
       doc            = new(:complete_path => complete_path)
       doc.valid?
-      # If no such file exists in the DB, add it
       doc.probably_unique_id = complete_path.base26_hash
       doc.filename   = File.basename(complete_path)
       doc.filetype   = File.extname(complete_path)
       doc.basename   = File.basename(complete_path, doc.filetype)
       doc.modified   = File.mtime(complete_path)
       doc.get_alias_path!
-      doc.cache_content    = PlainTextExtractor.extract_content_from(complete_path) rescue ""
+      doc.cache_content    = doc.content rescue ""
       doc.save
     end
     doc
   end
 
   # Delegating properties to File::method_name(complete_path)
-  [:dirname, :basename, :extname, :ext_as_sym, :file?, :plain_text?, :size, :ext_as_sym].each{|method_name|
+  [:dirname, :file?, :plain_text?, :size, :ext_as_sym].each{|method_name|
     define_method(method_name){File.send(method_name,complete_path)}
   }
-  alias_method :filename, :basename
   alias_attribute :to_s, :complete_path
 
 
@@ -44,17 +43,11 @@ class Document < ActiveRecord::Base
 
   # Returns filename without extension
   #   "buildings.odt" => "buildings"
-  def basename
-    filename.chomp(extname)
-  end
 
   # Returns an id for this document.
   # This id will be used in Controllers in order to get tiny urls.
   # Since it's a base26 hash of the absolute filename, it can only be "probably unique".
   # For huge amount of indexed documents, it would be wise to increase HashLength in config/custom/picolena.rb
-  def probably_unique_id
-    @probably_unique_id||=complete_path.base26_hash
-  end
 
   # Returns true iff some PlainTextExtractor has been defined to convert it to plain text.
   #  Document.new(:complete_path => "presentation.pdf").supported? => true
