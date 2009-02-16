@@ -83,21 +83,21 @@ class Document < ActiveRecord::Base
   #   >> doc.pretty_date
   #   => "2008-05-09"
   def pretty_date
-    from_index[:modified].sub(/(\d{4})(\d{2})(\d{2})\d{6}/,'\1-\2-\3')
+    modified.strftime("%Y-%M-%d")
   end
   
   # Returns the last modification time before the document got indexed.
   #   >> doc.pretty_mtime
   #   => "2008-05-09 09:39:51"
   def pretty_mtime
-    from_index[:modified].sub(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/,'\1-\2-\3 \4:\5:\6')
+    modified.strftime("%Y-%M-%d %H:%m:%S")
   end
 
   # Returns the last modification time before the document got indexed, as YYYYMMDDHHMMSS integer.
   #   >> doc.mtime
   #   => 20080509093951
   def mtime
-    from_index[:modified].to_i
+    modified.to_i
   end
 
   # Returns matching score as a percentage, e.g. 56.3%
