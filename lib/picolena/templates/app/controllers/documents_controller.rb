@@ -59,7 +59,7 @@ class DocumentsController < ApplicationController
   #  there is no matching document (wrong hash)
   def check_if_valid_link
     @probably_unique_id=params[:id]
-    @document=Document.find_by_unique_id(@probably_unique_id) rescue no_valid_link
+    @document=Document.find_by_probably_unique_id(@probably_unique_id) || no_valid_link
   end
   
   def ensure_index_is_created

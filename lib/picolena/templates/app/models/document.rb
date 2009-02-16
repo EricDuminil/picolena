@@ -156,10 +156,6 @@ class Document < ActiveRecord::Base
     Indexer.index[probably_unique_id]
   end
 
-  def self.find_by_unique_id(probably_unique_id)
-    new(Indexer.index[probably_unique_id][:complete_path])
-  end
-
   def in_indexed_directory?
     !indexed_directory.nil?
   end
