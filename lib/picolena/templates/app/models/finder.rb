@@ -40,7 +40,7 @@ class Finder
         begin
           found_doc=Document[index[index_id][:complete_path]]
           found_doc.matching_content=index.highlight(query, index_id,
-                                                     :field => :content, :excerpt_length => 80,
+                                                     :field => :cache_content, :excerpt_length => 80,
                                                      :pre_tag => "<<", :post_tag => ">>"
           )
           found_doc.score=score

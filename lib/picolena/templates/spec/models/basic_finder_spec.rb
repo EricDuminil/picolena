@@ -41,7 +41,7 @@ end
 
 fields={
   # description       => key
-  :content            => :content,
+  :content            => :cache_content,
   :complete_path      => :complete_path,
   :basename           => :basename,
   :filename           => :filename,

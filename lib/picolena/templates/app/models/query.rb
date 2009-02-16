@@ -7,7 +7,7 @@ class Query
     
     # Returns terms related to content. Useful for cache highlighting
     def content_terms(raw_query)
-      Query.extract_from(raw_query).terms(Indexer.index.searcher).select{|term| term.field==:content}.collect{|term| term.text}.uniq
+      Query.extract_from(raw_query).terms(Indexer.index.searcher).select{|term| term.field==:cache_content}.collect{|term| term.text}.uniq
     end
 
     private
@@ -20,7 +20,7 @@ class Query
        /\b#{:NOT.l}\b/=>'NOT',
        /(#{:filename.l}):/=>'filename:',
        /(#{:filetype.l}):/=>'filetype:',
-       /#{:content.l}:/ => 'content:',
+       /#{:content.l}:/ => 'cache_content:',
        /(#{:modified.l}):/ => 'modified:',
        /(#{:language.l}):/ => 'language:',
        /\b#{:LIKE.l}\s+(\S+)/=>'\1~'
@@ -32,7 +32,7 @@ class Query
 
     # Instantiates a QueryParser once, and keeps it in cache.
     def parser
-      @@parser ||= Ferret::QueryParser.new(:fields => [:content, :filename, :basename, :alias_path, :filetype, :modified], :or_default => false, :analyzer=>Picolena::Analyzer)
+      @@parser ||= Ferret::QueryParser.new(:fields => [:cache_content, :filename, :basename, :alias_path, :filetype, :modified], :or_default => false, :analyzer=>Picolena::Analyzer)
     end
   end
 end

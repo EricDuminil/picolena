@@ -76,16 +76,10 @@ class Document < ActiveRecord::Base
     PlainTextExtractor.extract_content_from(complete_path)
   end
 
-  # Cache à la Google.
-  # Returns content as it was at the time it was indexed.
-#  def cached
-#    from_index[:content]
-#  end
-  
   # Returns cached content with matching terms between '<<' '>>'.
   def highlighted_cache(raw_query)
     excerpts=Indexer.index.highlight(Query.extract_from(raw_query), doc_id,
-                            :field => :content, :excerpt_length => :all,
+                            :field => :cache_content, :excerpt_length => :all,
                             :pre_tag => "<<", :post_tag => ">>"
              )
     excerpts.is_an?(Array) ? excerpts.first : ""
@@ -146,7 +140,7 @@ class Document < ActiveRecord::Base
   # This boolean is used in views to know if a link should be
   # displayed to show the content
   def has_content?
-    cached =~ /\w/
+    cache_content =~ /\w/
   end
   
   private

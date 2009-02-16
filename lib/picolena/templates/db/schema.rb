@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(:version => 20090213234937) do
     t.string   "filename"
     t.string   "basename"
     t.string   "filetype"
-    t.text     "cached"
+    t.text     "cache_content"
     t.string   "language"
     t.datetime "modified"
   end

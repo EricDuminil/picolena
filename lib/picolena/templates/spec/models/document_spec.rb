@@ -47,9 +47,9 @@ describe Document do
     another_doc.content.should == "just a content test\nin a txt file"
   end
   
-  it "should know its cached content" do
+  it "should know its cache content" do
     another_doc=Document["spec/test_dirs/indexed/basic/plain.txt"]
-    another_doc.cached.should == "just a content test\nin a txt file"
+    another_doc.cache_content.should == "just a content test\nin a txt file"
   end
 
   it "should keep content cached" do
@@ -61,7 +61,7 @@ describe Document do
       doc.write("This line should not be indexed. It shouldn't be found in cache")
       }
     some_doc.content.should_not == content_before
-    some_doc.cached.should == content_before
+    some_doc.cache_content.should == content_before
   end
 
   it "should know its highlighted cached content for a given query" do
