@@ -1,4 +1,8 @@
 # Document class retrieves information from filesystem and the index for any given document.
+# TODO: Update doc to reflect changes in sphinx branch
+# TODO: Do not raise inside validation. Use Document#save! if needed.
+# TODO: Clean up unneeded methods
+# TODO: Better delegation to PlainTextExtractor
 class Document < ActiveRecord::Base
   attr_accessor :score, :matching_content
 
