@@ -120,6 +120,19 @@ end
 class Object
   # [1,2,3].is_an?(Array) just looks better than [1,2,3].is_a?(Array)
   alias_method :is_an?, :is_a?
+
+  def ruby_platform_symbol
+    case RUBY_PLATFORM
+    when /linux/
+      :linux
+    #NOTE: Mac OS should be listed before Windows because 'darwin' includes 'win'
+    when /darwin/
+      :mac_os
+    when /win/
+      :windows
+    end
+  end
+  RUBY_PLATFORM_SYMBOL=ruby_platform_symbol
 end
 
 module Kernel
