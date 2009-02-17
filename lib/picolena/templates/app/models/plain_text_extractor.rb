@@ -47,8 +47,8 @@ class PlainTextExtractor
     end
 
     # Launches extractor on given file and outputs plain text result and language (if found)
-    def extract_information_from(source)
-      find_by_filename(source).extract_information
+    def extract_content_and_language_from(source)
+      find_by_filename(source).extract_content_and_language
     end
 
     # Tries to extract a thumbnail from source.
@@ -97,37 +97,39 @@ class PlainTextExtractor
 
   # Returns plain text content and language of source file,
   # using mguesser to guess used language.
-  # This method only returns probable language if the content is bigger than 500 chars
-  # and if probability score is higher than 90%.
-  def extract_information
-    content=extract_content
-
-    return {:content => content} unless [# Is LanguageRecognition turned on? (cf config/custom/picolena.rb)
-                                         Picolena::UseLanguageRecognition,
-                                         # Is a language guesser already installed?
-                                         PlainTextExtractor.language_guesser,
-                                         # Language recognition is too unreliable for small files.
-                                         content.size > 500].all?
-
-    language=IO.popen(PlainTextExtractor.language_guesser,'w+'){|lang_guesser|
-      lang_guesser.write content
-      lang_guesser.close_write
-      output=lang_guesser.read
-      if output=~/^([01]\.\d+)\t(\w+)\t(\w+)/ then
-        score, lang, encoding = $1.to_f, $2, $3
-        # Language recognition isn't reliable if score is too low.
-        lang unless score<0.9
-      end
-    }
-
-    {:content => content, :language => language}
+  def extract_content_and_language
+    [content = extract_content, find_language(content)]
   end
 
   def extract_thumbnail
     silently_execute(specific_thumbnail_command) if thumbnail_command
   end
 
+
   private
+
+  # Is it worth it using language recognition?
+  # Content needs to have at leat 500 chars in order for recognition to be reliable.
+  def use_language_recognition?(content_size)
+    Picolena::UseLanguageRecognition &&
+    PlainTextExtractor.language_guesser &&
+    content_size > 500
+  end
+
+  # This method only returns probable language if the content is bigger than 500 chars
+  # and if probability score is higher than 90%.
+  def find_language(content)
+    IO.popen(PlainTextExtractor.language_guesser,'w+'){|lang_guesser|
+      lang_guesser.write content
+      lang_guesser.close_write
+      output=lang_guesser.read
+      if output=~/^([01]\.\d+)\t(\w+)\t(\w+)/ then
+      score, lang, encoding = $1.to_f, $2, $3
+        # Language recognition isn't reliable if score is too low.
+        lang if score>0.9
+      end
+    } if use_language_recognition?(content.size)
+  end
 
   # destination method can be used by some conversion command that cannot output to stdout (example?)
   # a file containing plain text result will first be written by command, and then be read by extract_content.

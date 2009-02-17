@@ -44,7 +44,8 @@ class Finder
                                                      :pre_tag => "<<", :post_tag => ">>"
           )
           found_doc.score=score
-          @matching_documents<<found_doc
+          @matching_documents<<found_doc if found_doc.valid?
+        #TODO : Remove raise in Document#validation and remove this rescue as well!
         rescue Errno::ENOENT
           #"File has been moved/deleted!"
         end

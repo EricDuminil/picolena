@@ -20,7 +20,7 @@ class Document < ActiveRecord::Base
       doc.basename   = File.basename(complete_path, doc.filetype)
       doc.modified   = File.mtime(complete_path)
       doc.get_alias_path!
-      doc.cache_content    = doc.content rescue ""
+      doc.cache_content, doc.language    = doc.content_and_language rescue ""
       doc.save
     end
     doc
@@ -67,6 +67,10 @@ class Document < ActiveRecord::Base
   # Retrieves content as it is *now*.
   def content
     PlainTextExtractor.extract_content_from(complete_path)
+  end
+
+  def content_and_language
+    PlainTextExtractor.extract_content_and_language_from(complete_path)
   end
 
   # Returns cached content with matching terms between '<<' '>>'.
