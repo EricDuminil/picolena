@@ -111,18 +111,7 @@ module PlainTextExtractorDSL
     #
     #NOTE: What to do when no command is defined for a given platform?
     command_as_hash.invert.find{|platforms,command|
-      platforms.to_s.split(/_?and_?/i).collect{|on_platform| on_platform.sub(/on_/,'').to_sym}.include?(current_platform_symbol)
+      platforms.to_s.split(/_?and_?/i).collect{|on_platform| on_platform.sub(/on_/,'').to_sym}.include?(RUBY_PLATFORM_SYMBOL)
     }.last.dup
   end
-
-  def current_platform_symbol
-    @@platform_symbol||=case RUBY_PLATFORM
-      when /linux/
-        :linux
-      when /win/
-        :windows
-      when /darwin/
-        :mac_os
-      end
-    end
 end

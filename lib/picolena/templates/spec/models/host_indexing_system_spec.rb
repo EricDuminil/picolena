@@ -1,7 +1,16 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+def redefine_ruby_platform(new_platform)
+  Object.send(:remove_const, :RUBY_PLATFORM)
+  Object.const_set(:RUBY_PLATFORM,new_platform)
+end
+
 describe "Host indexing system" do
- PlainTextExtractor.dependencies.each do |dependency|
+  before(:all) do
+    @original_platform = RUBY_PLATFORM
+  end
+ 
+  PlainTextExtractor.dependencies.each do |dependency|
     it "should have #{dependency} installed" do
        dependency.should be_installed
     end
@@ -27,6 +36,17 @@ describe "Host indexing system" do
     }
   end
 
+  it "should know on which platform it is running" do
+    redefine_ruby_platform('i486-linux')
+    ruby_platform_symbol.should == :linux
+
+    redefine_ruby_platform('universal-darwin9.0')
+    ruby_platform_symbol.should == :mac_os
+
+    redefine_ruby_platform('mswin32')
+    ruby_platform_symbol.should == :windows
+  end
+
   it "should be able to calculate base26 hash from strings" do
     "test_dirs/indexed/010/decrepito.pdf".base26_hash(5).should == "rails"
     "test_dirs/indexed/migrations/000_restreins.rb".base26_hash(5).should == "ricou"
@@ -37,5 +57,9 @@ describe "Host indexing system" do
 
   it "should not use too small a hash for Document#probably_unique_id" do
     Picolena::HashLength.should_not < 10
+  end
+
+  after(:all) do
+    redefine_ruby_platform(@original_platform)
   end
 end
