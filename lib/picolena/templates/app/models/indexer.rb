@@ -9,6 +9,10 @@
 #   picolena.rb
 # They control the indexing performance, which directories should be indexed
 # , which files should be ignored and if language recognition is to be used.
+#
+# TODO: possibility to update index, instead of re-creating it every single time
+# TODO: specs to test if rake index:update works the way it should
+# NOTE: Removing dbm structure didn't make any spec fail!
 
 require 'indexer_logger'
 class Indexer
@@ -28,7 +32,7 @@ class Indexer
       }
       logger.debug "Now optimizing index"
       index.optimize
-      index_time_dbm_file['last']=Time.now._dump
+      #TODO: Write indexing time somewhere
       unlock!
       logger.show_report
     end
@@ -52,7 +56,6 @@ class Indexer
           else
             logger.debug "Identical : #{complete_path}"
           end
-          index_time_dbm_file[complete_path] = Time.now._dump
         }
       }
     end
@@ -94,15 +97,15 @@ class Indexer
     end
     
     # Checks for indexed files that are missing from filesytem
-    # and removes them from index & dbm file.
+    # and removes them from index & DB
     def prune_index
-      missing_files=index_time_dbm_file.reject{|filename,itime| File.exists?(filename) && Picolena::IndexedDirectories.any?{|dir,alias_path| filename.starts_with?(dir)}}
-      missing_files.each{|filename, itime|
-        index.writer.delete(:complete_path, filename)
-        index_time_dbm_file.delete(filename)
-        logger.debug "Removed : #{filename}"
-      }
-      index.optimize
+#     missing_files=index_time_dbm_file.reject{|filename,itime| File.exists?(filename) && Picolena::IndexedDirectories.any?{|dir,alias_path| filename.starts_with?(dir)}}
+#     missing_files.each{|filename, itime|
+#       index.writer.delete(:complete_path, filename)
+#       index_time_dbm_file.delete(filename)
+#       logger.debug "Removed : #{filename}"
+#     }
+#     index.optimize
     end
 
     # Only one IndexWriter should be instantiated.
@@ -125,7 +128,7 @@ class Indexer
     # Returns the time at which the index was last created/updated.
     # Returns "none" if it doesn't exist.
     def last_update
-      Time._load(index_time_dbm_file['last']) rescue "none"
+      "none"
     end
     
     # Returns the time at which the reload file was last touched.
@@ -140,8 +143,7 @@ class Indexer
     # its modification time and returns false unless the file has been
     # modified after the last indexing process.
     def should_index_this_document?(complete_path)
-      last_itime=index_time_dbm_file[complete_path]
-      @from_scratch || !last_itime || File.mtime(complete_path)> Time._load(last_itime) 
+      @from_scratch
     end
     
     def locked?
@@ -179,13 +181,6 @@ class Indexer
       @@logger ||= IndexerLogger.new
     end
     
-    # Copied from Ferret book, By David Balmain
-    # FIXME : Find an alternative that doesn't need any more dependency.
-    # NOTE: Not supported on windows.
-    def index_time_dbm_file
-      @@dbm_file ||= DBM.open(File.join(Picolena::MetaIndexPath, 'added_at'))
-    end
-
     def index_exists?
       index_filename and File.exists?(index_filename)
     end
@@ -224,8 +219,6 @@ class Indexer
       # an IndexWriter at the same time, and get a
       #  Ferret::Store::Lock::LockError
       index
-      # Opens dbm file to dump indexing time.
-      index_time_dbm_file
       # ActiveSupport sometime raises
       #  Expected Object is NOT missing constant
       # without.
