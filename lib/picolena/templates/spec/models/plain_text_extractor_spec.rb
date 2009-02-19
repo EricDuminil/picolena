@@ -47,6 +47,6 @@ describe "PlainTextExtractors" do
 
   it "should not extract content of binary files" do
     bin_file="spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION"
-    lambda{PlainTextExtractor.extract_content_from(bin_file)}.should raise_error(RuntimeError, "binary file")
+    PlainTextExtractor.extract_content_from(bin_file).should be_nil
   end
 end

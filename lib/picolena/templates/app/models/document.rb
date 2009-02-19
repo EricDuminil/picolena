@@ -1,6 +1,5 @@
 # Document class retrieves information from filesystem and the index for any given document.
 # TODO: Update doc to reflect changes in sphinx branch
-# TODO: Do not raise inside validation. Use Document#save! if needed.
 # TODO: Clean up unneeded methods
 # TODO: Better delegation to PlainTextExtractor
 class Document < ActiveRecord::Base
@@ -17,17 +16,25 @@ class Document < ActiveRecord::Base
     unless doc = find_by_complete_path(complete_path)
       # If no such file exists in the DB, add it
       doc            = new(:complete_path => complete_path)
-      doc.valid?
       doc.probably_unique_id = complete_path.base26_hash
       doc.filename   = File.basename(complete_path)
       doc.filetype   = File.extname(complete_path)
       doc.basename   = File.basename(complete_path, doc.filetype)
       doc.modified   = File.mtime(complete_path)
       doc.get_alias_path!
-      doc.cache_content, doc.language    = doc.content_and_language rescue ""
+      if doc.supported? then
+        doc.cache_content, doc.language    = doc.content_and_language
+        PlainTextExtractor.extract_thumbnail_from(complete_path)
+      end
       doc.save
     end
     doc
+  end
+
+  #FIXME: Somehow remove this method
+  #NOTE: Why isn't ActiveRecord#valid? actually calling anything?
+  def valid?
+    must_be_an_existing_file && must_be_in_an_indexed_directory
   end
 
   # Delegating properties to File::method_name(complete_path)
@@ -57,18 +64,19 @@ class Document < ActiveRecord::Base
   #  Document.new(:complete_path => "presentation.pdf").supported? => true
   #  Document.new(:complete_path => "presentation.some_weird_extension").supported? => false
   def supported?
-    PlainTextExtractor.supported_extensions.include?(self.ext_as_sym) unless ext_as_sym==:no_extension and !plain_text?
+    extractor unless ext_as_sym==:no_extension and !plain_text?
   end
 
   def extractor
-    PlainTextExtractor.find_by_extension(self.ext_as_sym) rescue nil
+    @extractor||=PlainTextExtractor.find_by_extension(self.ext_as_sym)
   end
 
   def mime
-    extractor.mime_name rescue 'application/octet-stream'
+    extractor ? extractor.mime_name : 'application/octet-stream'
   end
 
   # Retrieves content as it is *now*.
+  # TODO: use extractor
   def content
     PlainTextExtractor.extract_content_from(complete_path)
   end
@@ -143,6 +151,7 @@ class Document < ActiveRecord::Base
   #   "http://www.mycompany.com/wiki/organigram.odp"
   def get_alias_path!
     alias_dir=Picolena::IndexedDirectories[indexed_directory]
+    #FIXME: Doesn't work when doc is not in indexed_dir
     self[:alias_path]=dirname.sub(indexed_directory,alias_dir)
   end
   
@@ -158,10 +167,6 @@ class Document < ActiveRecord::Base
     Indexer.index.search(Ferret::Search::TermQuery.new(:probably_unique_id,probably_unique_id)).hits.first.doc
   end
 
-  def in_indexed_directory?
-    !indexed_directory.nil?
-  end
-
   # Returns the IndexedDirectory in which the Document is included.
   # Returns nil if no corresponding dir is found.
   def indexed_directory
@@ -170,14 +175,15 @@ class Document < ActiveRecord::Base
     }
   end
   
+  # NOTE: Those validations are basically useless: they come too late
   # Raises unless @complete_path is the path of an existing file
   def must_be_an_existing_file
-    raise Errno::ENOENT, @complete_path unless file?
+    file?
   end
 
   # Raises unless @complete_path is included in an indexed_directory.
   # It prevents end user to get information about non-indexed sensitive files.
   def must_be_in_an_indexed_directory
-    raise ArgumentError, "required document is not in indexed directory" unless in_indexed_directory?
+    indexed_directory
   end
 end

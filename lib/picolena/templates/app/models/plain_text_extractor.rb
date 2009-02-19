@@ -27,7 +27,6 @@ class PlainTextExtractor
     end
 
     # Finds which extractor should be used for a given file.
-    # Raises if the file is unsupported.
     def find_by_filename(filename)
       ext=File.ext_as_sym(filename)
       returning find_by_extension(ext) do |found_extractor|
@@ -36,9 +35,8 @@ class PlainTextExtractor
     end
 
     # Finds which extractor should be used for a given file, according to its extension
-    # Raises if the file is unsupported.
     def find_by_extension(ext)
-      all.find{|extractor| extractor.exts.include?(ext)} || raise(ArgumentError, "no convertor for .#{ext}")
+      all.find{|extractor| extractor.exts.include?(ext)}
     end
 
     # Launches extractor on given file and outputs plain text result
@@ -128,7 +126,7 @@ class PlainTextExtractor
         # Language recognition isn't reliable if score is too low.
         lang if score>0.9
       end
-    } if use_language_recognition?(content.size)
+    } if content && use_language_recognition?(content.size)
   end
 
   # destination method can be used by some conversion command that cannot output to stdout (example?)

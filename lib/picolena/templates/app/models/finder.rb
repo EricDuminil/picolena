@@ -37,18 +37,13 @@ class Finder
     @matching_documents=[]
     start=Time.now
       @total_hits = index.search_each(query, :limit => @per_page, :offset=>@offset, :sort => (sort_by_date if @sort_by=='date')){|index_id, score|
-        begin
-          found_doc=Document[index[index_id][:complete_path]]
-          found_doc.matching_content=index.highlight(query, index_id,
-                                                     :field => :cache_content, :excerpt_length => 80,
-                                                     :pre_tag => "<<", :post_tag => ">>"
-          )
-          found_doc.score=score
-          @matching_documents<<found_doc if found_doc.valid?
-        #TODO : Remove raise in Document#validation and remove this rescue as well!
-        rescue Errno::ENOENT
-          #"File has been moved/deleted!"
-        end
+        found_doc=Document[index[index_id][:complete_path]]
+        found_doc.matching_content=index.highlight(query, index_id,
+                                                   :field => :cache_content, :excerpt_length => 80,
+                                                   :pre_tag => "<<", :post_tag => ">>"
+        )
+        found_doc.score=score
+        @matching_documents<<found_doc if found_doc.valid?# && File.exists?(found_doc.complete_path)
       }
       @executed=true
     @time_needed=Time.now-start

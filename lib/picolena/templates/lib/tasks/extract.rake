@@ -4,13 +4,8 @@ namespace :extract do
   task :content => :environment do
     ARGV.shift
     ARGV.select{|fn| File.file?(fn)}.each{|filename|
-      begin
-        content=PlainTextExtractor.extract_content_from(filename)
-        puts "### Content extracted from : #{filename}"
-        puts content
-      rescue => e
-        puts "### No content extracted from #{filename} (#{e.message})"
-      end
+      puts "### Content extracted from : #{filename}"
+      puts PlainTextExtractor.extract_content_from(filename)
     }
   end
 end
