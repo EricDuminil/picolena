@@ -69,8 +69,11 @@ class Indexer
     # gets indexed anyway.
     def add_or_update_file(complete_path)
       document=Document[complete_path]
-      logger.add_document document
-      #logger.reject_document document, e
+      if document.extract_error then
+        logger.reject_document document
+      else
+        logger.add_document document
+      end
       index << document.attributes
     end
 

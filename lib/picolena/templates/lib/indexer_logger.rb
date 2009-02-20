@@ -13,14 +13,14 @@ class IndexerLogger<Logger
   end
 
   def add_document(document)
-    debug ["Added : #{document[:complete_path]}",document[:language] && " ("<<document[:language]<<")"].join
-    @found_languages.add(document[:language]) if document[:language]
-    @supported_filetypes.add(document[:filetype])
+    debug ["Added : #{document.complete_path}",document.language && " ("<<document.language<<")"].join
+    @found_languages.add(document.language) if document.language
+    @supported_filetypes.add(document.filetype)
   end
 
-  def reject_document(document, error)
-    @unsupported_filetypes.add(document[:filetype])
-    debug "Added without content (#{error.message}) : #{document[:complete_path]}"
+  def reject_document(document)
+    @unsupported_filetypes.add(document.filetype)
+    debug "Added without content (#{document.extract_error}) : #{document.complete_path}"
   end
   
   def show_report

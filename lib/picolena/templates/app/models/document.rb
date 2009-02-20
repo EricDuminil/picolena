@@ -2,7 +2,7 @@
 # TODO: Update doc to reflect changes in sphinx branch
 # TODO: Clean up unneeded methods
 class Document < ActiveRecord::Base
-  attr_accessor :score, :matching_content
+  attr_accessor :score, :matching_content, :extract_error
 
   validate          :must_be_an_existing_file
   validate          :must_be_in_an_indexed_directory
@@ -62,7 +62,12 @@ class Document < ActiveRecord::Base
   #  Document.new(:complete_path => "presentation.pdf").supported? => true
   #  Document.new(:complete_path => "presentation.some_weird_extension").supported? => false
   def supported?
-    extractor unless ext_as_sym==:no_extension and !plain_text?
+    if extractor then
+      self.extract_error="binary file" if ext_as_sym==:no_extension and !plain_text?
+    else
+      self.extract_error="no convertor for #{filetype}"
+    end
+    !extract_error
   end
 
   def extractor
