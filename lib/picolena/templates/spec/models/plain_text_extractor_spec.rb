@@ -49,4 +49,15 @@ describe "PlainTextExtractors" do
     bin_file="spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION"
     Document.extract_content_from(bin_file).should be_nil
   end
+
+  it "should not be prone to race conditions" do
+    one_plain_text_filename     = 'spec/test_dirs/indexed/others/utf8.txt'
+    another_plain_text_filename = 'spec/test_dirs/indexed/lang/goethe'
+
+    first_extractor   = Document[one_plain_text_filename].extractor
+    another_extractor = Document[another_plain_text_filename].extractor
+
+    another_extractor.source.should == File.expand_path(another_plain_text_filename)
+    first_extractor.source.should   == File.expand_path(one_plain_text_filename)
+  end
 end
