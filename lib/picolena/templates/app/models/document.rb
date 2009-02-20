@@ -31,12 +31,6 @@ class Document < ActiveRecord::Base
     doc
   end
 
-  #FIXME: Somehow remove this method
-  #NOTE: Why isn't ActiveRecord#valid? actually calling anything?
-  def valid?
-    must_be_an_existing_file && must_be_in_an_indexed_directory
-  end
-
   # Delegating properties to File::method_name(complete_path)
   [:dirname, :file?, :plain_text?, :size, :ext_as_sym].each{|method_name|
     define_method(method_name){File.send(method_name,complete_path)}
@@ -151,8 +145,7 @@ class Document < ActiveRecord::Base
   #   "http://www.mycompany.com/wiki/organigram.odp"
   def get_alias_path!
     alias_dir=Picolena::IndexedDirectories[indexed_directory]
-    #FIXME: Doesn't work when doc is not in indexed_dir
-    self[:alias_path]=dirname.sub(indexed_directory,alias_dir)
+    self[:alias_path]=dirname.sub(indexed_directory,alias_dir) if indexed_directory
   end
   
   private
@@ -175,15 +168,17 @@ class Document < ActiveRecord::Base
     }
   end
   
-  # NOTE: Those validations are basically useless: they come too late
-  # Raises unless @complete_path is the path of an existing file
+  # NOTE: This validation is basically useless: it comes too late
+  # File.mtime(complete_path) will raise before
   def must_be_an_existing_file
-    file?
+    errors.add(:complete_path, "is not an existing file") unless file?
   end
 
-  # Raises unless @complete_path is included in an indexed_directory.
+  # checks if @complete_path is included in an indexed_directory.
   # It prevents end user to get information about non-indexed sensitive files.
+  # NOTE: Should it raise, or just add an error?
   def must_be_in_an_indexed_directory
-    indexed_directory
+    #raise ArgumentError, "required document is not in indexed directory" unless indexed_directory
+    errors.add(:complete_path, "is not included in any indexed_directory") unless indexed_directory
   end
 end

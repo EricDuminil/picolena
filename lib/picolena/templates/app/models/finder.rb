@@ -43,7 +43,8 @@ class Finder
                                                    :pre_tag => "<<", :post_tag => ">>"
         )
         found_doc.score=score
-        @matching_documents<<found_doc if found_doc.valid?# && File.exists?(found_doc.complete_path)
+        # TODO: Add specs to see what happens if IndexedDirectories has changed
+        @matching_documents<<found_doc if found_doc.valid?
       }
       @executed=true
     @time_needed=Time.now-start
