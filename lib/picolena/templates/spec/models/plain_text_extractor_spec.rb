@@ -49,4 +49,15 @@ describe "PlainTextExtractors" do
     bin_file="spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION"
     lambda{PlainTextExtractor.extract_content_from(bin_file)}.should raise_error(RuntimeError, "binary file")
   end
+
+  it "should not be prone to race conditions" do
+    one_plain_text_filename     = 'whatever.txt'
+    another_plain_text_filename = 'random.cpp'
+
+    first_extractor   = PlainTextExtractor.find_by_filename(one_plain_text_filename)
+    another_extractor = PlainTextExtractor.find_by_filename(another_plain_text_filename)
+
+    another_extractor.source.should == another_plain_text_filename
+    first_extractor.source.should   == one_plain_text_filename
+  end
 end
