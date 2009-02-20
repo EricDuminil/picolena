@@ -1,8 +1,8 @@
-# D.query displays matching_documents for query, and returns the document
+# F.query displays matching_documents for query, and returns the document
 # with the highest score.
 # Useful for development and debugging purposes 
 #
-# >> D.test
+# >> F.test
 #  71 document(s) found for test:
 #  for_test.txt
 #  some_test_files.zip
@@ -16,7 +16,7 @@
 #  README
 #  ...........
 #  => "spec/test_dirs/indexed/just_one_doc/for_test.txt (82.7%)"
-class D
+class F
   def self.method_missing(query,*params)
     self[query.to_s] || super
   end
@@ -31,5 +31,12 @@ class D
     else
       puts "Nothing found for #{query}"
     end
+  end
+end
+
+# D[path] is just a shortcut to Document[path]
+class D
+  def self.[](path)
+    Document[path]
   end
 end
