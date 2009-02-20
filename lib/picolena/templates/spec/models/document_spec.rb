@@ -25,13 +25,12 @@ describe Document do
 
   it "should be an existing file" do
     lambda {Document["/patapouf.txt"]}.should raise_error(Errno::ENOENT)
-    lambda {@valid_document}.should_not raise_error
     lambda {Document["spec/test_dirs/not_indexed/Rakefile"]}.should_not raise_error(Errno::ENOENT)
   end
 
   it "should belong to an indexed directory" do
-    lambda {@valid_document}.should_not raise_error
-    lambda {Document["spec/test_dirs/not_indexed/Rakefile"]}.should raise_error(ArgumentError, "required document is not in indexed directory")
+    @valid_document.should be_valid
+    Document["spec/test_dirs/not_indexed/Rakefile"].should_not be_valid
   end
 
   basic_pdf_attribute.each{|attribute,expected_value|

@@ -119,6 +119,20 @@ describe Finder do
     end
   end
 
+  it "should not raise if IndexedDirectories has been modified, but just ignore files that are not included anymore" do
+    @original_indexed_dirs=Picolena::IndexedDirectories.dup
+    # There's only one file ('for_test.txt') in this directory
+    # This should be the only one found once IndexedDirectories has been modified.
+    just_one_doc=File.expand_path(File.join(RAILS_ROOT, 'spec/test_dirs/indexed/just_one_doc'))
+    begin
+      lambda {
+        Picolena::IndexedDirectories.replace(just_one_doc => '//just_one_doc/')
+        #NOTE: total_hits will still be >15, but matching_documents.size should == 1
+      }.should change{Finder.new('filetype:txt').matching_documents.size}.to(1)
+    ensure
+      Picolena::IndexedDirectories.replace(@original_indexed_dirs)
+    end
+  end
 
   # Ferret sometimes SEGFAULT crashed with '*.pdf' queries
   it "should not crash while looking for *.pdf" do

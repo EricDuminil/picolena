@@ -43,7 +43,6 @@ class Finder
                                                    :pre_tag => "<<", :post_tag => ">>"
         )
         found_doc.score=score
-        # TODO: Add specs to see what happens if IndexedDirectories has changed
         @matching_documents<<found_doc if found_doc.valid?
       }
       @executed=true
