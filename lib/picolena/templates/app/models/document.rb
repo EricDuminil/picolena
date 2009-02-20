@@ -1,7 +1,6 @@
 # Document class retrieves information from filesystem and the index for any given document.
 # TODO: Update doc to reflect changes in sphinx branch
 # TODO: Clean up unneeded methods
-# TODO: Better delegation to PlainTextExtractor
 class Document < ActiveRecord::Base
   attr_accessor :score, :matching_content
 
@@ -11,6 +10,7 @@ class Document < ActiveRecord::Base
   # find_or_create_by_complete_path(complete_path) on steroids
   # not using find_or_create to avoid recalculating each parameter
   # everytime a Document is initialized
+  # TODO: Separate this in different methods (create, update, ...)
   def self.[](path)
     complete_path=File.expand_path(path)
     unless doc = find_by_complete_path(complete_path)
@@ -24,13 +24,17 @@ class Document < ActiveRecord::Base
       doc.get_alias_path!
       if doc.supported? then
         doc.cache_content, doc.language    = doc.content_and_language
-        PlainTextExtractor.extract_thumbnail_from(complete_path)
+        doc.extractor.extract_thumbnail
       end
       doc.save
     end
     doc
   end
 
+  def self.extract_content_from(path)
+    new(:complete_path => File.expand_path(path)).content
+  end
+  
   # Delegating properties to File::method_name(complete_path)
   [:dirname, :file?, :plain_text?, :size, :ext_as_sym].each{|method_name|
     define_method(method_name){File.send(method_name,complete_path)}
@@ -62,7 +66,9 @@ class Document < ActiveRecord::Base
   end
 
   def extractor
-    @extractor||=PlainTextExtractor.find_by_extension(self.ext_as_sym)
+    @extractor ||= returning PlainTextExtractor.find_by_extension(ext_as_sym) do |xtr|
+      xtr.source = complete_path if xtr
+    end
   end
 
   def mime
@@ -70,13 +76,12 @@ class Document < ActiveRecord::Base
   end
 
   # Retrieves content as it is *now*.
-  # TODO: use extractor
   def content
-    PlainTextExtractor.extract_content_from(complete_path)
+    extractor.extract_content
   end
 
   def content_and_language
-    PlainTextExtractor.extract_content_and_language_from(complete_path)
+    extractor.extract_content_and_language
   end
 
   # Returns cached content with matching terms between '<<' '>>'.

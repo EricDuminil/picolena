@@ -5,7 +5,7 @@ namespace :extract do
     ARGV.shift
     ARGV.select{|fn| File.file?(fn)}.each{|filename|
       puts "### Content extracted from : #{filename}"
-      puts PlainTextExtractor.extract_content_from(filename)
+      puts Document.extract_content_from(filename)
     }
   end
 end

@@ -26,33 +26,9 @@ class PlainTextExtractor
       @@supported_exts||=all.collect{|extractor| extractor.exts}.flatten.compact.uniq
     end
 
-    # Finds which extractor should be used for a given file.
-    def find_by_filename(filename)
-      ext=File.ext_as_sym(filename)
-      returning find_by_extension(ext) do |found_extractor|
-        found_extractor.source=filename
-      end
-    end
-
     # Finds which extractor should be used for a given file, according to its extension
     def find_by_extension(ext)
       all.find{|extractor| extractor.exts.include?(ext)}
-    end
-
-    # Launches extractor on given file and outputs plain text result
-    def extract_content_from(source)
-      find_by_filename(source).extract_content
-    end
-
-    # Launches extractor on given file and outputs plain text result and language (if found)
-    def extract_content_and_language_from(source)
-      find_by_filename(source).extract_content_and_language
-    end
-
-    # Tries to extract a thumbnail from source.
-    # Doesn't do anything if thumbnail_command isn't defined for the corresponding filetype.
-    def extract_thumbnail_from(source)
-      find_by_filename(source).extract_thumbnail
     end
 
     # Returns which language guesser should be used by the system.

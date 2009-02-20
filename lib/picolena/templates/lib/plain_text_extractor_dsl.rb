@@ -83,7 +83,7 @@ module PlainTextExtractorDSL
         specific_unpack_command=unpack_command.sub('SOURCE','"'<<source<<'"').sub(/TE?MPDIR/,'"'<<specific_temp_dir<<'"')
         silently_execute(specific_unpack_command)
         Dir["#{specific_temp_dir}/**/*"].select{|f| File.file?(f)}.map{|filename|
-          content=PlainTextExtractor.extract_content_from(filename) rescue "---"
+          content=Document.extract_content_from(filename)
           ["##"<<filename.sub(specific_temp_dir,'').gsub('/', '>'),
             content]
         }.join("\n")
