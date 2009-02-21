@@ -1,6 +1,7 @@
 == 0.2.4
 
-* 1 bug fix :
+* 2 bug fixes :
+  * Race conditions in Indexing process would mess up the whole index
   * Platform recognition would recognise Mac OS X as win32
 
 

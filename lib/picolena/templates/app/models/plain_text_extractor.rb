@@ -27,10 +27,10 @@ class PlainTextExtractor
     end
 
     # Finds which extractor should be used for a given file.
-    # Raises if the file is unsupported.
+    # TODO: Rename this method, which does more than barely finding an extractor
     def find_by_filename(filename)
       ext=File.ext_as_sym(filename)
-      returning find_by_extension(ext) do |found_extractor|
+      returning find_by_extension(ext).dup do |found_extractor|
         found_extractor.source=filename
       end
     end
@@ -64,8 +64,6 @@ class PlainTextExtractor
     end
   end
 
-  # FIXME : That is just plain wrong. Many Documents share the same PlainTextExtractor.
-  # => troubles with multi-threaded indexing
   attr_accessor :source
 
   # Parses commands in order to know which programs are needed.
