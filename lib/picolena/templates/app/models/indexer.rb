@@ -67,7 +67,6 @@ class Indexer
     def add_or_update_file(complete_path)
       document = Document.default_fields_for(complete_path)
       begin
-        PlainTextExtractor.extract_thumbnail_from(complete_path)
         document.merge! PlainTextExtractor.extract_information_from(complete_path)
         raise "empty document #{complete_path}" if document[:content].strip.empty?
         logger.add_document document

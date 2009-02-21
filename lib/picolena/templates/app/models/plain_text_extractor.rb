@@ -51,12 +51,6 @@ class PlainTextExtractor
       find_by_filename(source).extract_information
     end
 
-    # Tries to extract a thumbnail from source.
-    # Doesn't do anything if thumbnail_command isn't defined for the corresponding filetype.
-    def extract_thumbnail_from(source)
-      find_by_filename(source).extract_thumbnail
-    end
-
     # Returns which language guesser should be used by the system.
     # Returns nil if none is found.
     def language_guesser
@@ -100,6 +94,7 @@ class PlainTextExtractor
   # This method only returns probable language if the content is bigger than 500 chars
   # and if probability score is higher than 90%.
   def extract_information
+    extract_thumbnail
     content=extract_content
 
     return {:content => content} unless [# Is LanguageRecognition turned on? (cf config/custom/picolena.rb)
@@ -123,6 +118,8 @@ class PlainTextExtractor
     {:content => content, :language => language}
   end
 
+  # Tries to extract a thumbnail from source.
+  # Doesn't do anything if thumbnail_command isn't defined for the corresponding filetype.
   def extract_thumbnail
     silently_execute(specific_thumbnail_command) if thumbnail_command
   end
