@@ -2,6 +2,8 @@
 # TODO: Update doc to reflect changes in sphinx branch
 # TODO: Clean up unneeded methods
 class Document < ActiveRecord::Base
+  ActiveRecord::Base.extend(ActiveSupport::Memoizable)
+
   attr_accessor :score, :matching_content, :extract_error
 
   validate          :must_be_an_existing_file
@@ -75,11 +77,14 @@ class Document < ActiveRecord::Base
   # in order to avoid racing conditions between 2 different documents with 
   # the same filetype, and hence the same PlainTextExtractor
   def extractor
-    @extractor ||=((base_extractor=PlainTextExtractor.find_by_extension(ext_as_sym)) &&
-      (xtr = base_extractor.dup) &&
-      (xtr.source = complete_path) &&
-      xtr)
+    base_extractor=PlainTextExtractor.find_by_extension(ext_as_sym)
+    if base_extractor then
+      returning base_extractor.dup do |xtr|
+        xtr.source = complete_path
+      end
+    end
   end
+  memoize :extractor
 
   def mime
     extractor ? extractor.mime_name : 'application/octet-stream'
@@ -178,10 +183,11 @@ class Document < ActiveRecord::Base
   # Returns the IndexedDirectory in which the Document is included.
   # Returns nil if no corresponding dir is found.
   def indexed_directory
-    @indexed_dir||=Picolena::IndexedDirectories.keys.find{|indexed_dir|
+    Picolena::IndexedDirectories.keys.find{|indexed_dir|
       dirname.starts_with?(indexed_dir)
     }
   end
+  memoize :indexed_directory
   
   # NOTE: This validation is basically useless: it comes too late
   # File.mtime(complete_path) will raise before
