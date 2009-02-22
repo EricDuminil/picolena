@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+CLASS:PUBLIC
+PRODID:-//class_vcard from TroyWolf.com//NONSGML Version 1//EN
+REV:2009-02-22 21:27:03
+FN:Eric Duminil
+N:Duminil;Eric;;;
+TITLE:Main developer
+ORG:Picolena
+EMAIL;TYPE=internet,pref:wrong_address@picolena.com
+TZ:+0000
+END:VCARD
