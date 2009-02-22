@@ -70,10 +70,15 @@ class Document < ActiveRecord::Base
     !extract_error
   end
 
+  # Returns a PlainTextExtractor, if available.
+  # The extractor is found according to Document#filetype, and then duplicated
+  # in order to avoid racing conditions between 2 different documents with 
+  # the same filetype, and hence the same PlainTextExtractor
   def extractor
-    @extractor ||= returning PlainTextExtractor.find_by_extension(ext_as_sym) do |xtr|
-      xtr.source = complete_path if xtr
-    end
+    @extractor ||=((base_extractor=PlainTextExtractor.find_by_extension(ext_as_sym)) &&
+      (xtr = base_extractor.dup) &&
+      (xtr.source = complete_path) &&
+      xtr)
   end
 
   def mime

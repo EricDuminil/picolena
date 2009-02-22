@@ -38,8 +38,6 @@ class PlainTextExtractor
     end
   end
 
-  # FIXME : That is just plain wrong. Many Documents share the same PlainTextExtractor.
-  # => troubles with multi-threaded indexing
   attr_accessor :source
 
   # Parses commands in order to know which programs are needed.
