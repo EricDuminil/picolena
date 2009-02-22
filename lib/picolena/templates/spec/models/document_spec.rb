@@ -98,6 +98,13 @@ describe Document do
     Document["spec/test_dirs/indexed/others/ghjopdfg.xyz"].should_not be_supported
   end
 
+  it "should have an empty content when unsupported" do
+    unsupported_doc=Document['spec/test_dirs/indexed/others/asfg.abc']
+    unsupported_doc.should_not be_supported
+    unsupported_doc.content.should be_empty
+    unsupported_doc.cache_content.should be_empty
+  end
+
   it "should not be considered supported if binary" do
     Document["spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION"].should_not be_supported
   end
