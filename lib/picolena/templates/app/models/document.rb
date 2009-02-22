@@ -24,10 +24,8 @@ class Document < ActiveRecord::Base
       doc.basename   = File.basename(complete_path, doc.filetype)
       doc.modified   = File.mtime(complete_path)
       doc.get_alias_path!
-      if doc.supported? then
-        doc.cache_content, doc.language    = doc.content_and_language
-        doc.extractor.extract_thumbnail
-      end
+      doc.cache_content, doc.language    = doc.extract_content_and_language
+      doc.extract_thumbnail
       doc.save
     end
     doc
@@ -64,7 +62,7 @@ class Document < ActiveRecord::Base
   #  Document.new(:complete_path => "presentation.pdf").supported? => true
   #  Document.new(:complete_path => "presentation.some_weird_extension").supported? => false
   def supported?
-    if extractor then
+    if extractor.is_a?(PlainTextExtractor) then
       self.extract_error="binary file" if ext_as_sym==:no_extension and !plain_text?
     else
       self.extract_error="no convertor for #{filetype}"
@@ -82,22 +80,14 @@ class Document < ActiveRecord::Base
       returning base_extractor.dup do |xtr|
         xtr.source = complete_path
       end
+    else
+      EmptyExtractor.instance
     end
   end
   memoize :extractor
 
-  def mime
-    extractor ? extractor.mime_name : 'application/octet-stream'
-  end
-
-  # Retrieves content as it is *now*.
-  def content
-    extractor.extract_content
-  end
-
-  def content_and_language
-    extractor.extract_content_and_language
-  end
+  delegate      :extract_content, :extract_content_and_language, :extract_thumbnail, :mime,  :to => :extractor
+  alias_method  :content, :extract_content
 
   # Returns cached content with matching terms between '<<' '>>'.
   def highlighted_cache(raw_query)

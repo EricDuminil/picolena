@@ -10,7 +10,7 @@
 #  }
 
 module PlainTextExtractorDSL
-  attr_reader :exts, :mime_name, :description, :command, :content_and_file_examples, :thumbnail_command
+  attr_reader :exts, :mime, :description, :command, :content_and_file_examples, :thumbnail_command
 
   def initialize(&block)
     @content_and_file_examples=[]
@@ -24,7 +24,7 @@ module PlainTextExtractorDSL
   end
 
   def as(mime_name)
-    @mime_name=mime_name
+    @mime=mime_name
   end
 
   def aka(description)

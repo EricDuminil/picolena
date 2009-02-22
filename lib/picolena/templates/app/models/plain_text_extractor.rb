@@ -122,3 +122,26 @@ class PlainTextExtractor
     thumbnail_command.sub('SOURCE','"'<<source<<'"').sub('THUMBNAIL','"'<<File.thumbnail_path(source)<<'"')
   end
 end
+
+# Extractor that is attributed to non supported Documents,
+# to ease delegation from Document to PlainTextExtractor
+class EmptyExtractor
+  def self.instance
+    @@singleton||=EmptyExtractor.new
+  end
+
+  def extract_content_and_language
+    ['',nil]
+  end
+
+  def extract_thumbnail
+  end
+
+  def extract_content
+    ''
+  end
+
+  def mime_name
+    'application/octet-stream'
+  end
+end
