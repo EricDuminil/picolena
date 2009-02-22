@@ -149,7 +149,7 @@ lib/picolena/templates/spec/models/basic_finder_spec.rb
 lib/picolena/templates/spec/models/document_spec.rb
 lib/picolena/templates/spec/models/finder_spec.rb
 lib/picolena/templates/spec/models/host_indexing_system_spec.rb
-lib/picolena/templates/spec/models/index_directories_spec.rb
+lib/picolena/templates/spec/models/indexed_directories_spec.rb
 lib/picolena/templates/spec/models/indexer_spec.rb
 lib/picolena/templates/spec/models/plain_text_extractor_spec.rb
 lib/picolena/templates/spec/models/query_spec.rb
@@ -166,6 +166,7 @@ lib/picolena/templates/spec/test_dirs/indexed/basic/basic.tex
 lib/picolena/templates/spec/test_dirs/indexed/basic/crossed.text
 lib/picolena/templates/spec/test_dirs/indexed/basic/crossed.txt
 lib/picolena/templates/spec/test_dirs/indexed/basic/fake_thumbnailer
+lib/picolena/templates/spec/test_dirs/indexed/basic/forrest_gump.vcf
 lib/picolena/templates/spec/test_dirs/indexed/basic/hello.rb
 lib/picolena/templates/spec/test_dirs/indexed/basic/myfirstjavaprog.java
 lib/picolena/templates/spec/test_dirs/indexed/basic/one_page.ppt
@@ -173,6 +174,7 @@ lib/picolena/templates/spec/test_dirs/indexed/basic/other_basic.PDF
 lib/picolena/templates/spec/test_dirs/indexed/basic/other_too_small.dOc
 lib/picolena/templates/spec/test_dirs/indexed/basic/plain.txt
 lib/picolena/templates/spec/test_dirs/indexed/basic/queens.for
+lib/picolena/templates/spec/test_dirs/indexed/basic/rx_dml.vcard
 lib/picolena/templates/spec/test_dirs/indexed/basic/too_small.doc
 lib/picolena/templates/spec/test_dirs/indexed/basic/ubuntu_theme.odp
 lib/picolena/templates/spec/test_dirs/indexed/basic/weight_and_balance.ods

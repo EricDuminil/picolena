@@ -33,6 +33,8 @@ PlainTextExtractor.new {
   or_extract 'This program calculates greatest common divisors', :from=>'gcd.c'
   or_extract 'p 3 square.dat', :from => 'square.ins'
   or_extract 'Do loop (global)', :from => 'xor.vee'
+  or_extract 'Bubba Gump Shrimp Co', :from => 'forrest_gump.vcf'
+  or_extract 'eric duminil wrong_address@picolena.com', :from => 'rx_dml.vcard'
 
   # to check if other charsets are supported
   or_extract 'püöüökäößß AND ßklüöü', :from => 'utf-8.txt'
