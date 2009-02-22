@@ -5,6 +5,7 @@ namespace :index do
     Indexer.clear! :all
   end
 
+  #TODO: db:migrate before index:create
   desc 'Create index'
   task :create => :environment do
     Indexer.index_every_directory(remove_first=true)
