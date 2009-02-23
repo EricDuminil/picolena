@@ -19,8 +19,10 @@ max_buffer_memory: 134_217_728
 # 10 by default
 merge_factor: 10
 
-# Maximum number of extracted terms for any given document
-max_field_length: 10_000
+# Maximum size of extracted content, in bytes.
+# Anything bigger will get truncated and the rest won't get indexed
+# NOTE: This value should not be bigger than MySQL::max_allowed_packet
+max_content_length: 100_000
 
 
 ## Other parameters

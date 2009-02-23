@@ -6,8 +6,9 @@ class Document < ActiveRecord::Base
 
   attr_accessor :score, :matching_content, :extract_error
 
-  validate          :must_be_an_existing_file
-  validate          :must_be_in_an_indexed_directory
+  validate             :must_be_an_existing_file
+  validate             :must_be_in_an_indexed_directory
+  validates_length_of  :cache_content, :in => 1 .. Picolena::IndexingConfiguration[:max_content_length], :allow_blank => true
 
   # find_or_create_by_complete_path(complete_path) on steroids
   # not using find_or_create to avoid recalculating each parameter
