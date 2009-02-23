@@ -59,6 +59,10 @@ describe "Host indexing system" do
     Picolena::HashLength.should_not < 10
   end
 
+  it "should have at least one DB connection available to every indexing process" do
+    ActiveRecord::Base.connection.instance_variable_get('@config')[:pool].should > Picolena::IndexingConfiguration[:threads_number]
+  end
+
   after(:all) do
     redefine_ruby_platform(@original_platform)
   end
