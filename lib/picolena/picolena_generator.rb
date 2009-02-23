@@ -142,6 +142,7 @@ EOS
     config/custom
     doc
     db
+    db/migrate
     lang/ui
     lib
     lib/plain_text_extractors
