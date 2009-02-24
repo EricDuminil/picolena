@@ -10,7 +10,7 @@ PlainTextExtractor.new {
   or_extract                       '64x64 BMP'                                   , :from => 'gnu.bmp'
   or_extract                       'application/postscript 258x43'               , :from => 'diceface.eps'
   or_extract                       'Panasonic DMC-FZ8 320x240'                   , :from => 'glass.png'
-  or_extract                       'Panasonic DMC-FZ8 "35mm equivalent: 432.0mm"', :from => 'cygnus.jpeg'
+  or_extract                       '(Panasonic DMC-FZ8 Focal Length In 35mm Format) AND ((432 mm) OR 432mm)', :from => 'cygnus.jpeg'
   or_extract                       '"1990 bytes" 24x24 LZW'                      , :from => 'warning.tiff'
   or_extract                       '"1978 bytes" 24x24 LZW'                      , :from => 'caution.tif'
   or_extract                       'GIF 110x140'                                 , :from => 'rails_logo_remix.gif'
