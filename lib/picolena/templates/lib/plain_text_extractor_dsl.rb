@@ -77,7 +77,7 @@ module PlainTextExtractorDSL
     #FIXME: Cleaner code needed!
     @command=lambda {|source|
       begin
-        global_temp_dir   = File.join(Dir::tmpdir, 'picolena_archive_temp')
+        global_temp_dir   = File.join(Dir::tmpdir, "picolena_archive_temp_for_#{ENV['USER']}")
         specific_temp_dir = File.join(global_temp_dir, source.base26_hash)
         FileUtils.mkpath specific_temp_dir
         specific_unpack_command=unpack_command.sub('SOURCE','"'<<source<<'"').sub(/TE?MPDIR/,'"'<<specific_temp_dir<<'"')
