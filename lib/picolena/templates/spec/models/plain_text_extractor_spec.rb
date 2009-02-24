@@ -47,7 +47,21 @@ describe "PlainTextExtractors" do
 
   it "should not extract content of binary files" do
     bin_file="spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION"
-    Document.extract_content_from(bin_file).should be_nil
+    Document.extract_content_from(bin_file).should be_empty
+  end
+
+  it "should truncate extracted content when specified" do
+    old_max_content_length = Picolena::IndexingConfiguration[:max_content_length]
+    Picolena::IndexingConfiguration[:max_content_length] = 500
+    begin
+      full_content  = Document['spec/test_dirs/indexed/lang/lorca'].content
+      trunc_content = Document['spec/test_dirs/indexed/lang/lorca'].content(:truncated)
+      full_content.size.should > trunc_content.size
+      full_content.starts_with?(trunc_content).should be_true
+      trunc_content.size.should == Picolena::IndexingConfiguration[:max_content_length]
+    ensure
+      Picolena::IndexingConfiguration[:max_content_length] = old_max_content_length
+    end
   end
 
   it "should not be prone to race conditions" do

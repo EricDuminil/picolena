@@ -25,7 +25,7 @@ class Document < ActiveRecord::Base
       doc.basename   = File.basename(complete_path, doc.filetype)
       doc.modified   = File.mtime(complete_path)
       doc.get_alias_path!
-      doc.cache_content, doc.language    = doc.extract_content_and_language
+      doc.cache_content, doc.language    = doc.extract_content_and_language(:truncate)
       doc.extract_thumbnail
       doc.save
     end

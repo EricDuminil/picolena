@@ -48,7 +48,11 @@ class PlainTextExtractor
 
   ## Conversion part
   # Returns plain text content of source file
-  def extract_content
+  #
+  # If desired, result can be truncated to avoid too big a data :
+  # DBMS might expect a maximum field size, and the indexer might ignore
+  # any term after the N first ones.
+  def extract_content(truncate=false)
     content=if command.is_a?(String) then
       # If command is a String, launch it via system(command).
       if command.include?('DESTINATION') then
@@ -67,13 +71,16 @@ class PlainTextExtractor
       # with source file as parameter.
       command.call(source)
     end
-    content.strip if content
+
+    content||=""
+    content.strip!
+    truncate ? content[0...Picolena::IndexingConfiguration[:max_content_length]] : content
   end
 
   # Returns plain text content and language of source file,
   # using mguesser to guess used language.
-  def extract_content_and_language
-    [content = extract_content, find_language(content)]
+  def extract_content_and_language(truncate=false)
+    [content = extract_content(truncate), find_language(content)]
   end
 
   def extract_thumbnail
@@ -131,14 +138,14 @@ class EmptyExtractor
     @@singleton||=EmptyExtractor.new
   end
 
-  def extract_content_and_language
+  def extract_content_and_language(*p)
     ['',nil]
   end
 
   def extract_thumbnail
   end
 
-  def extract_content
+  def extract_content(*p)
     ''
   end
 

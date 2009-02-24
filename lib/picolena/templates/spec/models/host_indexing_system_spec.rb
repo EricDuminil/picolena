@@ -63,6 +63,14 @@ describe "Host indexing system" do
     ActiveRecord::Base.connection.instance_variable_get('@config')[:pool].should > Picolena::IndexingConfiguration[:threads_number]
   end
 
+  it "should know the maximum allowed content size extracted from a Document (config/custom/indexing_performance.yml)" do
+    Picolena::IndexingConfiguration[:max_content_length].should_not be_nil
+  end
+
+  it "should not allow maximum content field to be too small" do
+    Picolena::IndexingConfiguration[:max_content_length].should >= 10_000
+  end
+
   #NOTE: Works for MySQL. Equivalent for other DBMS?
   it "should not allow content field to grow bigger than what DBMS supports" do
     r                  = ActiveRecord::Base.connection.execute "SHOW GLOBAL VARIABLES LIKE 'max_allowed_packet'"
