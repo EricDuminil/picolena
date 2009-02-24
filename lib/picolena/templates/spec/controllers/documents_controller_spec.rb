@@ -64,7 +64,7 @@ describe DocumentsController do
     lambda{get 'show', :id=>'*ric'}.should_not raise_error
     response.should be_success
     orig_assigns['matching_documents'].entries.should_not be_empty
-    orig_assigns['matching_documents'].any?{|doc| doc.matching_content.join.starts_with?("<<Éric>> Mößer\n\n\f")}.should be_true
+    orig_assigns['matching_documents'].any?{|doc| doc.matching_content.join.starts_with?("<<Éric>> Mößer")}.should be_true
   end
 
   it "GET 'show' should accept ? in queries" do

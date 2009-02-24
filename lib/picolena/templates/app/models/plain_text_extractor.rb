@@ -49,7 +49,7 @@ class PlainTextExtractor
   ## Conversion part
   # Returns plain text content of source file
   def extract_content
-    if command.is_a?(String) then
+    content=if command.is_a?(String) then
       # If command is a String, launch it via system(command).
       if command.include?('DESTINATION') then
         # If command includes 'DESTINATION' keyword,
@@ -67,6 +67,7 @@ class PlainTextExtractor
       # with source file as parameter.
       command.call(source)
     end
+    content.strip if content
   end
 
   # Returns plain text content and language of source file,
