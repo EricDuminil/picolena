@@ -78,21 +78,24 @@ class File
   # Returns iso-8859-15 instead of iso-8859-1, to be sure € char can be
   # encoded
   def self.encoding(source)
-    parse_for_charset="grep -io charset=[a-z0-9\\-]* | sed 's/charset=//i'"
-    if File.extname(source)[0,4]==".htm" then
-      enc=%x{head -n20 \"#{source}\" | #{parse_for_charset}}.chomp
+    raw_data=if File.extname(source)[0,4]==".htm" then
+      # Let's hope that encoding information is written in the first 2000 bytes!
+      File.read(source,2000)
     else
-      enc=%x{file -i \"#{source}\"  | #{parse_for_charset}}.chomp
+      %x{file -i \"#{source}\"}
     end
+
+    enc=raw_data.scan(/charset=([\w\-]+)/i).flatten.first
+
     #iso-8859-15 should be used instead of iso-8859-1, for € char
     case enc
-     when "iso-8859-1"
-       "iso-8859-15"
-     when "unknown"
-       ""
-     else
-       enc
-     end
+    when "iso-8859-1"
+      "iso-8859-15"
+    when "unknown"
+      ""
+    else
+      enc || ""
+    end
   end
 
   # Returns the content of a file and removes it after.
