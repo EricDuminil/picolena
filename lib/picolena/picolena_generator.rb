@@ -208,5 +208,20 @@ EOS
     globalite/spec/lang/ui
     globalite/tasks
     haml
+    thinking_sphinx
+    thinking_sphinx/lib
+    thinking_sphinx/lib/riddle
+    thinking_sphinx/lib/riddle/client
+    thinking_sphinx/lib/thinking_sphinx
+    thinking_sphinx/lib/thinking_sphinx/active_record
+    thinking_sphinx/lib/thinking_sphinx/index
+    thinking_sphinx/rails
+    thinking_sphinx/spec
+    thinking_sphinx/spec/fixtures
+    thinking_sphinx/spec/unit
+    thinking_sphinx/spec/unit/thinking_sphinx
+    thinking_sphinx/spec/unit/thinking_sphinx/active_record
+    thinking_sphinx/spec/unit/thinking_sphinx/index
+    thinking_sphinx/tasks
 )
 end
