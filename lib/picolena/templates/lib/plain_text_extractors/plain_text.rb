@@ -2,7 +2,8 @@ PlainTextExtractor.new {
   every :txt, :text
   every :tex, :bib, :for, :cpp, :c, :rb, :ins, :vee, :java
   every :ini
-  every :sub, :srt
+  #NOTE: Might be worth parsing subtitles to remove time scale
+  every :srt
   #NOTE: Could be interesting to extract thumbnail from vCards
   every :vcf, :vcard 
   every :no_extension
@@ -34,6 +35,9 @@ PlainTextExtractor.new {
   or_extract 'Do loop (global)', :from => 'xor.vee'
   or_extract 'Bubba Gump Shrimp Co', :from => 'forrest_gump.vcf'
   or_extract 'eric duminil wrong_address@picolena.com', :from => 'rx_dml.vcard'
+  or_extract 'John Doe 192.0.2.42', :from => 'config.ini'
+  or_extract 'Design of a Carbon Fiber Composite Grid Structure for the GLAST Spacecraft Using a Novel Manufacturing Technique', :from => 'design_of_a_carbon_fiber.bib'
+  or_extract 'for the very last time', :from => 'dh_part.srt'
 
   # to check if other charsets are supported
   or_extract 'püöüökäößß AND ßklüöü', :from => 'utf-8.txt'

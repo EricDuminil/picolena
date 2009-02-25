@@ -202,7 +202,10 @@ lib/picolena/templates/spec/test_dirs/indexed/others/BIN_FILE_WITHOUT_EXTENSION
 lib/picolena/templates/spec/test_dirs/indexed/others/Thumbs.db
 lib/picolena/templates/spec/test_dirs/indexed/others/asfg.abc
 lib/picolena/templates/spec/test_dirs/indexed/others/ccmatrix1.cpp
+lib/picolena/templates/spec/test_dirs/indexed/others/config.ini
 lib/picolena/templates/spec/test_dirs/indexed/others/cross_site_scripting.txt
+lib/picolena/templates/spec/test_dirs/indexed/others/design_of_a_carbon_fiber.bib
+lib/picolena/templates/spec/test_dirs/indexed/others/dh_part.srt
 lib/picolena/templates/spec/test_dirs/indexed/others/gcd.c
 lib/picolena/templates/spec/test_dirs/indexed/others/ghjopdfg.xyz
 lib/picolena/templates/spec/test_dirs/indexed/others/lemonde.htm
