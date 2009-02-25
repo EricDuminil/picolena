@@ -8,6 +8,12 @@ lib/picolena/templates/config/custom/title_and_names_and_links.yml
 lib/picolena/templates/config/custom/icons_and_filetypes.yml
 lib/picolena/templates/config/custom/indexing_performance.yml
 lib/picolena/templates/config/database.yml
+lib/picolena/templates/config/development.sphinx.conf
+lib/picolena/templates/config/test.sphinx.conf
+lib/picolena/templates/config/production.sphinx.conf
+lib/picolena/templates/db/sphinx/development
+lib/picolena/templates/db/sphinx/test
+lib/picolena/templates/db/sphinx/production
 lib/picolena/templates/log
 lib/picolena/templates/spec/test_dirs/indexed/others/bäñüßé.txt
 lib/picolena/templates/tmp

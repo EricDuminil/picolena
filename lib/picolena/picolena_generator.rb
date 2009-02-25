@@ -143,6 +143,7 @@ EOS
     doc
     db
     db/migrate
+    db/sphinx
     lang/ui
     lib
     lib/plain_text_extractors

@@ -10,6 +10,10 @@ class Document < ActiveRecord::Base
   validate             :must_be_in_an_indexed_directory
   validates_length_of  :cache_content, :in => 1 .. Picolena::IndexingConfiguration[:max_content_length], :allow_blank => true
 
+  define_index do
+    indexes cache_content, :as => :content
+  end
+
   # find_or_create_by_complete_path(complete_path) on steroids
   # not using find_or_create to avoid recalculating each parameter
   # everytime a Document is initialized
