@@ -18,31 +18,35 @@ class Document < ActiveRecord::Base
     indexes modified
   end
 
-  # find_or_create_by_complete_path(complete_path) on steroids
-  # not using find_or_create to avoid recalculating each parameter
-  # everytime a Document is initialized
-  # TODO: Separate this in different methods (create, update, ...)
-  def self.[](path)
-    complete_path=File.expand_path(path)
-    unless doc = find_by_complete_path(complete_path)
-      # If no such file exists in the DB, add it
-      doc            = new(:complete_path => complete_path)
-      doc.probably_unique_id = complete_path.base26_hash
-      doc.filename   = File.basename(complete_path)
-      doc.filetype   = File.extname(complete_path)
-      doc.basename   = File.basename(complete_path, doc.filetype)
-      doc.modified   = File.mtime(complete_path)
-      doc.get_alias_path!
-      doc.cache_content, doc.language    = doc.extract_content_and_language(:truncate)
-      doc.extract_thumbnail
-      doc.save
+  class << self
+    def extract_content_from(path)
+      new(:complete_path => File.expand_path(path)).content
     end
-    doc
+
+    def find_or_create_with_content(path)
+      complete_path=File.expand_path(path)
+      find_or_create_by_complete_path(complete_path) do |doc|
+        doc.extract_fs_info!
+        doc.extract_doc_info!(:truncate)
+      end
+    end
+    alias_method :[], :find_or_create_with_content
   end
 
-  def self.extract_content_from(path)
-    new(:complete_path => File.expand_path(path)).content
+  def extract_fs_info!
+     self.probably_unique_id = complete_path.base26_hash
+     self.filename           = File.basename(complete_path)
+     self.filetype           = File.extname(complete_path)
+     self.basename           = File.basename(complete_path, filetype)
+     self.cache_mtime        = mtime
+     get_alias_path!
   end
+
+  def extract_doc_info!(truncate=false)
+    self.cache_content, self.language = extract_content_and_language(truncate)
+    extract_thumbnail
+  end
+
   
   # Delegating properties to File::method_name(complete_path)
   [:dirname, :file?, :plain_text?, :size, :ext_as_sym].each{|method_name|
@@ -126,7 +130,7 @@ class Document < ActiveRecord::Base
   #   >> doc.mtime
   #   => 20080509093951
   def mtime
-    modified.to_i
+    File.mtime(complete_path)
   end
 
   # Returns matching score as a percentage, e.g. 56.3%
