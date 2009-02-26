@@ -128,7 +128,8 @@ describe Finder do
       lambda {
         Picolena::IndexedDirectories.replace(just_one_doc => '//just_one_doc/')
         #NOTE: total_hits will still be >15, but matching_documents.size should == 1
-      }.should change{Finder.new('filetype:txt').matching_documents.size}.to(1)
+        #NOTE: this spec is broken : if the 10 first documents are not included in Picolena::IndexedDirectories, then matching_documents.empty?
+      }.should change{Finder.new('filetype:txt','relevance',1,20).matching_documents.size}.to(1)
     ensure
       Picolena::IndexedDirectories.replace(@original_indexed_dirs)
     end
