@@ -12,6 +12,10 @@ class Document < ActiveRecord::Base
 
   define_index do
     indexes cache_content, :as => :content
+    indexes complete_path, :as => :path
+    indexes alias_path, filename, basename, filetype
+    indexes language
+    indexes modified
   end
 
   # find_or_create_by_complete_path(complete_path) on steroids
