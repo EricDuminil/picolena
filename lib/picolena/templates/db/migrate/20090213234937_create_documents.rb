@@ -12,7 +12,7 @@ class CreateDocuments < ActiveRecord::Migration
       t.text     :cache_content
       t.string   :language
 
-      t.datetime :modified
+      t.datetime :cache_mtime
     end
   end
 

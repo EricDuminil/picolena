@@ -113,22 +113,23 @@ class Document < ActiveRecord::Base
 
   # Returns the last modification date before the document got indexed.
   # Useful to know how old a document is, and to which version the cache corresponds.
-  #   >> doc.pretty_date
+  #   >> doc.pretty_cache_mdate
   #   => "2008-05-09"
-  def pretty_date
-    modified.strftime("%Y-%M-%d")
+  def pretty_cache_mdate
+    cache_mtime.strftime("%Y-%M-%d")
   end
   
   # Returns the last modification time before the document got indexed.
-  #   >> doc.pretty_mtime
+  #   >> doc.pretty_cache_mtime
   #   => "2008-05-09 09:39:51"
-  def pretty_mtime
-    modified.strftime("%Y-%M-%d %H:%m:%S")
+  # TODO: Remove pretty_mtime if not used in views
+  def pretty_cache_mtime
+    cache_mtime.strftime("%Y-%M-%d %H:%m:%S")
   end
 
-  # Returns the last modification time before the document got indexed, as YYYYMMDDHHMMSS integer.
-  #   >> doc.mtime
-  #   => 20080509093951
+  # Returns the Document modification time
+  # mtime > cache_mtime means that the document has been modified since the last time
+  # content has been extracted
   def mtime
     File.mtime(complete_path)
   end

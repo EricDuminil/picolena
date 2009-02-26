@@ -80,16 +80,18 @@ describe Document do
   end
   
   it "should know its modification date" do
-    @valid_document.pretty_date.class.should == String
-    @valid_document.pretty_date.should =~/^\d{4}\-\d{2}\-\d{2}$/
+    @valid_document.pretty_cache_mdate.class.should == String
+    @valid_document.pretty_cache_mdate.should =~/^\d{4}\-\d{2}\-\d{2}$/
   end
   
   it "should know its modification time and returns it in a pretty way" do
     @valid_document.should respond_to(:mtime)
-    @valid_document.mtime.should be_kind_of(Integer)
-    @valid_document.should respond_to(:pretty_mtime)
-    @valid_document.pretty_mtime.class.should == String
-    @valid_document.pretty_mtime.should =~/^\d{4}\-\d{2}\-\d{2} \d{2}:\d{2}:\d{2}$/
+    @valid_document.mtime.should be_kind_of(Time)
+    @valid_document.should respond_to(:cache_mtime)
+    @valid_document.cache_mtime.should be_kind_of(Time)
+    @valid_document.should respond_to(:pretty_cache_mtime)
+    @valid_document.pretty_cache_mtime.should be_kind_of(String)
+    @valid_document.pretty_cache_mtime.should =~/^\d{4}\-\d{2}\-\d{2} \d{2}:\d{2}:\d{2}$/
   end
   
   it "should know if its content can be extracted" do
