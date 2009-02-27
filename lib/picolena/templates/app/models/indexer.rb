@@ -51,11 +51,7 @@ class Indexer
 
       indexing_list_chunks.each_with_thread{|chunk|
         chunk.each{|complete_path|
-          if should_index_this_document?(complete_path) then
-            add_or_update_file(complete_path)
-          else
-            logger.debug "Identical : #{complete_path}"
-          end
+          add_or_update_file(complete_path)
         }
       }
     end
@@ -68,13 +64,29 @@ class Indexer
     # be found, some basic information about the document (mtime, filename, complete_path)
     # gets indexed anyway.
     def add_or_update_file(complete_path)
-      document=Document[complete_path]
-      if document.supported? then
-        logger.add_document document
+      document=Document.find_by_complete_path(complete_path)
+      if document then
+        if document.supported? then
+          if document.has_been_modified? then
+            document.extract_doc_info!(:truncate)
+            document.save
+            logger.add_document(document, :update)
+            index << document.attributes
+          else
+            logger.debug "Identical : #{complete_path}"
+          end
+        else
+          logger.debug "Ignoring  : #{complete_path}"
+        end
       else
-        logger.reject_document document
+        document=Document[complete_path]
+        if document.supported? then
+          logger.add_document document
+        else
+          logger.reject_document document
+        end
+        index << document.attributes
       end
-      index << document.attributes
     end
 
     # Ensures index is closed, and removes every index file for RAILS_ENV.

@@ -12,8 +12,8 @@ class IndexerLogger<Logger
     debug "Indexing every directory"
   end
 
-  def add_document(document)
-    debug ["Added : #{document.complete_path}",document.language && " ("<<document.language<<")"].join
+  def add_document(document, update=false)
+    debug [update ? "Updated   " : "Added     ", ": #{document.complete_path}",document.language && " ("<<document.language<<")"].join
     @found_languages.add(document.language) if document.language
     @supported_filetypes.add(document.filetype)
   end
