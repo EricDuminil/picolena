@@ -34,9 +34,15 @@ class Document < ActiveRecord::Base
   end
 
   def extract_fs_info!
+     # Returns an id for this document.
+     # This id will be used in Controllers in order to get tiny urls.
+     # Since it's a base26 hash of the absolute filename, it can only be "probably unique".
+     # For huge amount of indexed documents, it would be wise to increase HashLength in config/custom/picolena.rb
      self.probably_unique_id = complete_path.base26_hash
      self.filename           = File.basename(complete_path)
      self.filetype           = File.extname(complete_path)
+     # Returns filename without extension
+     #   "buildings.odt" => "buildings"
      self.basename           = File.basename(complete_path, filetype)
      self.cache_mtime        = mtime
      get_alias_path!
@@ -63,13 +69,7 @@ class Document < ActiveRecord::Base
     [self,("(#{pretty_score})" if @score),("(language:#{language})" if language)].compact.join(" ")
   end
 
-  # Returns filename without extension
-  #   "buildings.odt" => "buildings"
 
-  # Returns an id for this document.
-  # This id will be used in Controllers in order to get tiny urls.
-  # Since it's a base26 hash of the absolute filename, it can only be "probably unique".
-  # For huge amount of indexed documents, it would be wise to increase HashLength in config/custom/picolena.rb
 
   # Returns true iff some PlainTextExtractor has been defined to convert it to plain text.
   #  Document.new(:complete_path => "presentation.pdf").supported? => true
