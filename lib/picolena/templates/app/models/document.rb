@@ -116,7 +116,7 @@ class Document < ActiveRecord::Base
   #   >> doc.pretty_cache_mdate
   #   => "2008-05-09"
   def pretty_cache_mdate
-    cache_mtime.strftime("%Y-%M-%d")
+    cache_mtime.strftime("%Y-%m-%d")
   end
   
   # Returns the last modification time before the document got indexed.
@@ -124,7 +124,7 @@ class Document < ActiveRecord::Base
   #   => "2008-05-09 09:39:51"
   # TODO: Remove pretty_mtime if not used in views
   def pretty_cache_mtime
-    cache_mtime.strftime("%Y-%M-%d %H:%m:%S")
+    cache_mtime.strftime("%Y-%m-%d %H:%M:%S")
   end
 
   # Returns the Document modification time
