@@ -162,7 +162,16 @@ describe Document do
     doc=Document["spec/test_dirs/indexed/others/nested/unreadable.pdf"]
     doc.should_not have_content
     lambda {doc.highlighted_cache('unreadable')}.should_not raise_error
-    doc.highlighted_cache('unreadable').should ~ /^\s*$/
+    doc.highlighted_cache('unreadable').should be_empty
+  end
+
+  it "should know if it has been modified since its content has been extracted" do
+    @valid_document.extract_doc_info!
+    @valid_document.has_been_modified?.should be_false
+    FileUtils.touch(@valid_document.complete_path)
+    @valid_document.has_been_modified?.should be_true
+    @valid_document.extract_doc_info!
+    @valid_document.has_been_modified?.should be_false
   end
 
   after(:all) do

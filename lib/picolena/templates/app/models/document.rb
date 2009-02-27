@@ -34,23 +34,23 @@ class Document < ActiveRecord::Base
   end
 
   def extract_fs_info!
-     # Returns an id for this document.
-     # This id will be used in Controllers in order to get tiny urls.
-     # Since it's a base26 hash of the absolute filename, it can only be "probably unique".
-     # For huge amount of indexed documents, it would be wise to increase HashLength in config/custom/picolena.rb
-     self.probably_unique_id = complete_path.base26_hash
-     self.filename           = File.basename(complete_path)
-     self.filetype           = File.extname(complete_path)
-     # Returns filename without extension
-     #   "buildings.odt" => "buildings"
-     self.basename           = File.basename(complete_path, filetype)
-     self.cache_mtime        = mtime
-     get_alias_path!
+    # Returns an id for this document.
+    # This id will be used in Controllers in order to get tiny urls.
+    # Since it's a base26 hash of the absolute filename, it can only be "probably unique".
+    # For huge amount of indexed documents, it would be wise to increase HashLength in config/custom/picolena.rb
+    self.probably_unique_id = complete_path.base26_hash
+    self.filename           = File.basename(complete_path)
+    self.filetype           = File.extname(complete_path)
+    # Returns filename without extension
+    #   "buildings.odt" => "buildings"
+    self.basename           = File.basename(complete_path, filetype)
+    get_alias_path!
   end
 
   def extract_doc_info!(truncate=false)
     self.cache_content, self.language = extract_content_and_language(truncate)
     extract_thumbnail
+    self.cache_mtime = mtime
   end
 
   
@@ -170,6 +170,10 @@ class Document < ActiveRecord::Base
   def get_alias_path!
     alias_dir=Picolena::IndexedDirectories[indexed_directory]
     self[:alias_path]=dirname.sub(indexed_directory,alias_dir) if indexed_directory
+  end
+
+  def has_been_modified?
+    mtime > cache_mtime
   end
   
   private
