@@ -75,10 +75,10 @@ class Document < ActiveRecord::Base
   #  Document.new(:complete_path => "presentation.pdf").supported? => true
   #  Document.new(:complete_path => "presentation.some_weird_extension").supported? => false
   def supported?
-    if extractor.is_a?(PlainTextExtractor) then
-      self.extract_error="binary file" if ext_as_sym==:no_extension and !plain_text?
-    else
+    if extractor.is_an?(EmptyExtractor) then
       self.extract_error="no convertor for #{filetype}"
+    else
+      self.extract_error="binary file" if ext_as_sym==:no_extension and !plain_text?
     end
     !extract_error
   end
