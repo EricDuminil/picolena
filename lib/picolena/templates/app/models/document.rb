@@ -15,7 +15,7 @@ class Document < ActiveRecord::Base
     indexes complete_path, :as => :path
     indexes alias_path, filename, basename, filetype
     indexes language
-    indexes modified
+    indexes cache_mtime, :as => :modified
   end
 
   class << self
