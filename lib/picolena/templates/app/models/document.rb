@@ -172,6 +172,9 @@ class Document < ActiveRecord::Base
     self[:alias_path]=dirname.sub(indexed_directory,alias_dir) if indexed_directory
   end
 
+  # For a given document, it retrieves the time it was modified before getting
+  # indexed, compare it to its modification time and returns true if the file
+  # has been modified after the last indexing process.
   def has_been_modified?
     mtime > cache_mtime
   end

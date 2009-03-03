@@ -10,9 +10,7 @@
 # They control the indexing performance, which directories should be indexed
 # , which files should be ignored and if language recognition is to be used.
 #
-# TODO: possibility to update index, instead of re-creating it every single time
 # TODO: specs to test if rake index:update works the way it should
-# NOTE: Removing dbm structure didn't make any spec fail!
 
 require 'indexer_logger'
 require 'timeout'
@@ -33,7 +31,6 @@ class Indexer
       }
       logger.debug "Now optimizing index"
       index.optimize
-      #TODO: Write indexing time somewhere
       unlock!
       logger.show_report
     end
@@ -98,6 +95,7 @@ class Indexer
           end
         end
       rescue Exception => e
+        # TODO: If TimeOut exceeded, ensure that at least some information about Document is written in DB
         logger.exception complete_path, e, thread_number
       end
     end
@@ -160,9 +158,6 @@ class Indexer
       File.mtime(reload_file)
     end
     
-    # For a given document, it retrieves the time it was last indexed, compare it to
-    # its modification time and returns false unless the file has been
-    # modified after the last indexing process.
     def should_index_this_document?(complete_path)
       @from_scratch
     end
