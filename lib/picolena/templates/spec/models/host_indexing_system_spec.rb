@@ -1,5 +1,8 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
+#TODO: Check for DB collation
+#Mysql::Error: Illegal mix of collations (latin1_swedish_ci,IMPLICIT) and (utf8_general_ci,COERCIBLE)
+
 def redefine_ruby_platform(new_platform)
   Object.send(:remove_const, :RUBY_PLATFORM)
   Object.const_set(:RUBY_PLATFORM,new_platform)
