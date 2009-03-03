@@ -19,9 +19,11 @@ module Enumerable
   # Used for the indexer to make it multi-threaded.
   # It ensures that threads are joined together before returning.
   def each_with_thread(&block)
+    thread_number=0
     tds=self.collect{|elem|
-      Thread.new(elem) {|elem|
-        block.call(elem)
+      thread_number+=1
+      Thread.new(thread_number,elem) {|tn,elem|
+        block.call(tn,elem)
       }
     }
     tds.each{|aThread| aThread.join}

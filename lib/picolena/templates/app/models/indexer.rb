@@ -52,9 +52,9 @@ class Indexer
       indexing_list_chunks=indexing_list.in_transposed_slices(Picolena::IndexingConfiguration[:threads_number])
       prepare_multi_threads_environment
 
-      indexing_list_chunks.each_with_thread{|chunk|
+      indexing_list_chunks.each_with_thread{|thread_number, chunk|
         chunk.each{|complete_path|
-          add_or_update_file(complete_path)
+          add_or_update_file(complete_path,thread_number)
         }
       }
     end
@@ -66,7 +66,7 @@ class Indexer
     # If for some reason (no content found or no defined PlainTextExtractor), content cannot
     # be found, some basic information about the document (mtime, filename, complete_path)
     # gets indexed anyway.
-    def add_or_update_file(complete_path)
+    def add_or_update_file(complete_path, thread_number)
       begin
         Timeout::timeout(60) do
           document=Document.find_by_complete_path(complete_path)
@@ -76,7 +76,7 @@ class Indexer
                 # If the document exists & has content that might have been modified, update it
                 document.extract_doc_info!(:truncate)
                 document.save
-                logger.add_document(document, :update)
+                logger.add_document(document, :update, thread_number)
                 index << document.attributes
               else
                 # The document hasn't been modified, move along
@@ -90,15 +90,15 @@ class Indexer
             # The document has not been indexed so far, create it and extract its content if supported
             document=Document[complete_path]
             if document.supported? then
-              logger.add_document document
+              logger.add_document document, false, thread_number
             else
-              logger.reject_document document
+              logger.reject_document document, thread_number
             end
             index << document.attributes
           end
         end
       rescue Exception => e
-        logger.exception complete_path, e
+        logger.exception complete_path, e, thread_number
       end
     end
 

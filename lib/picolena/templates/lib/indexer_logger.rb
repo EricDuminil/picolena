@@ -15,19 +15,19 @@ class IndexerLogger<Logger
     debug "Indexing every directory"
   end
 
-  def add_document(document, update=false)
-    debug [percentage, '-', update ? "Updated  " : "Added    ", ':', "#{document.complete_path}",document.language && "("<<document.language<<")"].join(' ')
+  def add_document(document, update=false, tn=0)
+    debug [percentage, '-', tn, '-', update ? "Updated  " : "Added    ", ':', "#{document.complete_path}",document.language && "("<<document.language<<")"].join(' ')
     @found_languages.add(document.language) if document.language
     @supported_filetypes.add(document.filetype)
   end
 
-  def reject_document(document)
+  def reject_document(document, tn)
     @unsupported_filetypes.add(document.filetype)
-    debug "#{percentage} - Added without content (#{document.extract_error}) : #{document.complete_path}"
+    debug "#{percentage} - #{tn} - Added without content (#{document.extract_error}) : #{document.complete_path}"
   end
 
-  def exception(path, e)
-    warn "#{percentage} - EXCEPTION : \"#{e.message}\" for : #{path}"
+  def exception(path, e, tn)
+    warn "#{percentage} - #{tn} - EXCEPTION : \"#{e.message}\" for : #{path}"
   end
   
   def show_report
