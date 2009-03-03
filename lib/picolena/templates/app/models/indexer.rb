@@ -46,6 +46,8 @@ class Indexer
         File.file?(filename) && File.basename(filename) !~ Picolena::ToIgnore
       }
 
+      logger.documents_number = indexing_list.size
+
       indexing_list_chunks=indexing_list.in_transposed_slices(Picolena::IndexingConfiguration[:threads_number])
       prepare_multi_threads_environment
 
