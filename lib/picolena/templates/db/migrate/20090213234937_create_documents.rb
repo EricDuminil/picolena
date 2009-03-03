@@ -14,6 +14,9 @@ class CreateDocuments < ActiveRecord::Migration
 
       t.datetime :cache_mtime
     end
+
+    add_index(:documents, :complete_path)
+    add_index(:documents, :probably_unique_id)
   end
 
   def self.down
