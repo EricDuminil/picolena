@@ -8,6 +8,7 @@ class IndexerLogger<Logger
     @supported_filetypes={}
     @unsupported_filetypes={}
     @indexed_so_far = 0
+    @exceptions = {}
   end
 
   def start_indexing
@@ -16,7 +17,8 @@ class IndexerLogger<Logger
   end
 
   def add_document(document, update=false, tn=0)
-    debug [percentage, '-', tn, '-', update ? "Updated  " : "Added    ", ':', "#{document.complete_path}",document.language && "("<<document.language<<")"].join(' ')
+    msg = update ? "Updated" : "Added"
+    debug [percentage, '-', tn, '-', msg.ljust(9), ':', "#{document.complete_path}",document.language && "("<<document.language<<")"].join(' ')
     @found_languages.add(document.language) if document.language
     @supported_filetypes.add(document.filetype)
   end
@@ -28,10 +30,16 @@ class IndexerLogger<Logger
 
   def exception(path, e, tn)
     warn "#{percentage} - #{tn} - EXCEPTION : \"#{e.message}\" for : #{path}"
+    @exceptions.add(e.message.split(/-/).first.strip)
+  end
+
+  def ignore(message, path, tn)
+    debug "#{percentage} - #{tn} - #{message.ljust(9)} : #{path}"
   end
   
   def show_report
-    describe :found_languages, :supported_filetypes, :unsupported_filetypes
+    describe :found_languages, :supported_filetypes, :unsupported_filetypes, :exceptions
+    info "Number of documents      : #{@documents_number}"
     info "Time needed              : #{Time.now-@start_time} s."
   end
 

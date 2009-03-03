@@ -80,11 +80,11 @@ class Indexer
                 index << document.attributes
               else
                 # The document hasn't been modified, move along
-                logger.debug "Identical : #{complete_path}"
+                logger.ignore "Identical", complete_path, thread_number
               end
             else
              # The document isn't supported, move along
-             logger.debug "Ignoring  : #{complete_path}"
+             logger.ignore "Ignoring", complete_path, thread_number
             end
           else
             # The document has not been indexed so far, create it and extract its content if supported
