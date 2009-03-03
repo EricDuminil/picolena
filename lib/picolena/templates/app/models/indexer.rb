@@ -70,17 +70,21 @@ class Indexer
       if document then
         if document.supported? then
           if document.has_been_modified? then
+            # If the document exists & has content that might have been modified, update it
             document.extract_doc_info!(:truncate)
             document.save
             logger.add_document(document, :update)
             index << document.attributes
           else
+            # The document hasn't been modified, move along
             logger.debug "Identical : #{complete_path}"
           end
         else
-          logger.debug "Ignoring  : #{complete_path}"
+         # The document isn't supported, move along
+         logger.debug "Ignoring  : #{complete_path}"
         end
       else
+        # The document has not been indexed so far, create it and extract its content if supported
         document=Document[complete_path]
         if document.supported? then
           logger.add_document document
