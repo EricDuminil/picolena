@@ -25,6 +25,10 @@ class IndexerLogger<Logger
     @unsupported_filetypes.add(document.filetype)
     debug "#{percentage} - Added without content (#{document.extract_error}) : #{document.complete_path}"
   end
+
+  def exception(path, e)
+    warn "#{percentage} - EXCEPTION : \"#{e.message}\" for : #{path}"
+  end
   
   def show_report
     describe :found_languages, :supported_filetypes, :unsupported_filetypes

@@ -15,6 +15,7 @@
 # NOTE: Removing dbm structure didn't make any spec fail!
 
 require 'indexer_logger'
+require 'timeout'
 class Indexer
   class << self
     # Finds every document included in IndexedDirectories, parses them with
@@ -66,32 +67,38 @@ class Indexer
     # be found, some basic information about the document (mtime, filename, complete_path)
     # gets indexed anyway.
     def add_or_update_file(complete_path)
-      document=Document.find_by_complete_path(complete_path)
-      if document then
-        if document.supported? then
-          if document.has_been_modified? then
-            # If the document exists & has content that might have been modified, update it
-            document.extract_doc_info!(:truncate)
-            document.save
-            logger.add_document(document, :update)
-            index << document.attributes
+      begin
+        Timeout::timeout(60) do
+          document=Document.find_by_complete_path(complete_path)
+          if document then
+            if document.supported? then
+              if document.has_been_modified? then
+                # If the document exists & has content that might have been modified, update it
+                document.extract_doc_info!(:truncate)
+                document.save
+                logger.add_document(document, :update)
+                index << document.attributes
+              else
+                # The document hasn't been modified, move along
+                logger.debug "Identical : #{complete_path}"
+              end
+            else
+             # The document isn't supported, move along
+             logger.debug "Ignoring  : #{complete_path}"
+            end
           else
-            # The document hasn't been modified, move along
-            logger.debug "Identical : #{complete_path}"
+            # The document has not been indexed so far, create it and extract its content if supported
+            document=Document[complete_path]
+            if document.supported? then
+              logger.add_document document
+            else
+              logger.reject_document document
+            end
+            index << document.attributes
           end
-        else
-         # The document isn't supported, move along
-         logger.debug "Ignoring  : #{complete_path}"
         end
-      else
-        # The document has not been indexed so far, create it and extract its content if supported
-        document=Document[complete_path]
-        if document.supported? then
-          logger.add_document document
-        else
-          logger.reject_document document
-        end
-        index << document.attributes
+      rescue Exception => e
+        logger.exception complete_path, e
       end
     end
 
