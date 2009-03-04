@@ -74,7 +74,7 @@ class Indexer
                 document.extract_doc_info!(:truncate)
                 document.save
                 logger.add_document(document, :update, thread_number)
-                index << document.attributes
+                index << document.to_ferret_doc
               else
                 # The document hasn't been modified, move along
                 logger.ignore "Identical", complete_path, thread_number
@@ -91,7 +91,7 @@ class Indexer
             else
               logger.reject_document document, thread_number
             end
-            index << document.attributes
+            index << document.to_ferret_doc
           end
         end
       rescue Exception => e
@@ -225,7 +225,7 @@ class Indexer
         field_infos.add_field(:basename,           :store => :no,  :index => :yes, :boost => 1.5)
         field_infos.add_field(:filename,           :store => :no,  :index => :yes, :boost => 1.5)
         field_infos.add_field(:filetype,           :store => :no,  :index => :yes, :boost => 1.5)
-        field_infos.add_field(:modified,           :store => :yes, :index => :untokenized)
+        field_infos.add_field(:cache_mtime,        :store => :yes, :index => :untokenized)
         field_infos.add_field(:language,           :store => :yes, :index => :untokenized)
       end
     end

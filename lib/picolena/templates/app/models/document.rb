@@ -178,6 +178,10 @@ class Document < ActiveRecord::Base
   def has_been_modified?
     mtime > cache_mtime
   end
+
+  def to_ferret_doc
+    attributes.merge('cache_mtime'=> cache_mtime.strftime("%Y%m%d%H%M%S"))
+  end
   
   private
  

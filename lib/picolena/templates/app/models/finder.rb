@@ -91,7 +91,7 @@ class Finder
  
   # Returns a SortField that sorts documents by reversed modified time.
   def sort_by_date
-    Ferret::Search::SortField.new(:modified, :type => :byte, :reverse => true)
+    Ferret::Search::SortField.new(:cache_mtime, :type => :byte, :reverse => true)
   end
 
   # Raises if index does not contain any document.

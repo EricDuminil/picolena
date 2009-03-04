@@ -46,7 +46,7 @@ fields={
   :basename           => :basename,
   :filename           => :filename,
   :extension          => :filetype,
-  :modification_time  => :modified,
+  :modification_time  => :cache_mtime,
   :probably_unique_id => :probably_unique_id,
   :language           => :language
 }

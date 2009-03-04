@@ -21,7 +21,7 @@ class Query
        /(#{:filename.l}):/=>'filename:',
        /(#{:filetype.l}):/=>'filetype:',
        /#{:content.l}:/ => 'cache_content:',
-       /(#{:modified.l}):/ => 'modified:',
+       /(#{:modified.l}):/ => 'cache_mtime:',
        /(#{:language.l}):/ => 'language:',
        /\b#{:LIKE.l}\s+(\S+)/=>'\1~'
       }
@@ -32,7 +32,7 @@ class Query
 
     # Instantiates a QueryParser once, and keeps it in cache.
     def parser
-      @@parser ||= Ferret::QueryParser.new(:fields => [:cache_content, :filename, :basename, :alias_path, :filetype, :modified], :or_default => false, :analyzer=>Picolena::Analyzer)
+      @@parser ||= Ferret::QueryParser.new(:fields => [:cache_content, :filename, :basename, :alias_path, :filetype, :cache_mtime], :or_default => false, :analyzer=>Picolena::Analyzer)
     end
   end
 end
