@@ -96,6 +96,7 @@ class Indexer
         end
       rescue Exception => e
         # TODO: If TimeOut exceeded, ensure that at least some information about Document is written in DB
+        # TODO: If TimeOut exceeded, ensure that no tmp file resides in /tmp
         logger.exception complete_path, e, thread_number
       end
     end
