@@ -8,7 +8,6 @@ describe "Finder without index on disk" do
     @new_index_path=File.join(Dir::tmpdir,'ferret_tst')
     Picolena::IndexSavePath.replace(@new_index_path)
     Picolena::MetaIndexPath.replace(File.join(@new_index_path,'meta'))
-    FileUtils.mkpath Picolena::MetaIndexPath
   end
 
   before(:each) do

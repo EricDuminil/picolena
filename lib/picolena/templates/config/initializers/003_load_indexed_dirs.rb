@@ -11,7 +11,6 @@ module Picolena
   IndexSavePath=File.join(IndexesSavePath,ENV["RAILS_ENV"] || "development")
   FileUtils.mkpath IndexSavePath
   MetaIndexPath= File.join(IndexSavePath,'meta')
-  FileUtils.mkpath MetaIndexPath
 
   # Creates a regular expression called ToIgnore
   # which describes files that should not be indexed

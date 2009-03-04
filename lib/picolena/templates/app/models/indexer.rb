@@ -177,6 +177,7 @@ class Indexer
     end
     
     def reload_file
+      FileUtils.mkpath Picolena::MetaIndexPath
       File.join(Picolena::MetaIndexPath,'reload')
     end
     
@@ -191,6 +192,7 @@ class Indexer
     end
     
     def lock_file
+      FileUtils.mkpath Picolena::MetaIndexPath
       File.join(Picolena::MetaIndexPath,'lock')
     end
 
