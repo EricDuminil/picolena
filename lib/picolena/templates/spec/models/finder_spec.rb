@@ -23,6 +23,8 @@ describe Finder do
     File.utime(0, once_upon_a_time, 'spec/test_dirs/indexed/basic/basic.pdf')
     File.utime(0, a_bit_later, 'spec/test_dirs/indexed/yet_another_dir/office2003-word-template.dot')
     File.utime(0, nineties, 'spec/test_dirs/indexed/others/placeholder.txt')
+    File.utime(0, Time.now+2.days, 'spec/test_dirs/indexed/lang/goethe')
+    File.utime(0, Time.now+1.day, 'spec/test_dirs/indexed/lang/lorca')
     Indexer.index_every_directory(remove_first=true)
   end
 
@@ -153,6 +155,16 @@ describe Finder do
   it "should not index those stupid Thumbs.db files" do
     Finder.new("Thumbs.db").matching_documents.should be_empty
     Finder.new("filetype:db").matching_documents.should_not be_empty
+  end
+
+  it "should be able to sort results by mtime" do
+    lambda{@recent_docs=Finder.new('*', 'date').matching_documents}.should_not raise_error
+    # mtime has been modified before indexing
+    #   File.utime(0, Time.now+2.days, 'spec/test_dirs/lang/goethe')
+    #   File.utime(0, Time.now+1.day, 'spec/test_dirs/lang/lorca')
+    # so that those 2 docs should show up at the top of the list
+    @recent_docs.first.filename.should  == 'goethe'
+    @recent_docs.second.filename.should == 'lorca'
   end
 
 #  Not sure about this spec!
