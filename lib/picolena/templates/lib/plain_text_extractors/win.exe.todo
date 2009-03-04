@@ -1,0 +1,15 @@
+#From http://firmit.wordpress.com/tag/extract-ico-from-exe/
+#
+#Extract icon from win-binary
+#April 6, 2008
+#
+#I wanted to use an icon in a windows exe-file. I extractet the ico-file by using a tool called wrestool. It was found in a package, which was easily installed:
+#
+#    sudo apt-get install icoutils
+#
+#    I extracted the ico with this command:
+#
+#        wrestool -x --output=. -t14 file.exe
+#
+#        I could then easily convert the file to whatever, and place the file in my wanted location /usr/share/icons
+#
