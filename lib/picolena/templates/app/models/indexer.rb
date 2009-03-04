@@ -102,11 +102,10 @@ class Indexer
     end
 
     # Ensures index is closed, and removes every index file for RAILS_ENV.
-    def clear!(clear_all=false, clear_db=true)
-      Document.destroy_all if clear_db
+    def clear!(db_as_well=true)
+      Document.destroy_all if db_as_well
       close
-      to_remove=clear_all ? Picolena::IndexesSavePath : Picolena::IndexSavePath
-      Dir.glob(File.join(to_remove,'**/*')).each{|f| FileUtils.rm(f) if File.file?(f)}
+      Dir.glob(File.join(Picolena::IndexSavePath,'**/*')).each{|f| FileUtils.rm(f) if File.file?(f)}
     end
 
     # Closes the index and
@@ -168,7 +167,7 @@ class Indexer
     end
 
     def recreate_from_database!
-      clear!(all=false,db=false)
+      clear!(db_as_well=false)
       lock!
       #TODO: Batched find will be useful
       Document.find(:all).each{|document|

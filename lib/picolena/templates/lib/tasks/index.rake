@@ -1,8 +1,8 @@
 desc 'Ferret index maintenance tasks'
 namespace :index do
-  desc 'Clear indexes'
+  desc 'Clear index for the given environment'
   task :clear => :environment do
-    Indexer.clear! :all
+    Indexer.clear!
   end
 
   #TODO: db:migrate before index:create
