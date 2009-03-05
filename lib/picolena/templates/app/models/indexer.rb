@@ -158,10 +158,6 @@ class Indexer
       File.mtime(reload_file)
     end
     
-    def should_index_this_document?(complete_path)
-      @from_scratch
-    end
-    
     def locked?
       File.exists?(lock_file)
     end
