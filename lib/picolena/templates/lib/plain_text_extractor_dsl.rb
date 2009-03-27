@@ -52,23 +52,25 @@ module PlainTextExtractorDSL
 
   def extract_content_with(command_as_hash_or_string=nil,&block)
     #TODO: Find a better way to manage platforms, and include OS X, Vista, BSD...
-  @command=case command_as_hash_or_string
-  when String
-    command_as_hash_or_string
-  when Hash
-    command_for_current_platform(command_as_hash_or_string)
+    @command=case command_as_hash_or_string
+    when String
+      command_as_hash_or_string
+    when Hash
+      command_for_current_platform(command_as_hash_or_string)
     else
       block || raise("No command defined for this extractor: #{description}")
     end
   end
 
   def extract_thumbnail_with(command_as_hash_or_string=nil, &block)
-    #TODO: Don't ignore block and use it as in extract_content_with
+    #TODO: DRY this
     @thumbnail_command=case command_as_hash_or_string
     when String
       command_as_hash_or_string
     when Hash
       command_for_current_platform(command_as_hash_or_string)
+    else
+      block || raise("No command defined for this extractor: #{description}")
     end
   end
 

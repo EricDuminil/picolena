@@ -84,9 +84,11 @@ class PlainTextExtractor
   end
 
   def extract_thumbnail
-    silently_execute(specific_thumbnail_command) if thumbnail_command
+    case thumbnail_command
+      when String : silently_execute(specific_thumbnail_command)
+      when Proc   : thumbnail_command.call(source, File.thumbnail_path(source))
+    end
   end
-
 
   private
 
