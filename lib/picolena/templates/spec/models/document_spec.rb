@@ -145,7 +145,7 @@ describe Document do
     doc=Document["spec/test_dirs/indexed/media/badminton.avi"]
     doc.icon_path.should_not be_nil
     doc.icon_path.should == "thumbnails/#{doc.probably_unique_id}.jpg"
-  end
+  end if Picolena::Thumbnail::Extract
 
   it "should know its icon_path if an icon  if available for its mimetype" do
     doc=Document["spec/test_dirs/indexed/others/xor.vee"]

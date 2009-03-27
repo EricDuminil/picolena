@@ -7,6 +7,7 @@ lib/picolena/templates/config/custom/white_list_ip.yml
 lib/picolena/templates/config/custom/title_and_names_and_links.yml
 lib/picolena/templates/config/custom/icons_and_filetypes.yml
 lib/picolena/templates/config/custom/indexing_performance.yml
+lib/picolena/templates/config/custom/thumbnails.yml
 lib/picolena/templates/config/database.yml
 lib/picolena/templates/config/development.sphinx.conf
 lib/picolena/templates/config/test.sphinx.conf

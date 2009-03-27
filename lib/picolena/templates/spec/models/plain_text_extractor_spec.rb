@@ -27,7 +27,7 @@ describe "PlainTextExtractors" do
         end
       end
 
-      if extractor.thumbnail_command then
+      if Picolena::Thumbnail::Extract && extractor.thumbnail_command then
         doc=Document.find_by_extension(ext)
         if doc then
           it should_extract_thumbnail do

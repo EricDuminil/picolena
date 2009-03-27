@@ -70,6 +70,7 @@ class PicolenaGenerator < RubiGen::Base #:nodoc:
       m.file '../config/icons_and_filetypes.yml', 'config/custom/icons_and_filetypes.yml'
       m.file '../config/indexing_performance.yml', 'config/custom/indexing_performance.yml'
       m.template '../config/database.yml', 'config/database.yml', :assigns => {:user => ENV['USER']}
+      m.template '../config/thumbnails.yml', 'config/custom/thumbnails.yml'
 
       # README, License & Rakefile
       m.file 'MIT-LICENSE', 'LICENSE'

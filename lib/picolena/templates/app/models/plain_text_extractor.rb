@@ -129,7 +129,8 @@ class PlainTextExtractor
 
   # Replaces generic command with specific source and thumbnail (if specified) files
   def specific_thumbnail_command
-    thumbnail_command.sub('SOURCE','"'<<source<<'"').sub('THUMBNAIL','"'<<File.thumbnail_path(source)<<'"')
+    #TODO: DRY!
+    thumbnail_command.sub('SOURCE','"'<<source<<'"').sub('THUMBNAIL','"'<<File.thumbnail_path(source)<<'"').sub('QUALITY','"'<<Picolena::Thumbnail::Quality<<'"').sub('WIDTH','"'<<Picolena::Thumbnail::Width<<'"').sub('HEIGHT','"'<<Picolena::Thumbnail::Height<<'"')
   end
 end
 

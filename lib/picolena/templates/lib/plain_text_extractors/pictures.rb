@@ -3,7 +3,7 @@ PlainTextExtractor.new {
   as "image/*"
   aka "some picture"
 
-  extract_thumbnail_with           'convert -quality 50 -thumbnail 80x80 SOURCE THUMBNAIL'
+  extract_thumbnail_with           'convert -quality QUALITY -thumbnail WIDTHxHEIGHT SOURCE THUMBNAIL'
 
   extract_content_with             'exiftool SOURCE'
   which_should_for_example_extract 'Eric Duminil Nikon D90'                      , :from => 'crow.jpg'

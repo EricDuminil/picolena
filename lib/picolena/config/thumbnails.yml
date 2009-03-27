@@ -1,0 +1,10 @@
+# Should Picolena extract thumbnails from files?
+extract_thumbnails : true
+
+# Quality is in percent (0 = bad, 100 = good)
+quality            : 50
+# Size in pixels
+width              : 80
+height             : 80
+
+# NOTE: With those settings, filesize for one thumbnail is around 1kB

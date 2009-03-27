@@ -49,7 +49,7 @@ class Document < ActiveRecord::Base
 
   def extract_doc_info!(truncate=false)
     self.cache_content, self.language = extract_content_and_language(truncate)
-    extract_thumbnail
+    extract_thumbnail if Picolena::Thumbnail::Extract
     self.cache_mtime = mtime
   end
 

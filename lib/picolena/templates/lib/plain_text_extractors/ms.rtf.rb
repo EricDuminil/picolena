@@ -14,7 +14,7 @@ PlainTextExtractor.new {
   extract_thumbnail_with {|source, destination|
     wmf_pics_inside_rtf=Dir.glob("#{RAILS_ROOT}/pict*.wmf")
     unless wmf_pics_inside_rtf.empty?
-      silently_execute("convert -quality 50 -thumbnail 80x80 #{wmf_pics_inside_rtf.first} #{destination}")
+      silently_execute("convert -quality #{Picolena::Thumbnail::Quality} -thumbnail #{Picolena::Thumbnail::Width}x#{Picolena::Thumbnail::Height} #{wmf_pics_inside_rtf.first} #{destination}")
       wmf_pics_inside_rtf.each{|f| FileUtils.rm f}
     end
   }
