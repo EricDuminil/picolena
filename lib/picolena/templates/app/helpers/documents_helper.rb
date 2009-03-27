@@ -85,10 +85,19 @@ module DocumentsHelper
     # Parses cache for found terms
     # Replaces linebreak by <br/>
     # < and > by &lt; and &gt;
+
     h(document.highlighted_cache(query)).gsub(/\n/,'<br/>').gsub(/&lt;&lt;(.*?)&gt;&gt;/){|c| term=$1
       # and affects a span class to each term
       content_tag(:span, term, :class=>"matching_content_#{content_terms.index(term.downcase)}")
     }
+  end
+
+  # Returns multicolor search terms à la Google
+  def highlighted_query(query)
+    content_terms=Query.content_terms(query)
+    content_terms.map{|term|
+      content_tag(:span, term, :class=>"matching_content_#{content_terms.index(term)}")
+    }.join(" ")
   end
   
   def sort_by_date_or_relevance(query,params)
