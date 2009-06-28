@@ -8,7 +8,6 @@ lib/picolena/templates/config/test.sphinx.conf
 lib/picolena/templates/config/production.sphinx.conf
 lib/picolena/templates/doc
 lib/picolena/templates/log
-lib/picolena/templates/spec/test_dirs/indexed/others/bäñüßé.txt
 lib/picolena/templates/tmp
 lib/picolena/templates/vendor
 doc

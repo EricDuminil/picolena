@@ -16,7 +16,6 @@ lib/picolena/templates/db/sphinx/development
 lib/picolena/templates/db/sphinx/test
 lib/picolena/templates/db/sphinx/production
 lib/picolena/templates/log
-lib/picolena/templates/spec/test_dirs/indexed/others/bäñüßé.txt
 lib/picolena/templates/tmp
 lib/picolena/templates/vendor
 lib/picolena/templates/coverage
