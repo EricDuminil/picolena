@@ -68,7 +68,7 @@ describe DocumentsController do
   end
 
   it "GET 'show' should accept ? in queries" do
-    params_from(:get, '/documents/?ric').should == {:controller => 'documents', :action => 'show', :id => '?ric'}
+    params_from(:get, '/documents/%3Fric').should == {:controller => 'documents', :action => 'show', :id => '?ric'}
     lambda{get 'show', :id=>'?ric'}.should_not raise_error(ActionController::RoutingError)
     response.should be_success
     orig_assigns['matching_documents'].entries.should_not be_empty
