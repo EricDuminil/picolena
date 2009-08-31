@@ -152,7 +152,7 @@ class EmptyExtractor
     ''
   end
 
-  def mime_name
+  def mime
     'application/octet-stream'
   end
 end
