@@ -121,6 +121,16 @@ describe DocumentsController do
     response.should be_success
   end
 
+  it "GET 'download' should be successful with correct ID and unknown MIME" do
+    get 'show', :id=>'whatever.db'
+    response.should be_success
+    orig_assigns['matching_documents'].entries.should_not be_empty
+    d=orig_assigns['matching_documents'].entries.first
+    get 'download', :id=>d.probably_unique_id
+    orig_assigns['document'].complete_path.should == d.complete_path
+    response.should be_success
+  end
+
   it "GET 'download' should redirect if wrong id" do
     probably_unique_id="Not a document".base26_hash
     get 'download', :id=>probably_unique_id
