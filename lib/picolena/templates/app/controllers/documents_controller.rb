@@ -26,12 +26,17 @@ class DocumentsController < ApplicationController
       page=params[:page]||1
       finder=Finder.new(@query,@sort_by,page)
       finder.execute!
-      pager=::Paginator.new(finder.total_hits, Picolena::ResultsPerPage) do
-        finder.matching_documents
-      end
-      @matching_documents=pager.page(page)
       @total_hits=finder.total_hits
     @time_needed=Time.now-start
+    respond_to do |format|
+      format.html{
+        pager=::Paginator.new(finder.total_hits, Picolena::ResultsPerPage) do
+          finder.matching_documents
+        end
+        @matching_documents=pager.page(page)
+      }
+      format.xml {@matching_documents=finder.matching_documents}
+    end
   end
 
 
